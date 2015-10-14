@@ -1,0 +1,25 @@
+{
+  "name": "usda-innovation-challenge",
+  "version": "1.0.0",
+  "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conroywhitney/usda-innovation-challenge.git"
+  },
+  "keywords": [
+    "usda",
+    "agriculture",
+    "maps",
+    "graphs"
+  ],
+  "author": "Conroy Whitney",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/conroywhitney/usda-innovation-challenge/issues"
+  },
+  "homepage": "https://github.com/conroywhitney/usda-innovation-challenge"
+}
