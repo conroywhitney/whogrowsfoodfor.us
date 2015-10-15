@@ -21,6 +21,3 @@ export function getZoomFIPS(someFIPS) {
   }
 }
 
-export function getStateFIPS(countyFIPS) {
-  return countyFIPS;
-}
