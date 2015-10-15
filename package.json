@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/conroywhitney/ag-eyes/issues"
   },
-  "homepage": "https://github.com/conroywhitney/ag-eyes"
+  "homepage": "https://github.com/conroywhitney/ag-eyes",
+  "devDependencies": {
+    "webpack": "^1.12.2"
+  }
 }
