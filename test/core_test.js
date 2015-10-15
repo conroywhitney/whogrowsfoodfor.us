@@ -7,7 +7,7 @@ describe('application logic', () => {
     return fromJS({
       crop: null,
       stat: null,
-      spotlight: null,
+      selected: null,
       zoom: null,
       detail: ['land', 'states'],
       histograms: [],
@@ -25,8 +25,8 @@ describe('application logic', () => {
       expect(initialState().get('stat')).to.be.null;
     });
 
-    it('should not have any region in the spotlight', () => {
-      expect(initialState().get('spotlight')).to.be.null;
+    it('should not have any selected region', () => {
+      expect(initialState().get('selected')).to.be.null;
     });
 
     it('should draw country and state boundaries', () => {
