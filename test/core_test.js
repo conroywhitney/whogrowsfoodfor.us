@@ -1,7 +1,12 @@
 import {Map, List, fromJS} from 'immutable';
 import {expect} from 'chai';
+import {select} from '../src/core'
 
 describe('application logic', () => {
+
+  const countyFIPS   = 41029;
+  const stateFIPS    = 41000;
+  const stateZoomXYZ = [1, 2, 3];
 
   function initialState() {
     return fromJS({
@@ -39,6 +44,14 @@ describe('application logic', () => {
 
     it('should have a generic label', () => {
       expect(initialState().get('label')).to.eq("Through the Eyes of Agriculture in the United States of America");
+    });
+
+  });
+
+  describe('select', () => {
+
+    it('should set the id of the selected region', () => {
+      expect(select(initialState(), countyFIPS).get('selected')).to.eq(countyFIPS);
     });
 
   });
