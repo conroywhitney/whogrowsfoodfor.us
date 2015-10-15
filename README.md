@@ -1,10 +1,12 @@
-# USDA Innovation Challenge
+# Eyes of Agriculture
 @conroywhitney's entry to the USDA Innovation Challenge 2015 ([usdaapps.devpost.com](https://usdaapps.devpost.com))
 
 ## Goals
-The aim of this project is to show not only where various agricultural
+The aim of this project is to view the United States through the lens of
+the regions that produce our food -- through the eyes of agriculture.
+This includes not only where various agricultural
 products are produced around the country (both crop- and animal-based),
-but also to give a window into the land, communities, and methods that are involved in the
+but also to give a window into the land, communities, and lifestyle that are involved in the
 production of our food here in the United States.
 
 To that end, this project has two key pieces of functionality:
@@ -14,7 +16,8 @@ To that end, this project has two key pieces of functionality:
    socioeconomics; as well as to look into projected values relating to climate change.
 
 The goal is to allow farmers, researches, and consumers to gain a better
-understanding of our food system, both where it is now, and what it might look like in the future.
+understanding of our food system through the lens of a particular
+agricultural product.
 
 ## Data
 The data used for this project can be downloaded in its original format.
