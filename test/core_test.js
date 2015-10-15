@@ -1,6 +1,6 @@
 import {Map, List, fromJS} from 'immutable';
 import {expect} from 'chai';
-import {select, getZoomXYZ} from '../src/core'
+import {select, getZoomXYZ, getZoomFIPS} from '../src/core'
 
 describe('application logic', () => {
 
@@ -73,6 +73,13 @@ describe('application logic', () => {
       expect(getZoomXYZ(null)).to.be.null;
     });
 
+  });
+
+  describe('getZoomFIPS', () => {
+
+    it('should return null if given nothing', () => {
+      expect(getZoomFIPS(null)).to.be.null;
+    });
 
   });
 

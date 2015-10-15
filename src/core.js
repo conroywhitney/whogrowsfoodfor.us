@@ -4,15 +4,15 @@ export function select(state, fips) {
   return state
     .set('selected', fips)
     .set('detail',   state.get('detail').push('counties'))
-    .set('zoom',     getZoomXYZ(getStateFIPS(fips)))
+    .set('zoom',     getZoomXYZ(getZoomFIPS(fips)))
   ;
 }
 
-export function getZoomXYZ(stateFIPS) {
-  if(!stateFIPS) { return null; }
+export function getZoomXYZ(zoomFIPS) {
+  if(!zoomFIPS) { return null; }
   return List([1, 2, 3]);
 }
 
-function getStateFIPS(someFIPS) {
+export function getZoomFIPS(someFIPS) {
   return someFIPS;
 }
