@@ -1,11 +1,11 @@
 import {Map, List, fromJS} from 'immutable';
 import {expect} from 'chai';
-import {select, getZoomXYZ, getZoomFIPS} from '../src/core'
+import {select, getZoomXYZ, getZoomFIPS, getPaddedFIPS} from '../src/core'
 
 describe('application logic', () => {
 
-  const stateFIPS    = 41000;
-  const countyFIPS   = 41029;
+  const stateFIPS    = '41000';
+  const countyFIPS   = '41029';
   const stateZoomXYZ = List([1, 2, 3]);
 
   function initialState() {
@@ -91,6 +91,50 @@ describe('application logic', () => {
 
     it('should return the state FIPS if it is a county', () => {
       expect(getZoomFIPS(countyFIPS)).to.eq(stateFIPS);
+    });
+
+    it('should balk at too many digits', () => {
+      expect(getZoomFIPS(100000)).to.eq(null);
+    });
+
+  });
+
+  describe('getPaddedFIPS', () => {
+
+    it('should handle null case', () => {
+      expect(getPaddedFIPS(null)).to.be.null;
+    });
+
+    it('should return null for negative numbers', () => {
+      expect(getPaddedFIPS(-1)).to.be.null;
+    });
+
+    it('should handle all zero case', () => {
+      expect(getPaddedFIPS(0)).to.eq('00000');
+    });
+
+    it('should handle one digit', () => {
+      expect(getPaddedFIPS(1)).to.eq('00001');
+    });
+
+    it('should handle two digits', () => {
+      expect(getPaddedFIPS(10)).to.eq('00010');
+    });
+
+    it('should handle three digits', () => {
+      expect(getPaddedFIPS(100)).to.eq('00100');
+    });
+
+    it('should handle four digits', () => {
+      expect(getPaddedFIPS(1000)).to.eq('01000');
+    });
+
+    it('should handle five digits', () => {
+      expect(getPaddedFIPS(10000)).to.eq('10000');
+    });
+
+    it('should balk at six digits', () => {
+      expect(getPaddedFIPS(100000)).to.eq(null);
     });
 
   });
