@@ -4,7 +4,7 @@
   "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel/register --recursive"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,10 @@
     "url": "https://github.com/conroywhitney/ag-eyes/issues"
   },
   "homepage": "https://github.com/conroywhitney/ag-eyes",
-  "devDependencies": {
+ "devDependencies": {
     "babel": "^5.8.23",
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3",
     "webpack": "^1.12.2"
   }
 }
