@@ -54,6 +54,11 @@ describe('application logic', () => {
       expect(select(initialState(), countyFIPS).get('selected')).to.eq(countyFIPS);
     });
 
+    it('should draw county borders', () => {
+      expect(select(initialState(), countyFIPS)
+             .get('detail')).to.eq(List(['land', 'states', 'counties']));
+    });
+
   });
 
 });
