@@ -6,7 +6,7 @@ describe('application logic', () => {
 
   const countyFIPS   = 41029;
   const stateFIPS    = 41000;
-  const stateZoomXYZ = [1, 2, 3];
+  const stateZoomXYZ = List([1, 2, 3]);
 
   function initialState() {
     return fromJS({
@@ -57,6 +57,12 @@ describe('application logic', () => {
     it('should draw county borders', () => {
       expect(select(initialState(), countyFIPS)
              .get('detail')).to.eq(List(['land', 'states', 'counties']));
+    });
+
+    it('should set zoom to XYZ of state', () => {
+      expect(select(initialState(), countyFIPS)
+             .get('zoom')).to.eq(stateZoomXYZ);
+
     });
 
   });
