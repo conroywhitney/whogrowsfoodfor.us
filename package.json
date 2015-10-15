@@ -4,7 +4,8 @@
   "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register --recursive"
+    "test": "mocha --compilers js:babel/register --recursive",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
