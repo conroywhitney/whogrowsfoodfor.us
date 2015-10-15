@@ -81,8 +81,16 @@ describe('application logic', () => {
       expect(getZoomFIPS(null)).to.be.null;
     });
 
+    it('should return null if given invalid FIPS', () => {
+      expect(getZoomFIPS(0)).to.be.null;
+    });
+
     it('should return the same FIPS if it is a state', () => {
       expect(getZoomFIPS(stateFIPS)).to.eq(stateFIPS);
+    });
+
+    it('should return the state FIPS if it is a county', () => {
+      expect(getZoomFIPS(countyFIPS)).to.eq(stateFIPS);
     });
 
   });

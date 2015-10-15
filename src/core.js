@@ -14,5 +14,15 @@ export function getZoomXYZ(zoomFIPS) {
 }
 
 export function getZoomFIPS(someFIPS) {
-  return someFIPS;
+  if(someFIPS > 0 && someFIPS < 100) {
+    return someFIPS;
+  } else if(someFIPS >= 100) {
+    return Math.floor(someFIPS/1000)*1000
+  } else {
+    return null;
+  }
+}
+
+export function getStateFIPS(countyFIPS) {
+  return countyFIPS;
 }
