@@ -1,5 +1,5 @@
 {
-  "name": "usda-innovation-challenge",
+  "name": "Eyes of Agriculture",
   "version": "1.0.0",
   "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
   "main": "index.js",
@@ -8,18 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/conroywhitney/usda-innovation-challenge.git"
+    "url": "https://github.com/conroywhitney/ag-eyes.git"
   },
   "keywords": [
     "usda",
     "agriculture",
     "maps",
-    "graphs"
+    "graphs",
+    "cartography"
   ],
   "author": "Conroy Whitney",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/conroywhitney/usda-innovation-challenge/issues"
+    "url": "https://github.com/conroywhitney/ag-eyes/issues"
   },
-  "homepage": "https://github.com/conroywhitney/usda-innovation-challenge"
+  "homepage": "https://github.com/conroywhitney/ag-eyes"
 }
