@@ -4,8 +4,8 @@ import {select, getZoomXYZ, getZoomFIPS} from '../src/core'
 
 describe('application logic', () => {
 
-  const countyFIPS   = 41029;
   const stateFIPS    = 41000;
+  const countyFIPS   = 41029;
   const stateZoomXYZ = List([1, 2, 3]);
 
   function initialState() {
@@ -79,6 +79,10 @@ describe('application logic', () => {
 
     it('should return null if given nothing', () => {
       expect(getZoomFIPS(null)).to.be.null;
+    });
+
+    it('should return the same FIPS if it is a state', () => {
+      expect(getZoomFIPS(stateFIPS)).to.eq(stateFIPS);
     });
 
   });
