@@ -14,10 +14,8 @@ export function getZoomXYZ(zoomFIPS) {
 }
 
 export function getZoomFIPS(someFIPS) {
-  if(someFIPS > 0 && someFIPS < 100) {
-    return someFIPS;
-  } else if(someFIPS >= 100) {
-    return Math.floor(someFIPS/1000)*1000
+  if(someFIPS > 0) {
+    return Math.floor(someFIPS / 1000) * 1000
   } else {
     return null;
   }
