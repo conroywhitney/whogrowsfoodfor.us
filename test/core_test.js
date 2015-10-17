@@ -21,7 +21,8 @@ describe('application logic', () => {
       histograms: [],
       label: defaultLabel,
       data: {
-        counties: require('../data/counties.json')
+        counties: require('../data/counties.json'),
+        states: require('../data/states.json')
       }
     });
   }
@@ -73,7 +74,7 @@ describe('application logic', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
       });
 
-      xit('should set a state-related label', () => {
+      it('should set a state-related label', () => {
         expect(newState.get('label')).to.eq(stateName);
       });
 

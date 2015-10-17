@@ -4,8 +4,8 @@ export function getLabel(state, fips) {
 	if(!state || !fips) { return defaultLabel; }
 
 	var
-		countyName = state.getIn(['data', 'counties', fips]),
-		stateName  = state.getIn(['data', 'states', fips])
+		stateName  = state.getIn(['data', 'states', fips, 'name']),
+		countyName = state.getIn(['data', 'counties', fips])
 	;
 	return countyName || stateName || defaultLabel;
 }
