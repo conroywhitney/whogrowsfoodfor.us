@@ -1,6 +1,21 @@
+import {Map, List, fromJS} from 'immutable';
+
 import {getStateFIPS, normalizeFIPS} from '../src/fips';
 import {getZoomXYZ} from '../src/zoom';
-import {getLabel} from '../src/label';
+import {getLabel, DEFAULT_LABEL} from '../src/label';
+
+export const INITIAL_STATE = fromJS({
+  crop: null,
+  stat: null,
+  selected: null,
+  zoom: null,
+  detail: ['land', 'states'],
+  histograms: [],
+  label: DEFAULT_LABEL,
+  data: {
+    labels: require('../data/labels.json')
+  }
+});
 
 export function select(state, fips) {
   var

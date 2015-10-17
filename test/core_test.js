@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {select} from '../src/core'
-import {defaultLabel} from '../src/label'
+import {select, INITIAL_STATE} from '../src/core'
+import {DEFAULT_LABEL} from '../src/label'
 
 describe('application logic', () => {
 
@@ -11,46 +11,31 @@ describe('application logic', () => {
   const countyFIPS   = '41029';
   const stateZoomXYZ = List([1, 2, 3]);
 
-  function initialState() {
-    return fromJS({
-      crop: null,
-      stat: null,
-      selected: null,
-      zoom: null,
-      detail: ['land', 'states'],
-      histograms: [],
-      label: defaultLabel,
-      data: {
-        labels: require('../data/labels.json')
-      }
-    });
-  }
-
   describe('defaults', () => {
 
     it('should not have any crops selected', () => {
-      expect(initialState().get('crop')).to.be.null;
+      expect(INITIAL_STATE.get('crop')).to.be.null;
     });
 
     it('should not have any stat selected', () => {
-      expect(initialState().get('stat')).to.be.null;
+      expect(INITIAL_STATE.get('stat')).to.be.null;
     });
 
     it('should not have any selected region', () => {
-      expect(initialState().get('selected')).to.be.null;
+      expect(INITIAL_STATE.get('selected')).to.be.null;
     });
 
     it('should draw country and state boundaries', () => {
-      expect(initialState().get('detail')).to.eq(List(['land', 'states']));
+      expect(INITIAL_STATE.get('detail')).to.eq(List(['land', 'states']));
     });
 
     it('should not have any histograms', () => {
-      expect(initialState().get('histograms')).to.be.empty;
+      expect(INITIAL_STATE.get('histograms')).to.be.empty;
     });
 
     it('should have a generic label', () => {
-      expect(initialState().get('label')).to.eq(defaultLabel);
-      expect(initialState().get('label')).to.have.length.above(0);
+      expect(INITIAL_STATE.get('label')).to.eq(DEFAULT_LABEL);
+      expect(INITIAL_STATE.get('label')).to.have.length.above(0);
     });
 
   });
@@ -59,7 +44,7 @@ describe('application logic', () => {
 
     describe('state level', () => {
 
-      var newState = select(initialState(), stateFIPS);
+      var newState = select(INITIAL_STATE, stateFIPS);
 
       it('should set the id of the selected region', () => {
         expect(newState.get('selected')).to.eq(stateFIPS);
@@ -81,7 +66,7 @@ describe('application logic', () => {
 
     describe('county level', () => {
 
-      var newState = select(initialState(), countyFIPS);
+      var newState = select(INITIAL_STATE, countyFIPS);
 
       it('should set the id of the selected region', () => {
         expect(newState.get('selected')).to.eq(countyFIPS);
