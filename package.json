@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel/register --require ./test/test_helper.js  --recursive",
     "test:watch": "npm run test -- --watch",
-    "clean": "rm -r data"
+    "clean": "rm -r data/ tmp/"
   },
   "repository": {
     "type": "git",
