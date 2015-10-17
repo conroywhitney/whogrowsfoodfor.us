@@ -1,4 +1,4 @@
-export function parseFIPS(string) {
+export function getStateFIPS(string) {
   // FIPS codes are in the thousands
   // Starting with Alabama at 01000
   // and ending with Puerto Rico at 72000
@@ -9,7 +9,7 @@ export function parseFIPS(string) {
     var
       fips_int    = parseInt(string),
       fips_floor  = Math.floor(fips_int / 1000) * 1000,
-      fips_string = getPaddedFIPS(fips_floor)
+      fips_string = normalizeFIPS(fips_floor)
     ;
     return fips_string;
   } else {
@@ -17,7 +17,7 @@ export function parseFIPS(string) {
   }
 }
 
-export function getPaddedFIPS(number) {
+export function normalizeFIPS(number) {
   if(number !== null && number >= 0 && number <= 99999) {
     return ("00000" + number).slice(-5);
   } else {

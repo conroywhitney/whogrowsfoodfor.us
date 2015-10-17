@@ -4,7 +4,9 @@ import {select} from '../src/core'
 
 describe('application logic', () => {
 
+  const stateName    = 'Oregon';
   const stateFIPS    = '41000';
+  const countyName   = 'Jackson County';
   const countyFIPS   = '41029';
   const stateZoomXYZ = List([1, 2, 3]);
 
@@ -16,7 +18,7 @@ describe('application logic', () => {
       zoom: null,
       detail: ['land', 'states'],
       histograms: [],
-      label: "Through the Eyes of Agriculture in the United States of America"
+      label: "United States of America"
     });
   }
 
@@ -43,34 +45,59 @@ describe('application logic', () => {
     });
 
     it('should have a generic label', () => {
-      expect(initialState().get('label')).to.eq("Through the Eyes of Agriculture in the United States of America");
+      expect(initialState().get('label')).to.eq("United States of America");
     });
 
   });
 
   describe('select', () => {
 
-    it('should set the id of the selected region', () => {
-      expect(select(initialState(), countyFIPS).get('selected')).to.eq(countyFIPS);
+    describe('state level', () => {
+
+      var newState = select(initialState(), stateFIPS);
+
+      it('should set the id of the selected region', () => {
+        expect(newState.get('selected')).to.eq(stateFIPS);
+      });
+
+      it('should draw county borders', () => {
+        expect(newState.get('detail')).to.eq(List(['land', 'states', 'counties']));
+      });
+
+      it('should set zoom to XYZ of state', () => {
+        expect(newState.get('zoom')).to.eq(stateZoomXYZ);
+
+      });
+
+      xit('should set a state-related label', () => {
+        expect(newState.get('label')).to.eq(stateName);
+      });
+
     });
 
-    it('should draw county borders', () => {
-      expect(select(initialState(), countyFIPS)
-             .get('detail')).to.eq(List(['land', 'states', 'counties']));
-    });
+    describe('county level', () => {
 
-    it('should set zoom to XYZ of state', () => {
-      expect(select(initialState(), countyFIPS)
-             .get('zoom')).to.eq(stateZoomXYZ);
+      var newState = select(initialState(), countyFIPS);
+
+      it('should set the id of the selected region', () => {
+        expect(newState.get('selected')).to.eq(countyFIPS);
+      });
+
+      it('should draw county borders', () => {
+        expect(newState.get('detail')).to.eq(List(['land', 'states', 'counties']));
+      });
+
+      it('should set zoom to XYZ of state', () => {
+        expect(newState.get('zoom')).to.eq(stateZoomXYZ);
+
+      });
+
+      xit('should set a county-related label', () => {
+        expect(newState.get('label')).to.eq(countyName);
+      });
 
     });
 
   });
-
-
-
-
-
-
 
 });
