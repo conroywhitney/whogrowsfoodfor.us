@@ -7,7 +7,7 @@ describe('label', () => {
 
 		it('should return default if given nothing', () => {
 			expect(getLabel(null, null)).to.eq(defaultLabel);
-      expect(getLabel(null, null)).to.have.length.above(0);
+			expect(getLabel(null, null)).to.have.length.above(0);
 		});
 
 	});
