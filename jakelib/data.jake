@@ -104,19 +104,19 @@ namespace('data', function() {
 
     download_task.addListener('complete', function(input_path) {
       console.log('Transforming state data ...');
+      var
+        writer = fs.createWriteStream(state_names_file)
+      ;
+
+      writer.on('finish', function() {
+        console.log("...state data: transformation complete");
+        // tell whoever's waiting on us that we're done using jake callback
+        writer.close(complete);
+      })
+
       fs.createReadStream(input_path)
         .pipe(csvConverter)
-        .pipe(
-          fs.createWriteStream(state_names_file)
-            .on('error', function(err) {
-              console.log("ERROR while writing state data");
-            })
-            .on('finish', function() {
-              console.log("...state data: transformation complete");
-              // tell whoever's waiting on us that we're done!
-              complete();
-            })
-        )
+        .pipe(writer)
       ;
     });
 
