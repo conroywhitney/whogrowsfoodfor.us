@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 import {select} from '../src/core'
+import {defaultLabel} from '../src/label'
 
 describe('application logic', () => {
 
@@ -18,9 +19,10 @@ describe('application logic', () => {
       zoom: null,
       detail: ['land', 'states'],
       histograms: [],
-      label: "United States of America",
+      label: defaultLabel,
       data: {
-        counties: require('../data/counties.json')
+        counties: require('../data/counties.json'),
+        states: require('../data/states.json')
       }
     });
   }
@@ -48,7 +50,8 @@ describe('application logic', () => {
     });
 
     it('should have a generic label', () => {
-      expect(initialState().get('label')).to.eq("United States of America");
+      expect(initialState().get('label')).to.eq(defaultLabel);
+      expect(initialState().get('label')).to.have.length.above(0);
     });
 
   });
@@ -71,7 +74,7 @@ describe('application logic', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
       });
 
-      xit('should set a state-related label', () => {
+      it('should set a state-related label', () => {
         expect(newState.get('label')).to.eq(stateName);
       });
 

@@ -22,6 +22,16 @@ namespace('download', function() {
     });
   });
 
+  desc('Download the state-level FIPS data from the census bureau');
+  task('stateFIPS', ['tmpdir'], {async: true}, function() {
+    var
+      path = tmp + 'state-fips.csv'
+    ;
+    download('http://www2.census.gov/geo/docs/reference/state.txt', path, function() {
+      complete(path);
+    });
+  });
+
   function download(url, path, callback) {
     console.log('Downloading [' + url + '] to [' + path + ']...');
     var
