@@ -16,6 +16,7 @@ namespace('data', function() {
       output_path   = output_dir + 'counties.json',
       csvConverter  = new Converter({
         toArrayString: true,
+        constructResult: false,
         headers: [
           'state_abbreviation',
           'state_fips_short',
