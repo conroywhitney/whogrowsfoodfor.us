@@ -21,8 +21,7 @@ describe('application logic', () => {
       histograms: [],
       label: defaultLabel,
       data: {
-        counties: require('../data/counties.json'),
-        states: require('../data/states.json')
+        names: require('../data/labels.json')
       }
     });
   }
