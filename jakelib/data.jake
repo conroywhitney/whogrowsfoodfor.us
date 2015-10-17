@@ -25,7 +25,6 @@ namespace('data', function() {
     // merge in states
     for(i = 0; i < states.length; i++) {
       var state = states[i];
-      console.log(state);
       output[state.fips] = {
         short: state.short,
         long:  state.long
@@ -35,7 +34,6 @@ namespace('data', function() {
     // merge in counties
     for(i = 0; i < counties.length; i++) {
       var county = counties[i];
-      console.log(county);
       output[county.fips] = {
         short: county.short,
         long:  county.long
@@ -71,7 +69,7 @@ namespace('data', function() {
       // create long fips code with state fips prepended (make sure converted to strings first)
       // these are what will be used later for the final data/names.json datafile
       county.fips  = county.state_fips_short + '' + county.county_fips_short;
-      county.short = county.county_name;
+      county.short = county.county_name.replace(' County', '');
       county.long  = county.county_name + ', ' + county.state_abbreviation;
     });
 
