@@ -5,7 +5,7 @@ var
 
 namespace('download', function() {
 
-  const tmp = '../tmp/';
+  const tmp = 'tmp/';
 
   desc('Creates a temporary folder to store the intermediate files we download');
   task('tmpdir', [], function() {
