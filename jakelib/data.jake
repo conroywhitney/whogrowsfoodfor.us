@@ -16,14 +16,36 @@ namespace('data', function() {
     console.log('Creating a combined JSON file of state and county names from tmp files');
 
     var
-      states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}'),
-      counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}'),
-      output   = {}
+      states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}')["states"],
+      counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}')["counties"],
+      // default values
+      output   = {"00000": { short: "United States", long: "United States of America"} }
     ;
 
-    console.log(states["states"][25]);
-    console.log(counties["counties"][2500]);
-    console.log("done! ! ! !!!");
+    // merge in states
+    for(i = 0; i < states.length; i++) {
+      var state = states[i];
+      console.log(state);
+      output[state.fips] = {
+        short: state.short,
+        long:  state.long
+      };
+    }
+
+    // merge in counties
+    for(i = 0; i < counties.length; i++) {
+      var county = counties[i];
+      console.log(county);
+      output[county.fips] = {
+        short: county.short,
+        long:  county.long
+      };
+    }
+
+    fs.writeFile(labels_file, JSON.stringify(output), 'utf-8', function(err) {
+      if (err) throw err;
+      console.log('...transformation complete');
+    });
   });
 
   desc('Create tmp file of county names from census information');
