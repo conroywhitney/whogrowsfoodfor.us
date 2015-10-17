@@ -94,7 +94,7 @@ describe('application logic', () => {
 
       });
 
-      xit('should set a county-related label', () => {
+      it('should set a county-related label', () => {
         expect(newState.get('label')).to.eq(countyName);
       });
 

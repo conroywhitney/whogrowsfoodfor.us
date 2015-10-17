@@ -16,7 +16,7 @@ namespace('data', function() {
       output_path   = datadir + 'counties.json',
       csvConverter  = new Converter({
         toArrayString: true,
-        constructResult: false,
+        constructResult: true,
         headers: [
           'state_abbreviation',
           'state_fips_short',
@@ -30,15 +30,22 @@ namespace('data', function() {
     csvConverter.on("record_parsed",function(item, csv, index){
       // create long fips code with state fips prepended (make sure converted to strings first)
       item.county_fips = item.state_fips_short + '' + item.county_fips_short;
-
-      // we won't be using these again, so no point saving them
-      delete item.state_fips_short;
-      delete item.county_fips_short;
-      delete item.county_fips_class_code;
     });
 
-    csvConverter.on("end_parsed", function (jsonArray) {
-      console.log('... transformation complete');
+    csvConverter.on("end_parsed", function(counties) {
+      var
+        output = {}
+      ;
+
+      for(i = 0; i < counties.length; i++) {
+        var county = counties[i];
+        output[county.county_fips] = county.county_name;
+      }
+
+      fs.writeFile(output_path, JSON.stringify(output), 'utf-8', function(err) {
+        if (err) throw err;
+        console.log('...transformation complete');
+      });
     });
 
     download_task.addListener('complete', function(filepath) {
@@ -46,7 +53,6 @@ namespace('data', function() {
       fs
         .createReadStream(filepath)
         .pipe(csvConverter)
-        .pipe(fs.createWriteStream(output_path))
       ;
     });
 

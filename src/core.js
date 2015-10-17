@@ -9,10 +9,14 @@ export function select(state, fips) {
     .set('selected', fips)
     .set('detail',   state.get('detail').push('counties'))
     .set('zoom',     getZoomXYZ(fips))
-    .set('label',    getLabel(fips))
+    .set('label',    getLabel(state.get('data'), fips))
   ;
 }
 
-function getLabel(fips) {
-  if(!fips) { return "United States" }
+function getLabel(data, fips) {
+  var
+    county = data.getIn(['counties', fips])
+  ;
+  if(fips && county) { return county }
+  return "United States";
 }
