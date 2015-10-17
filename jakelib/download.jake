@@ -33,6 +33,7 @@ namespace('download', function() {
           file.close(callback);
         });
       }).on('error', function(err) {
+        console.log('ERROR downloading [' + url + '] to [' + path + ']');
         fs.unlink(dest);
         callback(err);
       });

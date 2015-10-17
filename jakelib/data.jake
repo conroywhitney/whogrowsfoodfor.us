@@ -5,15 +5,15 @@ var
 
 namespace('data', function() {
 
-  const output_dir = 'data/';
+  const datadir = 'data/';
 
   desc('Creating a JSON file of county metadata from downloaded census information')
-  task('counties', ['dir'], function() {
+  task('counties', ['datadir'], function() {
     console.log('Creating a JSON file of county metadata from downloaded census information');
 
     var
       download_task = jake.Task['download:countyFIPS'],
-      output_path   = output_dir + 'counties.json',
+      output_path   = datadir + 'counties.json',
       csvConverter  = new Converter({
         toArrayString: true,
         constructResult: false,
@@ -54,11 +54,9 @@ namespace('data', function() {
     download_task.invoke();
   });
 
-  const tmp = 'tmp/';
-
   desc('Creates a folder to store the resultant files we transform');
-  task('dir', [], function() {
-    jake.mkdirP(output_dir);
+  task('datadir', [], function() {
+    jake.mkdirP(datadir);
   });
 
 });
