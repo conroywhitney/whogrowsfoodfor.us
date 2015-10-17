@@ -18,7 +18,10 @@ describe('application logic', () => {
       zoom: null,
       detail: ['land', 'states'],
       histograms: [],
-      label: "United States of America"
+      label: "United States of America",
+      data: {
+        counties: require('../data/counties.json')
+      }
     });
   }
 
@@ -66,7 +69,6 @@ describe('application logic', () => {
 
       it('should set zoom to XYZ of state', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
-
       });
 
       xit('should set a state-related label', () => {
