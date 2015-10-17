@@ -5,15 +5,53 @@ var
 
 namespace('data', function() {
 
-  const datadir = 'data/';
+  const datadir           = 'data/';
+  const tmpdir            = 'tmp/';
+  const state_names_file  = tmpdir + 'state_names.json';
+  const county_names_file = tmpdir + 'county_names.json';
+  const labels_file       = datadir + 'labels.json';
 
-  desc('Creating a JSON file of county metadata from downloaded census information')
-  task('counties', ['datadir'], function() {
-    console.log('Creating a JSON file of county metadata from downloaded census information');
+  desc('Creating a JSON file of regional labels from downloaded census information')
+  task('labels', ['datadir', 'stateNames', 'countyNames'], function() {
+    console.log('Creating a combined JSON file of state and county names from tmp files');
+
+    var
+      states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}')["states"],
+      counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}')["counties"],
+      // default values
+      output   = {"00000": { short: "United States", long: "United States of America"} }
+    ;
+
+    // merge in states
+    for(i = 0; i < states.length; i++) {
+      var state = states[i];
+      output[state.fips] = {
+        short: state.short,
+        long:  state.long
+      };
+    }
+
+    // merge in counties
+    for(i = 0; i < counties.length; i++) {
+      var county = counties[i];
+      output[county.fips] = {
+        short: county.short,
+        long:  county.long
+      };
+    }
+
+    fs.writeFile(labels_file, JSON.stringify(output), 'utf-8', function(err) {
+      if (err) throw err;
+      console.log('...transformation complete');
+    });
+  });
+
+  desc('Create tmp file of county names from census information');
+  task('countyNames', ['tmpdir'], { async: true }, function() {
+    console.log('Creating a tmp file of county names from downloaded census information');
 
     var
       download_task = jake.Task['download:countyFIPS'],
-      output_path   = datadir + 'counties.json',
       csvConverter  = new Converter({
         toArrayString: true,
         constructResult: true,
@@ -27,32 +65,29 @@ namespace('data', function() {
       })
     ;
 
-    csvConverter.on("record_parsed",function(item, csv, index){
+    csvConverter.on("record_parsed", function(county, csv, index){
       // create long fips code with state fips prepended (make sure converted to strings first)
-      item.county_fips = item.state_fips_short + '' + item.county_fips_short;
+      // these are what will be used later for the final data/names.json datafile
+      county.fips  = county.state_fips_short + '' + county.county_fips_short;
+      county.short = county.county_name.replace(' County', '');
+      county.long  = county.county_name + ', ' + county.state_abbreviation;
     });
 
-    csvConverter.on("end_parsed", function(counties) {
+    download_task.addListener('complete', function(input_path) {
+      console.log('Transforming county data ...');
       var
-        output = {}
+        writer = fs.createWriteStream(county_names_file)
       ;
 
-      for(i = 0; i < counties.length; i++) {
-        var county = counties[i];
-        output[county.county_fips] = county.county_name;
-      }
+      writer.on('finish', function() {
+        console.log("...county data: transformation complete");
+        // tell whoever's waiting on us that we're done using jake callback
+        writer.close(complete);
+      })
 
-      fs.writeFile(output_path, JSON.stringify(output), 'utf-8', function(err) {
-        if (err) throw err;
-        console.log('...transformation complete');
-      });
-    });
-
-    download_task.addListener('complete', function(filepath) {
-      console.log('Transforming county data ...');
-      fs
-        .createReadStream(filepath)
+      fs.createReadStream(input_path)
         .pipe(csvConverter)
+        .pipe(writer)
       ;
     });
 
@@ -60,13 +95,12 @@ namespace('data', function() {
     download_task.invoke();
   });
 
-  desc('Creating a JSON file of state metadata from downloaded census information')
-  task('states', ['datadir'], function() {
-    console.log('Creating a JSON file of state metadata from downloaded census information');
+  desc('Create a tmp file of state names from census information')
+  task('stateNames', ['tmpdir'], { async: true }, function() {
+    console.log('Creating a tmp file of state names from downloaded census information');
 
     var
       download_task = jake.Task['download:stateFIPS'],
-      output_path   = datadir + 'states.json',
       csvConverter  = new Converter({
         toArrayString: true,
         constructResult: true,
@@ -80,41 +114,39 @@ namespace('data', function() {
       })
     ;
 
-    csvConverter.on("record_parsed",function(item, csv, index){
+    csvConverter.on("record_parsed", function(state, csv, index){
       // convert fips into a string to preserve leading 0
       // add 000s for long code
-      item.state_fips = '' + item.state_fips + "000";
+      state.fips  = '' + state.state_fips + "000";
+      state.short = state.state_abbreviation;
+      state.long  = state.state_name;
     });
 
-    csvConverter.on("end_parsed", function(states) {
+    download_task.addListener('complete', function(input_path) {
+      console.log('Transforming state data ...');
       var
-        output = {}
+        writer = fs.createWriteStream(state_names_file)
       ;
 
-      for(i = 0; i < states.length; i++) {
-        var state = states[i];
-        output[state.state_fips] = {
-          name: state.state_name,
-          abbrev: state.state_abbreviation
-        };
-      }
+      writer.on('finish', function() {
+        console.log("...state data: transformation complete");
+        // tell whoever's waiting on us that we're done using jake callback
+        writer.close(complete);
+      })
 
-      fs.writeFile(output_path, JSON.stringify(output), 'utf-8', function(err) {
-        if (err) throw err;
-        console.log('...transformation complete');
-      });
-    });
-
-    download_task.addListener('complete', function(filepath) {
-      console.log('Transforming state data ...');
-      fs
-        .createReadStream(filepath)
+      fs.createReadStream(input_path)
         .pipe(csvConverter)
+        .pipe(writer)
       ;
     });
 
     // kick-start the whole process
     download_task.invoke();
+  });
+
+  desc('Creates a folder to store the interstitial files we use to transform');
+  task('tmpdir', [], function() {
+    jake.mkdirP(tmpdir);
   });
 
   desc('Creates a folder to store the resultant files we transform');

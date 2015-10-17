@@ -7,7 +7,7 @@ describe('application logic', () => {
 
   const stateName    = 'Oregon';
   const stateFIPS    = '41000';
-  const countyName   = 'Jackson County';
+  const countyName   = 'Jackson County, OR';
   const countyFIPS   = '41029';
   const stateZoomXYZ = List([1, 2, 3]);
 
@@ -21,8 +21,7 @@ describe('application logic', () => {
       histograms: [],
       label: defaultLabel,
       data: {
-        counties: require('../data/counties.json'),
-        states: require('../data/states.json')
+        labels: require('../data/labels.json')
       }
     });
   }
