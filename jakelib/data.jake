@@ -5,16 +5,20 @@ var
 
 namespace('data', function() {
 
+  const output_dir = 'data/';
+
   desc('Creating a JSON file of county metadata from downloaded census information')
-  task('counties', [], function() {
+  task('counties', ['dir'], function() {
     console.log('Creating a JSON file of county metadata from downloaded census information');
 
     var
-      download_countyFIPS = jake.Task['download:countyFIPS'],
-      csvConverter = new Converter({
+      download_task = jake.Task['download:countyFIPS'],
+      output_path   = output_dir + 'counties.json',
+      csvConverter  = new Converter({
+        toArrayString: true,
         headers: [
           'state_abbreviation',
-          'state_fips',
+          'state_fips_short',
           'county_fips_short',
           'county_name',
           'county_fips_class_code'
@@ -23,25 +27,37 @@ namespace('data', function() {
     ;
 
     csvConverter.on("record_parsed",function(item, csv, index){
-      // convert state fips to a string
-      item.state_fips  = '' + item.state_fips;
+      // create long fips code with state fips prepended (make sure converted to strings first)
+      item.county_fips = item.state_fips_short + '' + item.county_fips_short;
 
-      // create long fips code with state fips prepended
-      item.county_fips = item.state_fips + item.county_fips_short;
+      // we won't be using these again, so no point saving them
+      delete item.state_fips_short;
+      delete item.county_fips_short;
+      delete item.county_fips_class_code;
     });
 
     csvConverter.on("end_parsed", function (jsonArray) {
       console.log('... transformation complete');
-      console.log(jsonArray);
     });
 
-    download_countyFIPS.addListener('complete', function(filepath) {
+    download_task.addListener('complete', function(filepath) {
       console.log('Transforming county data ...');
-      fs.createReadStream(filepath).pipe(csvConverter);
+      fs
+        .createReadStream(filepath)
+        .pipe(csvConverter)
+        .pipe(fs.createWriteStream(output_path))
+      ;
     });
 
     // kick-start the whole process
-    download_countyFIPS.invoke();
+    download_task.invoke();
+  });
+
+  const tmp = 'tmp/';
+
+  desc('Creates a folder to store the resultant files we transform');
+  task('dir', [], function() {
+    jake.mkdirP(output_dir);
   });
 
 });
