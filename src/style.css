@@ -1,0 +1,19 @@
+.land {
+  stroke: #999;
+  fill: none;
+  stroke-width: .75px;
+}
+
+.states {
+  fill: none;
+  stroke: #999;
+  stroke-width: .75px;
+  stroke-linejoin: round;
+}
+
+.counties {
+  fill: none;
+  stroke: #CCC;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}

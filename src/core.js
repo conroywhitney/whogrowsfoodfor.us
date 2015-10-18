@@ -13,7 +13,8 @@ export const INITIAL_STATE = fromJS({
   histograms: [],
   label: DEFAULT_LABEL,
   data: {
-    labels: require('../data/labels.json')
+    labels:    require('../data/labels.json'),
+    geography: require('../data/us-geography.topo.json')
   }
 });
 
