@@ -4,7 +4,7 @@
   "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register --require ./test/test_helper.js  --recursive",
+    "test": "mocha --compilers js:babel/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
     "test:watch": "npm run test -- --watch",
     "clean": "rm -r data/ tmp/"
   },
@@ -34,6 +34,7 @@
     "csvtojson": "^0.4.3",
     "fs": "0.0.2",
     "http": "0.0.0",
+    "jsdom": "^7.0.0",
     "json-loader": "^0.5.3",
     "mocha": "^2.3.3",
     "webpack": "^1.12.2",
