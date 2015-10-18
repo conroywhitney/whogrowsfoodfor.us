@@ -37,6 +37,7 @@ export default React.createClass({
 
   render: function() {
     return <div className="map">
+      <svg width={this.props.width} height={this.props.height}>
         <Land
           topoJSON={landTopoJSON}
           className="land"
@@ -55,7 +56,8 @@ export default React.createClass({
           topoJSON={countyTopoJSON}
           className="bubble"
         />
-      </div>
+      </svg>
+    </div>
     ;
   }
 });

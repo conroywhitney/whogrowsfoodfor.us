@@ -8,12 +8,10 @@ export default React.createClass({
   render: function() {
     var d3path = d3.geo.path();
 
-    return React.DOM.svg({width: this.props.width, height: this.props.height},
-      React.DOM.path({
-        className: 'land',
-        d: d3path(this.props.topoJSON)
-      })
-    );
+    return React.DOM.path({
+      className: 'land',
+      d: d3path(this.props.topoJSON)
+    });
   }
 
 });
