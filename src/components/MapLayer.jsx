@@ -9,10 +9,9 @@ export default React.createClass({
     var d3path = d3.geo.path();
 
     return React.DOM.path({
-      className: 'states',
+      className: this.props.className,
       d: d3path(this.props.topoJSON)
     });
   }
 
 });
-

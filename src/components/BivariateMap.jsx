@@ -3,9 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import {landTopoJSON, stateTopoJSON, countyTopoJSON} from '../geography.js'
 
-import Land from './Land';
-import States from './States';
-import Counties from './Counties';
+import MapLayer from './MapLayer';
 import Bubbles from './Bubbles';
 
 export default React.createClass({
@@ -38,23 +36,17 @@ export default React.createClass({
   render: function() {
     return <div className="map">
       <svg width={this.props.width} height={this.props.height}>
-        <Land
+        <MapLayer
           topoJSON={landTopoJSON}
           className="land"
-          width={this.props.width}
-          height={this.props.height}
         />
-        <States
+        <MapLayer
           topoJSON={stateTopoJSON}
           className="states"
         />
-        <Counties
+        <MapLayer
           topoJSON={countyTopoJSON}
           className="counties"
-        />
-        <Bubbles
-          topoJSON={countyTopoJSON}
-          className="bubble"
         />
       </svg>
     </div>
