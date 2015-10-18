@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 import {select, INITIAL_STATE} from '../src/core'
-import {topoJSON, land, states, counties} from '../src/geography'
+import {topoJSON, landTopoJSON, stateTopoJSON, countyTopoJSON} from '../src/geography'
 
 describe('geography', () => {
 
@@ -13,26 +13,26 @@ describe('geography', () => {
 
   });
 
-  describe('land', () => {
+  describe('landTopoJSON', () => {
 
     it('should be defined', () => {
-      expect(land).to.be.ok;
+      expect(landTopoJSON).to.be.ok;
     });
 
   });
 
-  describe('states', () => {
+  describe('stateTopoJSON', () => {
 
     it('should be defined', () => {
-      expect(states).to.be.ok;
+      expect(stateTopoJSON).to.be.ok;
     });
 
   });
 
-  describe('counties', () => {
+  describe('countyTopoJSON', () => {
 
     it('should be defined', () => {
-      expect(counties).to.be.ok;
+      expect(countyTopoJSON).to.be.ok;
     });
 
   });
