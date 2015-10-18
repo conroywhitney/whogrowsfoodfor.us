@@ -1,21 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Title from './components/Title';
-import BivariateMap from './components/BivariateMap';
+import React           from 'react';
+import ReactDOM        from 'react-dom';
+import Router, {Route} from 'react-router';
+import {createStore}   from 'redux';
+import {Provider}      from 'react-redux';
+import reducer         from './reducer';
+import App             from './components/App';
+import {MapContainer}  from './components/MapContainer';
 
 require('./style.css');
 
-const label = "SOME LABEL";
+const store = createStore(reducer);
+
+const routes = <Route component={App}>
+  <Route path="/" component={MapContainer} />
+</Route>;
 
 ReactDOM.render(
-  <Title label={label} />,
-  document.getElementById('title')
+  <Provider store={store}>
+    <Router>{routes}</Router>
+  </Provider>,
+  document.getElementById('app')
 );
 
-ReactDOM.render(
-  <BivariateMap
-    width="960"
-    height="500"
-  />,
-  document.getElementById('map')
-);
