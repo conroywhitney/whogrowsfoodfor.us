@@ -13,6 +13,9 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-  <BivariateMap />,
+  <BivariateMap
+    width="960"
+    height="500"
+  />,
   document.getElementById('map')
 );

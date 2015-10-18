@@ -13,7 +13,9 @@ export default React.createClass({
 
   getDefaultProps: function() {
     return {
-      detail: ["land", "states", "counties"]
+      detail: ["land", "states", "counties"],
+      width: 900,
+      height: 400
     }
   },
 
@@ -38,6 +40,8 @@ export default React.createClass({
         <Land
           topoJSON={landTopoJSON}
           className="land"
+          width={this.props.width}
+          height={this.props.height}
         />
         <States
           topoJSON={stateTopoJSON}
