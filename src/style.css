@@ -10,3 +10,10 @@
   stroke-width: .75px;
   stroke-linejoin: round;
 }
+
+.counties {
+  fill: none;
+  stroke: #CCC;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
