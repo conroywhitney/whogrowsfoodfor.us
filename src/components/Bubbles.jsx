@@ -5,10 +5,7 @@ export default React.createClass({
   mixins: [PureRenderMixin],
 
   render: function() {
-    return  <div className="bubble">
-              OH HAI BUERBSLES
-            </div>
-    ;
+    return  <div className="bubble"></div>;
   }
 
 });
