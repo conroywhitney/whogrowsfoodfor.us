@@ -4,15 +4,13 @@ import Router, {Route} from 'react-router';
 import {createStore}   from 'redux';
 import {Provider}      from 'react-redux';
 import reducer         from './reducer';
-import App             from './components/App';
-import {MapContainer}  from './components/MapContainer';
+import Layout          from './layouts/Layout';
+import {Main}          from './views/Main';
 
-require('./style.css');
+const store   = createStore(reducer);
 
-const store = createStore(reducer);
-
-const routes = <Route component={App}>
-  <Route path="/" component={MapContainer} />
+const routes = <Route component={Layout}>
+  <Route path="/" component={Main} />
 </Route>;
 
 ReactDOM.render(
