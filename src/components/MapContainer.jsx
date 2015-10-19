@@ -9,10 +9,9 @@ export default React.createClass({
 
   render: function() {
     return <div className="map-container">
-      <h1>ZOMG MAP CONTAINER</h1>
       <Title label={this.props.label} />
       <BivariateMap width="960" height="500"/>
     </div>;
-  },
+  }
 
 });
