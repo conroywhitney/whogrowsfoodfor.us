@@ -5,7 +5,7 @@ import {getZoomXYZ} from '../src/zoom';
 import {getLabel, DEFAULT_LABEL} from '../src/label';
 
 export const INITIAL_STATE = fromJS({
-  crop: null,
+  product: null,
   stat: null,
   selected: null,
   zoom: null,
@@ -14,7 +14,8 @@ export const INITIAL_STATE = fromJS({
   label: DEFAULT_LABEL,
   data: {
     labels:    require('../data/labels.json'),
-    geography: require('../data/us-geography.topo.json')
+    geography: require('../data/us-geography.topo.json'),
+    products:  require('../data/products.json')
   }
 });
 

@@ -13,8 +13,8 @@ describe('application logic', () => {
 
   describe('defaults', () => {
 
-    it('should not have any crops selected', () => {
-      expect(INITIAL_STATE.get('crop')).to.be.null;
+    it('should not have any product selected', () => {
+      expect(INITIAL_STATE.get('product')).to.be.null;
     });
 
     it('should not have any stat selected', () => {
