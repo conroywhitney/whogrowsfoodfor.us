@@ -9,7 +9,7 @@ import {Main}          from './views/Main';
 
 const store   = createStore(reducer);
 
-const routes = <Route path="/" component={Layout}>
+const routes = <Route component={Layout}>
   <Route path="/" component={Main} />
 </Route>;
 
