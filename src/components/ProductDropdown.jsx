@@ -1,43 +1,29 @@
 import {Map, List, fromJS} from 'immutable';
-import React           from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {connect}       from 'react-redux';
-import Select          from 'react-select';
+import React            from 'react';
+import PureRenderMixin  from 'react-addons-pure-render-mixin';
+import {connect}        from 'react-redux';
+import Select           from 'react-select';
+import {productOptions} from '../products.js';
 
 export const ProductDropdownNaked = React.createClass({
   mixins: [PureRenderMixin],
 
-  componentWillMount: function() {
-    this.options = this.props.products.map(
-      p => ({value: p.key, label: p.name})
-    );
-
-    console.log("component will mount duh");
-    console.log(options);
-  },
-
   render: function() {
     return <div className="product dropdown">
+      <h1>ZOMG PRODUCT DROPDOWN</h1>
       <Select
           name="product-dropdown"
           value={this.props.product}
-          options={this.options}
-          onChange={this.onChange}
+          options={productOptions}
+          onChange={logChange}
       />
     </div>;
   },
 
-  onChange: function() {
-    console.log("changing dropdown");
+  logChange: function(newValue, selectedOptions) {
+    console.log("dropdown changed");
+    console.log(newValue);
+    console.log(selectedOptions);
   }
 
 });
-
-function mapStateToProps(state) {
-  return {
-    product:  state.get('product'),
-    products: state.getIn(['data', 'products'])
-  };
-}
-
-export const ProductDropdown = connect(mapStateToProps)(ProductDropdownNaked);
