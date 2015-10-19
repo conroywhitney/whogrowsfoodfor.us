@@ -15,6 +15,7 @@ export default  React.createClass({
           value={this.props.product}
           options={productOptions}
           onChange={this.logChange}
+          className="ui dropdown"
       />
     </div>;
   },

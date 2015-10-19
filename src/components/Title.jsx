@@ -9,7 +9,7 @@ export default React.createClass({
   },
   render: function() {
     return <div className="title">
-      {this.getLabel()}
+      {'Map of ' + this.getLabel()}
     </div>;
   }
 });

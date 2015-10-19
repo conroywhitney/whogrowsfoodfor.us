@@ -19,7 +19,7 @@ namespace('data', function() {
       states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}')["states"],
       counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}')["counties"],
       // default values
-      output   = {"00000": { short: "United States", long: "United States of America"} }
+      output   = {"00000": { short: "The United States", long: "The United States of America"} }
     ;
 
     // merge in states
