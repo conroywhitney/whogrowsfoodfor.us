@@ -1,3 +1,47 @@
+body {
+  text-align: center;
+  background-color: #FFFFFF;
+}
+
+.tabbed.menu {
+  display: none;
+}
+
+.ui.menu .item img.logo {
+  margin-right: 1.5em;
+}
+.main.container {
+  margin-top: 7em;
+}
+.wireframe {
+  margin-top: 2em;
+}
+.ui.footer.segment {
+  margin: 5em 0em 0em;
+  padding: 5em 0em;
+}
+.ui.dropdown .menu>.header {
+  background-color: #000;
+  margin: 0;
+  padding: 1.0rem;
+  color: #FFF;
+}
+
+#map {
+  position: relative;
+  overflow: hidden;
+}
+
+#map .tab {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+#controls {
+  margin-bottom: 25px;
+}
+
 .land {
   stroke: #999;
   fill: none;
@@ -17,3 +61,14 @@
   stroke-width: .5px;
   stroke-linejoin: round;
 }
+
+.bubble {
+  fill: none;
+  stroke: none;
+  stroke-width: 0.5px;
+}
+
+.blank {
+  fill: #FFF;
+}
+
