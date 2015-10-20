@@ -1,7 +1,7 @@
 import {Map, fromJS} from 'immutable';
 import {expect} from 'chai';
 
-import {INITIAL_STATE} from '../src/core';
+import {INITIAL_STATE} from '../src/constants';
 import makeStore from '../src/store';
 
 describe('store', () => {

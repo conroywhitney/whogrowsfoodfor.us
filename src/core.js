@@ -2,22 +2,8 @@ import {Map, List, fromJS} from 'immutable';
 
 import {getStateFIPS, normalizeFIPS} from '../src/fips';
 import {getZoomXYZ} from '../src/zoom';
-import {getLabel, DEFAULT_LABEL} from '../src/label';
-
-export const INITIAL_STATE = fromJS({
-  product: null,
-  stat: null,
-  selected: null,
-  zoom: null,
-  detail: ['land', 'states'],
-  histograms: [],
-  label: DEFAULT_LABEL,
-  data: {
-    labels:    require('../data/labels.json'),
-    geography: require('../data/us-geography.topo.json'),
-    products:  require('../data/products.json')
-  }
-});
+import {getLabel} from '../src/label';
+import {productJSON} from '../src/products';
 
 export function select(state, fips) {
   var
@@ -31,3 +17,11 @@ export function select(state, fips) {
   ;
 }
 
+export function product(state, productKey) {
+  var
+    product = productJSON[productKey];
+  ;
+  return state
+    .set('product', product)
+  ;
+};

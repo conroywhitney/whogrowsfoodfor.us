@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {getLabel, DEFAULT_LABEL} from '../src/label';
-import {INITIAL_STATE} from '../src/core';
+
+import {getLabel} from '../src/label';
+import {INITIAL_STATE, DEFAULT_LABEL} from '../src/constants';
 
 describe('label', () => {
 

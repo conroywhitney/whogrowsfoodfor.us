@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {select, INITIAL_STATE} from '../src/core'
-import {DEFAULT_LABEL} from '../src/label'
+import {INITIAL_STATE, DEFAULT_LABEL} from '../src/constants';
+import {select, product} from '../src/core';
 
 describe('application logic', () => {
 
@@ -85,6 +85,24 @@ describe('application logic', () => {
         expect(newState.get('label')).to.eq(countyName);
       });
 
+    });
+
+  });
+
+  describe('product', () => {
+
+    var
+      productKey = "spinach",
+      productName = "Spinach",
+      newState = product(INITIAL_STATE, productKey)
+    ;
+
+    it('should have a product', () => {
+      expect(newState.get('product')).to.be.ok;
+    });
+
+    it('should have the right product', () => {
+      expect(newState.get('product').name).to.eq(productName);
     });
 
   });

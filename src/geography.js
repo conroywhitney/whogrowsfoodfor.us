@@ -1,5 +1,5 @@
 import {Map, List, toJS} from 'immutable';
-import {INITIAL_STATE} from '../src/core'
+import {INITIAL_STATE} from './constants'
 import topojson from 'topojson'
 
 export const topoJSON       = INITIAL_STATE.getIn(['data', 'geography']).toJS();

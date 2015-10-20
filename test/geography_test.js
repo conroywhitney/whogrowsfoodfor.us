@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {select, INITIAL_STATE} from '../src/core'
-import {topoJSON, landTopoJSON, stateTopoJSON, countyTopoJSON} from '../src/geography'
+
+import {topoJSON, landTopoJSON, stateTopoJSON, countyTopoJSON} from '../src/geography';
 
 describe('geography', () => {
 
