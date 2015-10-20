@@ -4,13 +4,9 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  getTitle: function() {
-    return this.props.label || "";
-  },
-
   render: function() {
     return <div className="title">
-      {this.getTitle()}
+      {this.props.label}
     </div>;
   }
 

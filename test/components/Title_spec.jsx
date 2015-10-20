@@ -6,6 +6,8 @@ const {renderIntoDocument, scryRenderedDOMComponentsWithTag} = React.addons.Test
 
 describe('Title', () => {
 
+  // document query selector to find DOM node to do assertions without jQuery
+
   it('renders a string', () => {
     const testLabel = "TEST LABEL";
     const component = renderIntoDocument(

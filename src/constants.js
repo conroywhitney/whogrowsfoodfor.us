@@ -14,7 +14,8 @@ export const INITIAL_STATE = fromJS({
   zoom: null,
   detail: ['land', 'states'],
   histograms: [],
-  label: DEFAULT_LABEL,
+  // fetch: https://github.com/github/fetch
+  // use async actions to dispatch spinning/requesting/loading/showing
   data: {
     labels:    require('../data/labels.json'),
     geography: require('../data/us-geography.topo.json'),
