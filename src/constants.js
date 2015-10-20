@@ -23,4 +23,5 @@ export const INITIAL_STATE = fromJS({
   }
 });
 
-
+export const TEMP_DIR = 'tmp/';
+export const DATA_DIR = 'data/';
