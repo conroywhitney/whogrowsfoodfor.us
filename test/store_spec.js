@@ -1,7 +1,7 @@
 import {Map, fromJS} from 'immutable';
 import {expect} from 'chai';
 
-import {INITIAL_STATE} from '../src/constants';
+import {INITIAL_STATE, ACTIONS} from '../src/constants';
 import makeStore from '../src/store';
 
 describe('store', () => {
@@ -13,9 +13,10 @@ describe('store', () => {
     expect(store.getState()).to.equal(INITIAL_STATE);
 
     store.dispatch({
-      type: 'SELECT',
+      type: ACTIONS.setRegion,
       fips: countyFIPS
     });
+
     expect(store.getState().get('selected')).to.equal(countyFIPS);
   });
 

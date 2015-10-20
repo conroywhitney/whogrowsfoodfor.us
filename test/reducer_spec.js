@@ -1,7 +1,7 @@
 import {Map, fromJS} from 'immutable';
 import {expect} from 'chai';
-import reducer, {ACTIONS} from '../src/reducer';
-import {INITIAL_STATE} from '../src/constants';
+import reducer from '../src/reducer';
+import {INITIAL_STATE, ACTIONS} from '../src/constants';
 
 describe('reducer', () => {
 
@@ -10,12 +10,12 @@ describe('reducer', () => {
     expect(nextState).to.equal(INITIAL_STATE);
   });
 
-  describe('SELECT', () => {
+  describe('setRegion', () => {
 
     const countyFIPS   = '41029';
 
-    it('handles SELECT at basic level', () => {
-      const action    = {type: ACTIONS.select, fips: countyFIPS};
+    it('handles action at basic level', () => {
+      const action    = {type: ACTIONS.setRegion, fips: countyFIPS};
       const nextState = reducer(INITIAL_STATE, action);
 
       // simplest thing to make this pass is checking 'selected'
@@ -25,13 +25,13 @@ describe('reducer', () => {
 
   });
 
-  describe('PRODUCT', () => {
+  describe('setProduct', () => {
 
     const productKey  = 'spinach';
     const productName = 'Spinach';
 
     it('sets product field', () => {
-      const action    = {type: ACTIONS.product, product: productKey};
+      const action    = {type: ACTIONS.setProduct, product: productKey};
       const nextState = reducer(INITIAL_STATE, action);
 
       // simplest thing to make this pass is checking 'selected'
