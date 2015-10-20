@@ -16,7 +16,7 @@ describe('Title', () => {
 
     expect(divs.length).to.be.above(0);
     expect(title.textContent.length).to.be.above(0);
-    expect(title.textContent).to.eq("Map of " + testLabel);
+    expect(title.textContent).to.eq(testLabel);
   });
 
 });

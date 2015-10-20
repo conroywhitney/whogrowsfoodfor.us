@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {select, INITIAL_STATE} from '../src/core'
+
 import {productJSON, productList, productOptions, sectors} from '../src/products'
 
 describe('products', () => {

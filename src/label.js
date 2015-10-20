@@ -1,6 +1,28 @@
-export const DEFAULT_LABEL = "The United States of America";
+import {Map, List, fromJS} from 'immutable';
 
-export function getLabel(state, fips) {
-	if(!state) { return null; }
-	return state.getIn(['data', 'labels', fips, 'long']) || DEFAULT_LABEL;
+import {DEFAULT_LABEL} from './constants';
+
+export function getLabel(state) {
+  if(!state) { return null; }
+
+  var
+    labels       = state.getIn(['data', 'labels']),
+    fips         = state.get('selected'),
+    product      = state.get('product'),
+    regionLabel  = getRegionLabel(labels, fips),
+    productLabel = getProductLabel(product)
+  ;
+
+  return `Map of ${productLabel}${regionLabel}`
+}
+
+function getRegionLabel(labels, fips) {
+  console.log("getting region label");
+  console.log(fips);
+  return labels.getIn([fips, 'long']) || DEFAULT_LABEL;
+}
+
+function getProductLabel(product) {
+  if(!product) { return ''; }
+  return product.name + ' production in ';
 }

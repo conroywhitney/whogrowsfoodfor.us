@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {select, INITIAL_STATE} from '../src/core'
-import {DEFAULT_LABEL} from '../src/label'
+import {INITIAL_STATE, DEFAULT_LABEL} from '../src/constants';
+import {select, product} from '../src/core';
 
 describe('application logic', () => {
 
@@ -33,11 +33,6 @@ describe('application logic', () => {
       expect(INITIAL_STATE.get('histograms')).to.be.empty;
     });
 
-    it('should have a generic label', () => {
-      expect(INITIAL_STATE.get('label')).to.eq(DEFAULT_LABEL);
-      expect(INITIAL_STATE.get('label')).to.have.length.above(0);
-    });
-
   });
 
   describe('select', () => {
@@ -56,10 +51,6 @@ describe('application logic', () => {
 
       it('should set zoom to XYZ of state', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
-      });
-
-      it('should set a state-related label', () => {
-        expect(newState.get('label')).to.eq(stateName);
       });
 
     });
@@ -81,10 +72,24 @@ describe('application logic', () => {
 
       });
 
-      it('should set a county-related label', () => {
-        expect(newState.get('label')).to.eq(countyName);
-      });
+    });
 
+  });
+
+  describe('product', () => {
+
+    var
+      productKey = "spinach",
+      productName = "Spinach",
+      newState = product(INITIAL_STATE, productKey)
+    ;
+
+    it('should have a product', () => {
+      expect(newState.get('product')).to.be.ok;
+    });
+
+    it('should have the right product', () => {
+      expect(newState.get('product').name).to.eq(productName);
     });
 
   });

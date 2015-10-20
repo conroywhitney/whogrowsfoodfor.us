@@ -1,5 +1,5 @@
 import {Map, List, toJS} from 'immutable';
-import {INITIAL_STATE} from '../src/core'
+import {INITIAL_STATE} from './constants'
 
 export const productJSON = INITIAL_STATE.getIn(['data', 'products']).toJS();
 

@@ -4,12 +4,14 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  getLabel: function() {
+  getTitle: function() {
     return this.props.label || "";
   },
+
   render: function() {
     return <div className="title">
-      {'Map of ' + this.getLabel()}
+      {this.getTitle()}
     </div>;
   }
+
 });
