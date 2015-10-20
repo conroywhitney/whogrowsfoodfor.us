@@ -4,6 +4,8 @@ import {connect}       from 'react-redux';
 import ProductDropdown from '../components/ProductDropdown';
 import MapContainer    from '../components/MapContainer';
 
+import {getLabel}      from '../label'
+
 export const MainNaked = React.createClass({
   mixins: [PureRenderMixin],
 
@@ -24,7 +26,7 @@ export const MainNaked = React.createClass({
 const mapStateToProps = (state) => ({
   product:  state.get('product'),
   selected: state.get('selected'),
-  label:    state.get('label')
+  label:    getLabel(state)
 });
 
 export const Main = connect(mapStateToProps)(MainNaked);

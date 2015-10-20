@@ -33,11 +33,6 @@ describe('application logic', () => {
       expect(INITIAL_STATE.get('histograms')).to.be.empty;
     });
 
-    it('should have a generic label', () => {
-      expect(INITIAL_STATE.get('label')).to.eq(DEFAULT_LABEL);
-      expect(INITIAL_STATE.get('label')).to.have.length.above(0);
-    });
-
   });
 
   describe('select', () => {
@@ -58,10 +53,6 @@ describe('application logic', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
       });
 
-      it('should set a state-related label', () => {
-        expect(newState.get('label')).to.eq(stateName);
-      });
-
     });
 
     describe('county level', () => {
@@ -79,10 +70,6 @@ describe('application logic', () => {
       it('should set zoom to XYZ of state', () => {
         expect(newState.get('zoom')).to.eq(stateZoomXYZ);
 
-      });
-
-      it('should set a county-related label', () => {
-        expect(newState.get('label')).to.eq(countyName);
       });
 
     });

@@ -1,6 +1,6 @@
 import {Map, List, fromJS} from 'immutable';
 
-export const DEFAULT_LABEL = "The United States of America";
+export const DEFAULT_LABEL = 'The United States of America';
 
 export const INITIAL_STATE = fromJS({
   product: null,
