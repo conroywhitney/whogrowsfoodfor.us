@@ -41,4 +41,33 @@ describe('label', () => {
 
   });
 
+  describe('when have a product', () => {
+
+    it('should set the product name in the label', () => {
+      var
+      productKey    = 'corn',
+        productName = 'Corn',
+        newState    = product(INITIAL_STATE, 'corn')
+      ;
+      expect(getLabel(newState)).to.eq(`Map of ${productName} production in ${DEFAULT_LABEL}`);
+    });
+
+  });
+
+  describe('when have both a product and a region', () => {
+
+    it('should include both product and region', () => {
+      var
+        productKey  = 'corn',
+        productName = 'Corn',
+        regionFIPS  = '41029',
+        regionName  = 'Jackson County, OR',
+        newState    = product(INITIAL_STATE, productKey),
+        newState    = select(newState, regionFIPS)
+      ;
+      expect(getLabel(newState)).to.eq(`Map of ${productName} production in ${regionName}`);
+    });
+
+  });
+
 });
