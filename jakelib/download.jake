@@ -32,6 +32,12 @@ namespace('download', function() {
     });
   });
 
+  task('generic', ['tmpdir'], {async: true}, function(url, filename) {
+    download(url, filename, function() {
+      complete(filename);
+    });
+  });
+
   function download(url, path, callback) {
     console.log('Downloading [' + url + '] to [' + path + ']...');
     var
