@@ -14,16 +14,10 @@ export default  React.createClass({
           name="product-dropdown"
           value={this.props.product}
           options={productOptions}
-          onChange={this.logChange}
+          onChange={this.props.handleChange}
           className="ui dropdown"
       />
     </div>;
-  },
-
-  logChange: function(newValue, selectedOptions) {
-    console.log("dropdown changed");
-    console.log(newValue);
-    console.log(selectedOptions);
   }
 
 });

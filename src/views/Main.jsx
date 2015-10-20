@@ -13,12 +13,17 @@ export const MainNaked = React.createClass({
     return <div className="main container" ref="main">
       <ProductDropdown
         product={this.props.product}
+        handleChange={this.productChanged}
       />
       <MapContainer
         selected={this.props.selected}
         label={this.props.label}
       />
     </div>;
+  },
+
+  productChanged: function(newValue, selectedOptions) {
+    console.log(`product dropdown changed [${newValue}]`);
   }
 
 });
