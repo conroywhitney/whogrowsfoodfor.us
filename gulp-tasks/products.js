@@ -1,27 +1,28 @@
 var
-  gulp         = require('gulp-param')(require('gulp'), process.argv),
-  gulpSequence = require('gulp-sequence'),
-  fs           = require('fs'),
-  download     = require('gulp-download'),
-  replace      = require('gulp-replace'),
-  insert       = require('gulp-insert'),
-  parse        = require('csv-parse'),
-  jeditor      = require("gulp-json-editor"),
-  jsonRefactor = require('gulp-json-refactor'),
-  rename       = require('gulp-rename'),
-  slug         = require('slug'),
-  concat       = require('gulp-concat'),
-  ifElse       = require('gulp-if-else'),
-  replace      = require('gulp-replace'),
-  dir          = require('node-dir'),
-  jsonlint     = require("gulp-jsonlint"),
-  cartesian    = require('cartesian-product'),
-  R            = require('ramda'),
-  urlencode    = require('urlencode'),
-  TEMPDIR      = './tmp/',
-  RAWDIR       = './data/raw/',
-  DATADIR      = './data/',
-  OPTIONS      = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
+  gulp          = require('gulp-param')(require('gulp'), process.argv),
+  gulpSequence  = require('gulp-sequence'),
+  fs            = require('fs'),
+  download      = require('gulp-download'),
+  replace       = require('gulp-replace'),
+  insert        = require('gulp-insert'),
+  parse         = require('csv-parse'),
+  jeditor       = require("gulp-json-editor"),
+  jsonRefactor  = require('gulp-json-refactor'),
+  rename        = require('gulp-rename'),
+  slug          = require('slug'),
+  concat        = require('gulp-concat'),
+  ifElse        = require('gulp-if-else'),
+  replace       = require('gulp-replace'),
+  dir           = require('node-dir'),
+  jsonlint      = require("gulp-jsonlint"),
+  cartesian     = require('cartesian-product'),
+  R             = require('ramda'),
+  urlencode     = require('urlencode'),
+  productHelper = require('../src/product_helper'),
+  TEMPDIR       = './tmp/',
+  RAWDIR        = './data/raw/',
+  DATADIR       = './data/',
+  OPTIONS       = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
 ;
 
 function getProductList() {
@@ -33,6 +34,23 @@ function getProductList() {
   ;
 
   return products;
+}
+
+function getFilteredProductList() {
+  var
+    allProducts      = getProductList(),
+    filteredProducts = productHelper.filterProducts(allProducts)
+  ;
+
+  return filteredProducts;
+}
+
+function getFilteredOptions(option, productOptions) {
+  var
+    filteredOptions = productHelper.filterOptions(option, productOptions)
+  ;
+
+  return filteredOptions;
 }
 
 function getProductProperties(product) {
@@ -134,7 +152,7 @@ gulp.task('product-combinations', function() {
 
     optionKeys.forEach(function(option) {
       optionArr.push(
-        optionsJSON[props.slug][option]
+        getFilteredOptions(option, optionsJSON[props.slug][option])
       );
     });
 
