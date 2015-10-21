@@ -59,13 +59,4 @@ gulp.task('product-metadata', function() {
 
 })
 
-function getDistinctParamUrl(param, product) {
-  // I wish I could use `${}` here  =(
-  return 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' +
-            param +
-            '&commodity_desc=' +
-            product
-         ;
-}
-
 gulp.task('products', gulpSequence('product-list', 'product-metadata'));
