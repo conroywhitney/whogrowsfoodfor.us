@@ -134,13 +134,13 @@ gulp.task('product-concat', function() {
 
 gulp.task('product-combinations', function() {
   var
-    products = getProductList()
+    products = getFilteredProductList()
   ;
 
   products.forEach(function(product) {
     var
       props        = getProductProperties(product),
-      optionKeys   = ['commodity_desc', 'agg_level_desc', 'source_desc', 'year'].concat(OPTIONS),
+      optionKeys   = ['year', 'source_desc', 'agg_level_desc', 'commodity_desc', 'class_desc', 'unit_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'domain_desc'],
       optionFile   = props.folder + '/' + props.slug + '_options.json',
       optionsRaw   = fs.readFileSync(optionFile),
       optionsJSON  = JSON.parse(optionsRaw),
