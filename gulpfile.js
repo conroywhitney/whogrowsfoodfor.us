@@ -13,6 +13,7 @@ var geography = [
   {
     url: 'http://www2.census.gov/geo/docs/reference/codes/files/national_county.txt',
     filename: 'counties.csv',
+    headers: 'state_abbreviation,state_fips_short,county_fips_short,county_name,county_fips_class_code',
     csv: {
       delimiter: ','
     },
@@ -22,6 +23,7 @@ var geography = [
   {
     url: 'http://www2.census.gov/geo/docs/reference/state.txt',
     filename: 'states.csv',
+    headers: 'state_fips|state_abbreviation|state_name|state_ens',
     csv: {
       delimiter: '|'
     },
@@ -34,6 +36,7 @@ gulp.task('geography', function() {
   geography.forEach(function(obj) {
     download(obj.url)
       .pipe(rename(obj.filename))
+      .pipe(insert.prepend(obj.headers))
       .pipe(csv(obj.csv))
       .pipe(rename({extname: '.json'}))
       .pipe(gulp.dest(TEMPDIR))
