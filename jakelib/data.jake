@@ -5,11 +5,8 @@ var
 
 namespace('data', function() {
 
-  const datadir           = 'data/';
-  const tmpdir            = 'tmp/';
-  const state_names_file  = tmpdir + 'state_names.json';
-  const county_names_file = tmpdir + 'county_names.json';
-  const labels_file       = datadir + 'labels.json';
+  const DATA_DIR = 'data/';
+  const TEMP_DIR = 'tmp/';
 
   desc('Creating a JSON file of regional labels from downloaded census information')
   task('labels', ['datadir', 'stateNames', 'countyNames'], function() {
@@ -27,8 +24,13 @@ namespace('data', function() {
   });
 
   desc('Create tmp file of county names from census information');
-  task('countyNames', ['tmpdir'], { async: true }, function() {
+  task('countyNames', ['tmpdir', 'download:countyFIPS'], { async: true }, function() {
     console.log('Creating a tmp file of county names from downloaded census information');
+
+    fs.createReadStream(input_path)
+      .pipe(csvConverter)
+      .pipe(writer)
+    ;
 
     var
       download_task = jake.Task['download:countyFIPS'],

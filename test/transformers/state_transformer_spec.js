@@ -40,4 +40,12 @@ describe('state transformer', () => {
 
   });
 
+  describe('translate', () => {
+
+    it('should handle an array of objects', () => {
+
+    });
+
+  });
+
 });

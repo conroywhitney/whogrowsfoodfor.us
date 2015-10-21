@@ -5,51 +5,58 @@ var
 
 namespace('download', function() {
 
-  const tmp = 'tmp/';
+  const DATA_DIR = 'data/';
+  const TEMP_DIR = 'tmp/';
+
+  const FILEMAP = {
+    counties: { from: 'http://www2.census.gov/geo/docs/reference/codes/files/national_county.txt', to: TEMP_DIR + 'county-fips.csv' },
+    states:   { from: 'http://www2.census.gov/geo/docs/reference/state.txt', to: TEMP_DIR + 'state-fips.csv' }
+  };
+
+  task('all', ['tmpdir'], fuinction() {
+    var
+      keys = Object.keys(FILEMAP)
+    ;
+
+    for(key in keys) {
+      downloadFileByKey(key)
+    }
+  });
+
+  task('file', ['tmpdir'], function(key) {
+    downloadFileByKey(key);
+  });
+
+  function downloadFileByKey(key) {
+    var
+      file = FILEMAP[key],
+      from = file.from,
+      to   = file.to
+    };
+
+    console.log('Downloading [' + from + '] => [' + to + ']');
+
+    downloadUrlToPath(from, to, function() {
+      console.log('[' + to + '] download complete');
+      complete();
+    });
+  }
 
   desc('Creates a temporary folder to store the intermediate files we download');
   task('tmpdir', [], function() {
     jake.mkdirP(tmp);
   });
 
-  desc('Download the county-level FIPS data from the census bureau');
-  task('countyFIPS', ['tmpdir'], {async: true}, function() {
-    var
-      path = tmp + 'county-fips.csv'
-    ;
-    download('http://www2.census.gov/geo/docs/reference/codes/files/national_county.txt', path, function() {
-      complete(path);
-    });
-  });
-
-  desc('Download the state-level FIPS data from the census bureau');
-  task('stateFIPS', ['tmpdir'], {async: true}, function() {
-    var
-      path = tmp + 'state-fips.csv'
-    ;
-    download('http://www2.census.gov/geo/docs/reference/state.txt', path, function() {
-      complete(path);
-    });
-  });
-
-  task('generic', ['tmpdir'], {async: true}, function(url, filename) {
-    download(url, filename, function() {
-      complete(filename);
-    });
-  });
-
-  function download(url, path, callback) {
-    console.log('Downloading [' + url + '] to [' + path + ']...');
+  function downloadUrlToPath(url, path, callback) {
     var
       file    = fs.createWriteStream(path),
       request = http.get(url, function(response) {
         response.pipe(file);
         file.on('finish', function() {
-          console.log('...finished downloading [' + url + '] to [' + path + ']');
           file.close(callback);
         });
       }).on('error', function(err) {
-        console.log('ERROR downloading [' + url + '] to [' + path + ']');
+        console.log('ERROR downloading [' + url + '] => [' + path + ']');
         fs.unlink(dest);
         callback(err);
       });

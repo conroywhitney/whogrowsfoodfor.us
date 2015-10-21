@@ -8,8 +8,32 @@ export function load() {
   JSON.parse('{ "counties": ' + fs.readFileSync(COUNTY_FILE, 'utf8') + '}')["counties"]
 }
 
-export function translate(states) {
-  states.forEach(s => translateItem(s));
+export function convert(csv) {
+  var
+    csvConverter = new Converter({
+      toArrayString: true,
+      constructResult: true,
+      headers: [
+        'state_abbreviation',
+        'state_fips_short',
+        'county_fips_short',
+        'county_name',
+        'county_fips_class_code'
+      ]
+    })
+  ;
+
+  csvConverter.fromString(csv, function(err, jsonObj) {
+    if(err) {
+      console.log('error converting');
+      console.log(err);
+    }
+    console.log(jsonObj);
+  })
+}
+
+export function translate(counties) {
+  counties.forEach(s => translateItem(s));
 }
 
 export function translateItem(county) {
