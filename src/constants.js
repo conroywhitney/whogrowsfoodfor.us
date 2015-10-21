@@ -25,3 +25,4 @@ export const INITIAL_STATE = fromJS({
 
 export const TEMP_DIR = 'tmp/';
 export const DATA_DIR = 'data/';
+export const REGION_KEYS = ['key', 'shortName', 'longName'];
