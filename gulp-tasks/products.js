@@ -6,6 +6,7 @@ var
   replace      = require('gulp-replace'),
   insert       = require('gulp-insert'),
   parse        = require('csv-parse'),
+  jeditor      = require("gulp-json-editor"),
   jsonRefactor = require('gulp-json-refactor'),
   rename       = require('gulp-rename'),
   slug         = require('slug'),
@@ -47,6 +48,10 @@ gulp.task('product-metadata', function() {
       ;
 
       download(url)
+        .pipe(jeditor(function(json) {
+          if(!json || !json["data"]) { return []; }
+          return json["data"][0]["Values"];
+        }))
         .pipe(rename(filename))
         .pipe(gulp.dest(productFolder))
     });
