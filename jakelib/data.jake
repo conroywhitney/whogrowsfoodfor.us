@@ -16,31 +16,11 @@ namespace('data', function() {
     console.log('Creating a combined JSON file of state and county names from tmp files');
 
     var
-      states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}')["states"],
-      counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}')["counties"],
-      // default values
-      output   = {"00000": { short: "The United States", long: "The United States of America"} }
+      transformer = require('../src/transformers/region_transformer'),
+      output      = transformer.transform()
     ;
 
-    // merge in states
-    for(i = 0; i < states.length; i++) {
-      var state = states[i];
-      output[state.fips] = {
-        short: state.short,
-        long:  state.long
-      };
-    }
-
-    // merge in counties
-    for(i = 0; i < counties.length; i++) {
-      var county = counties[i];
-      output[county.fips] = {
-        short: county.short,
-        long:  county.long
-      };
-    }
-
-    fs.writeFile(labels_file, JSON.stringify(output), 'utf-8', function(err) {
+    fs.writeFile(labels_file, output, 'utf-8', function(err) {
       if (err) throw err;
       console.log('...transformation complete');
     });

@@ -1,9 +1,18 @@
+import R from 'ramda';
 import {TEMP_DIR, DATA_DIR} from '../constants';
 import {arrayToKeyedObject} from './shared_transformer';
 
 export const COUNTY_FILE = TEMP_DIR  + 'county_names.json';
 
-export function transform(county) {
+export function load() {
+  JSON.parse('{ "counties": ' + fs.readFileSync(COUNTY_FILE, 'utf8') + '}')["counties"]
+}
+
+export function translate(states) {
+  states.forEach(s => translateItem(s));
+}
+
+export function translateItem(county) {
   if(!county) { return {} };
 
   return {
@@ -13,3 +22,14 @@ export function transform(county) {
   }
 }
 
+export function save(output) {
+  return output;
+}
+
+export function transform() {
+  R.pipe(
+    load,
+    transform,
+    save
+  );
+}
