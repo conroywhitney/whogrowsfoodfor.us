@@ -5,7 +5,7 @@ import {productJSON, productList, productOptions, sectors, filterProducts, produ
 
 describe('products', () => {
 
-  const NUM_PRODUCTS = 184;
+  const NUM_PRODUCTS = 174;
 
   describe('productJSON', () => {
 

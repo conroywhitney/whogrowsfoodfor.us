@@ -3,14 +3,13 @@ import {INITIAL_STATE} from './constants'
 
 export const productJSON = INITIAL_STATE.getIn(['data', 'products']).toJS();
 
-export const filteredProducts = filterProducts(productJSON);
+export const rawProductList   = INITIAL_STATE.getIn(['data', 'raw', 'productList']).toJS()["data"][0]["Values"];
 
-export const productList = Object.keys(productJSON);
-
-export const productOptions = productList.map(p =>
-                                ({value: p, label: productJSON[p].name})
-                              );
-
+export const filteredProducts = filterProducts(rawProductList);
+export const productList      = Object.keys(filteredProducts);
+export const productOptions   = productList.map(p =>
+                                  ({value: p, label: p})
+                                );
 
 export function filterProducts(arr) {
   // return blank object if null or empty array

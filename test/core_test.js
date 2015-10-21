@@ -76,22 +76,4 @@ describe('application logic', () => {
 
   });
 
-  describe('product', () => {
-
-    var
-      productKey = "spinach",
-      productName = "Spinach",
-      newState = product(INITIAL_STATE, productKey)
-    ;
-
-    it('should have a product', () => {
-      expect(newState.get('product')).to.be.ok;
-    });
-
-    it('should have the right product', () => {
-      expect(newState.get('product').name).to.eq(productName);
-    });
-
-  });
-
 });

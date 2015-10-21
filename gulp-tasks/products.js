@@ -1,5 +1,6 @@
 var
   gulp         = require('gulp-param')(require('gulp'), process.argv),
+  gulpSequence = require('gulp-sequence'),
   fs           = require('fs'),
   download     = require('gulp-download'),
   replace      = require('gulp-replace'),
@@ -8,9 +9,12 @@ var
   jsonRefactor = require('gulp-json-refactor'),
   rename       = require('gulp-rename'),
   slug         = require('slug'),
-  TEMPDIR      = './data/raw',
+  TEMPDIR      = './tmp/',
+  RAWDIR       = './data/raw/',
   DATADIR      = './data/'
 ;
+
+gulp.task('products', gulpSequence('product-list', 'product-metadata'));
 
 gulp.task('product-list', function() {
   var
@@ -19,12 +23,12 @@ gulp.task('product-list', function() {
   ;
   download(url)
     .pipe(rename(filename))
-    .pipe(gulp.dest(DATADIR))
+    .pipe(gulp.dest(RAWDIR))
 });
 
 gulp.task('product-metadata', function() {
   var
-    productList    = DATADIR + 'product-list.json',
+    productList    = RAWDIR + 'product-list.json',
     productsRaw    = fs.readFileSync(productList),
     productJSON    = JSON.parse(productsRaw),
     products       = productJSON["data"][0]["Values"],
@@ -44,11 +48,11 @@ gulp.task('product-metadata', function() {
 
     download(productClassURL)
       .pipe(rename(classFilename))
-      .pipe(gulp.dest(DATADIR))
+      .pipe(gulp.dest(RAWDIR))
 
     download(productOptionsURL)
       .pipe(rename(optionsFilename))
-      .pipe(gulp.dest(DATADIR))
+      .pipe(gulp.dest(RAWDIR))
   });
 });
 

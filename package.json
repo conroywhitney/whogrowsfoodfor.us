@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
     "test:watch": "npm run test -- --watch --watch-extensions=jsx",
-    "clean": "rm -r tmp/; git clean -f data/"
+    "clean": "mkdir tmp/; rm -r tmp/; mkdir data/raw; rm -r data/raw; git clean -f data/"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "gulp-open": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
+    "gulp-sequence": "^0.4.1",
     "gulp-util": "^3.0.7",
     "http": "0.0.0",
     "jsdom": "^7.0.0",
