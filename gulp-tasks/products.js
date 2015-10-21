@@ -105,7 +105,7 @@ gulp.task('product-concat', function() {
     gulp.src(props.folder + '/*.json')
       .pipe(insert.append(',')) // add , to end of each of the files in the folder
       .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
-      .pipe(insert.prepend('{"' + props.slug + '":{ "commodity_desc": ["' + product + '"],')) // wrap object with product name
+      .pipe(insert.prepend('{"' + props.slug + '":{ "commodity_desc": ["' + product + '"], "source_desc": ["CENSUS"], "year": ["2012"], ')) // wrap object with product name
       .pipe(insert.append('"agg_level_desc": ["NATIONAL", "STATE", "COUNTY"]}}')) // add item and end object
       .pipe(gulp.dest(props.folder)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
@@ -123,7 +123,7 @@ gulp.task('product-combinations', function() {
   products.forEach(function(product) {
     var
       props        = getProductProperties(product),
-      optionKeys   = ['commodity_desc', 'agg_level_desc'].concat(OPTIONS),
+      optionKeys   = ['commodity_desc', 'agg_level_desc', 'source_desc', 'year'].concat(OPTIONS),
       optionFile   = props.folder + '/' + props.slug + '_options.json',
       optionsRaw   = fs.readFileSync(optionFile),
       optionsJSON  = JSON.parse(optionsRaw),
