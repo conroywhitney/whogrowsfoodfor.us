@@ -142,6 +142,7 @@ gulp.task('product-combinations', function() {
       props        = getProductProperties(product),
       optionKeys   = ['year', 'source_desc', 'agg_level_desc', 'commodity_desc', 'class_desc', 'unit_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'domain_desc'],
       optionFile   = props.folder + '/' + props.slug + '_options.json',
+      outputFile   = props.folder + '/' + props.slug + '_queries.json',
       optionsRaw   = fs.readFileSync(optionFile),
       optionsJSON  = JSON.parse(optionsRaw),
       optionArr    = [],
@@ -167,11 +168,14 @@ gulp.task('product-combinations', function() {
         qsvars    = qspair.join('&')
       ;
 
-      console.log(filenames);
       optionURLs.push(qsvars);
     });
 
-    result[props.slug] = optionURLs;
+    result[props.slug] = {
+      query_urls: optionURLs
+    };
+
+    fs.writeFileSync(outputFile, JSON.stringify(result));
   });
 
 });
