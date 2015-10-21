@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
     "test:watch": "npm run test -- --watch --watch-extensions=jsx",
-    "clean": "rm -r data/ tmp/"
+    "clean": "rm -r tmp/; git clean -f data/"
   },
   "repository": {
     "type": "git",
