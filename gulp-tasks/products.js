@@ -116,8 +116,7 @@ gulp.task('product-concat', function() {
 
 gulp.task('product-combinations', function() {
   var
-    products = getProductList(),
-    result   = {}
+    products = getProductList()
   ;
 
   products.forEach(function(product) {
@@ -129,7 +128,8 @@ gulp.task('product-combinations', function() {
       optionsJSON  = JSON.parse(optionsRaw),
       optionArr    = [],
       optionCombos = null,
-      optionURLs   = []
+      optionURLs   = [],
+      result   = {}
     ;
 
     optionKeys.forEach(function(option) {
@@ -142,20 +142,19 @@ gulp.task('product-combinations', function() {
 
     optionCombos.forEach(function(combo) {
       var
-        zipped  = R.zip(optionKeys, combo),
-        encoded = zipped.map(kv => [kv[0], urlencode(kv[1])]),
-        qspair  = encoded.map(kv => kv.join('='))
-        qsvars  = qspair.join('&')
+        filenames = combo.map(v => slug(v.toLowerCase(), '_')).join('_'),
+        zipped    = R.zip(optionKeys, combo),
+        encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
+        qspair    = encoded.map(kv => kv.join('='))
+        qsvars    = qspair.join('&')
       ;
+
+      console.log(filenames);
       optionURLs.push(qsvars);
     });
 
-    console.log(optionURLs);
-
     result[props.slug] = optionURLs;
   });
-
-  console.log(result);
 
 });
 
