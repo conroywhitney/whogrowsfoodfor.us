@@ -3,7 +3,7 @@ var
   download     = require('gulp-download'),
   replace      = require('gulp-replace'),
   insert       = require('gulp-insert'),
-  csv          = require('gulp-csv2json'),
+  parse        = require('csv-parse'),
   jsonRefactor = require('gulp-json-refactor'),
   rename       = require('gulp-rename'),
   TEMPDIR      = './data/raw'
@@ -15,7 +15,8 @@ var geography = [
     filename: 'counties.csv',
     headers: 'state_abbreviation,state_fips_short,county_fips_short,county_name,county_fips_class_code',
     csv: {
-      delimiter: ','
+      delimiter: ',',
+      objname: 'county_fips_short'
     },
     refactor: {
     }
@@ -37,7 +38,7 @@ gulp.task('geography', function() {
     download(obj.url)
       .pipe(rename(obj.filename))
       .pipe(insert.prepend(obj.headers))
-      .pipe(csv(obj.csv))
+      .pipe(parse(obj.csv))
       .pipe(rename({extname: '.json'}))
       .pipe(gulp.dest(TEMPDIR))
   });
