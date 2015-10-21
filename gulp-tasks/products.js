@@ -11,7 +11,10 @@ var
   rename       = require('gulp-rename'),
   slug         = require('slug'),
   concat       = require('gulp-concat'),
-  dir = require('node-dir'),
+  ifElse       = require('gulp-if-else'),
+  replace      = require('gulp-replace'),
+  dir          = require('node-dir'),
+  jsonlint     = require("gulp-jsonlint"),
   TEMPDIR      = './tmp/',
   RAWDIR       = './data/raw/',
   DATADIR      = './data/',
@@ -74,12 +77,13 @@ gulp.task('product-metadata', function() {
       ;
 
       download(url)
-        .pipe(jeditor(function(json) {
+        .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
           if(!json || !json["data"]) { return []; }
           return json["data"][0]["Values"];
         }))
-        .pipe(rename(filename))
-        .pipe(gulp.dest(props.folder))
+        .pipe(insert.prepend('"' + option + '":')) // add option name before value array
+        .pipe(rename(filename)) // set filename
+        .pipe(gulp.dest(props.folder)) // write to fs
     });
   });
 
@@ -95,10 +99,15 @@ gulp.task('product-concat', function() {
       props = getProductProperties(product)
     ;
 
-    gulp.src(props.folder + '*.json')
-      .pipe(concat(product + '_options.json'))
-      .pipe(gulp.dest(props.folder))
-
+    gulp.src(props.folder + '/*.json')
+      .pipe(insert.append(',')) // add , to end of each of the files in the folder
+      .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
+      .pipe(insert.prepend('{"' + props.slug + '":{')) // wrap object with product name
+      .pipe(insert.append('}}')) // end object wrap
+      .pipe(replace(',}', '}')) // make valid JSON again
+      .pipe(gulp.dest(props.folder)) // write to fs
+      .pipe(jsonlint()) // ensure we created valid JSON object in file
+      .pipe(jsonlint.reporter())
   });
 
 });
