@@ -14,8 +14,6 @@ var
   DATADIR      = './data/'
 ;
 
-gulp.task('products', gulpSequence('product-list', 'product-metadata'));
-
 gulp.task('product-list', function() {
   var
     url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=commodity_desc',
@@ -28,31 +26,41 @@ gulp.task('product-list', function() {
 
 gulp.task('product-metadata', function() {
   var
-    productList    = RAWDIR + 'product-list.json',
-    productsRaw    = fs.readFileSync(productList),
-    productJSON    = JSON.parse(productsRaw),
-    products       = productJSON["data"][0]["Values"],
-    baseClassURL   = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=class_desc&commodity_desc=',
-    baseOptionsURL = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=statisticcat_desc&commodity_desc='
+    productList = RAWDIR + 'product-list.json',
+    productsRaw = fs.readFileSync(productList),
+    productJSON = JSON.parse(productsRaw),
+    products    = productJSON["data"][0]["Values"],
+    options     = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
   ;
 
   products.forEach(function(product) {
     var
-      productQSVar      = product,
-      productSlug       = slug(productQSVar.toLowerCase()),
-      productClassURL   = baseClassURL + productQSVar,
-      productOptionsURL = baseOptionsURL + productQSVar,
-      classFilename     = productSlug + '-classes.json',
-      optionsFilename   = productSlug + '-options.json'
+      productQSVar  = product,
+      productSlug   = slug(productQSVar.toLowerCase(), '_'),
+      productFolder = RAWDIR + productSlug
     ;
 
-    download(productClassURL)
-      .pipe(rename(classFilename))
-      .pipe(gulp.dest(RAWDIR))
+    options.forEach(function(option) {
+      var
+        url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' + option + '&commodity_desc=' + product,
+        filename = productSlug + '_' + option + '.json'
+      ;
 
-    download(productOptionsURL)
-      .pipe(rename(optionsFilename))
-      .pipe(gulp.dest(RAWDIR))
+      download(url)
+        .pipe(rename(filename))
+        .pipe(gulp.dest(productFolder))
+    });
   });
-});
 
+})
+
+function getDistinctParamUrl(param, product) {
+  // I wish I could use `${}` here  =(
+  return 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' +
+            param +
+            '&commodity_desc=' +
+            product
+         ;
+}
+
+gulp.task('products', gulpSequence('product-list', 'product-metadata'));
