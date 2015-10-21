@@ -103,8 +103,7 @@ gulp.task('product-concat', function() {
       .pipe(insert.append(',')) // add , to end of each of the files in the folder
       .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
       .pipe(insert.prepend('{"' + props.slug + '":{')) // wrap object with product name
-      .pipe(insert.append('}}')) // end object wrap
-      .pipe(replace(',}', '}')) // make valid JSON again
+      .pipe(insert.append('"agg_level_desc": ["NATIONAL", "STATE", "COUNTY"]}}')) // add item and end object
       .pipe(gulp.dest(props.folder)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
       .pipe(jsonlint.reporter())
