@@ -11,9 +11,11 @@ var
   rename       = require('gulp-rename'),
   slug         = require('slug'),
   concat       = require('gulp-concat'),
+  dir = require('node-dir'),
   TEMPDIR      = './tmp/',
   RAWDIR       = './data/raw/',
-  DATADIR      = './data/'
+  DATADIR      = './data/',
+  OPTIONS      = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
 ;
 
 function getProductList() {
@@ -41,6 +43,10 @@ function getProductProperties(product) {
   }
 }
 
+function getOptionFilename(slug, option) {
+  return slug + '_' + option + '.json';
+}
+
 gulp.task('product-list', function() {
   var
     url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=commodity_desc',
@@ -53,8 +59,7 @@ gulp.task('product-list', function() {
 
 gulp.task('product-metadata', function() {
   var
-    products = getProductList(),
-    options  = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
+    products = getProductList()
   ;
 
   products.forEach(function(product) {
@@ -62,10 +67,10 @@ gulp.task('product-metadata', function() {
       props = getProductProperties(product)
     ;
 
-    options.forEach(function(option) {
+    OPTIONS.forEach(function(option) {
       var
         url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' + option + '&commodity_desc=' + props.qsVar,
-        filename = props.slug + '_' + option + '.json'
+        filename = getOptionFilename(props.slug, option)
       ;
 
       download(url)
