@@ -15,6 +15,9 @@ var
   replace      = require('gulp-replace'),
   dir          = require('node-dir'),
   jsonlint     = require("gulp-jsonlint"),
+  cartesian    = require('cartesian-product'),
+  R            = require('ramda'),
+  urlencode    = require('urlencode'),
   TEMPDIR      = './tmp/',
   RAWDIR       = './data/raw/',
   DATADIR      = './data/',
@@ -102,7 +105,7 @@ gulp.task('product-concat', function() {
     gulp.src(props.folder + '/*.json')
       .pipe(insert.append(',')) // add , to end of each of the files in the folder
       .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
-      .pipe(insert.prepend('{"' + props.slug + '":{')) // wrap object with product name
+      .pipe(insert.prepend('{"' + props.slug + '":{ "commodity_desc": ["' + product + '"],')) // wrap object with product name
       .pipe(insert.append('"agg_level_desc": ["NATIONAL", "STATE", "COUNTY"]}}')) // add item and end object
       .pipe(gulp.dest(props.folder)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
@@ -111,18 +114,48 @@ gulp.task('product-concat', function() {
 
 });
 
-gulp.task('product-values', function() {
+gulp.task('product-combinations', function() {
   var
-    products    = getProductList(),
-    geographies = ['NATIONAL', 'STATE', 'COUNTY']
+    products = getProductList(),
+    result   = {}
   ;
 
   products.forEach(function(product) {
     var
-      props = getProductProperties(product)
+      props        = getProductProperties(product),
+      optionKeys   = ['commodity_desc', 'agg_level_desc'].concat(OPTIONS),
+      optionFile   = props.folder + '/' + props.slug + '_options.json',
+      optionsRaw   = fs.readFileSync(optionFile),
+      optionsJSON  = JSON.parse(optionsRaw),
+      optionArr    = [],
+      optionCombos = null,
+      optionURLs   = []
     ;
 
+    optionKeys.forEach(function(option) {
+      optionArr.push(
+        optionsJSON[props.slug][option]
+      );
+    });
+
+    optionCombos = cartesian(optionArr);
+
+    optionCombos.forEach(function(combo) {
+      var
+        zipped  = R.zip(optionKeys, combo),
+        encoded = zipped.map(kv => [kv[0], urlencode(kv[1])]),
+        qspair  = encoded.map(kv => kv.join('='))
+        qsvars  = qspair.join('&')
+      ;
+      optionURLs.push(qsvars);
+    });
+
+    console.log(optionURLs);
+
+    result[props.slug] = optionURLs;
   });
+
+  console.log(result);
 
 });
 
