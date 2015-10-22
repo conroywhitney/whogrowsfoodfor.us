@@ -257,58 +257,8 @@ gulp.task('product-clean', function() {
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
-      .pipe(jsonTransform(function(fullJSON) {
-        var
-          slug        = props.slug,
-          productJSON = fullJSON[slug],
-          keys        = null,
-          rollupKey   = null,
-          output      = {}
-        ;
-
-        // remove the 'ignore' before getting keys
-        delete productJSON['ignore'];
-        keys = Object.keys(productJSON)
-
-        rollupKey = keys[0].replace(/_(national|state|county)/gi, '');
-
-        output[slug] = {};
-        output[slug][rollupKey] = {};
-
-        keys.forEach(function(key) {
-          console.log(key);
-
-          var
-            data      = productJSON[key]['data'],
-            units     = null
-          ;
-
-          if(!data) { return false; }
-
-          units = data[0]['unit_desc'];
-
-          output[slug][rollupKey]['units'] = {
-            units: units
-          };
-
-          data.forEach(function(region) {
-            var
-              state_fips_code = region['state_fips_code'] || null,
-              county_code     = region['county_code'] || null,
-              fips            = productHelper.getFipsFromStateCounty(state_fips_code, county_code),
-              value           = region['value'] || null,
-              value_int       = parseInt(value.replace(/,/g, ''))
-            ;
-
-            // only record value if we've actually got a value
-            if(value_int >= 0) {
-              output[slug][rollupKey][fips] = value_int;
-            }
-
-          });
-        });
-
-        return output;
+      .pipe(jsonTransform(function(dirtyJSON) {
+        return productHelper.getCleanJSON(dirtyJSON, props);
       }))
       .pipe(gulp.dest(PRODDIR)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
