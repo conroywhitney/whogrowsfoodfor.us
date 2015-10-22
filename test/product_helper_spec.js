@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey, getCleanKeys, getIntFromCommaString} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -253,6 +253,52 @@ describe('product helper', () => {
 
     it('should chop off state', () => {
       expect(getRollupKey('onions_dry_acres_area_harvested_state')).to.eq('onions_dry_acres_area_harvested');
+    });
+
+  });
+
+  describe('getCleanKeys', () => {
+
+    var
+      testInput = {test:'value', one:'two', ignore:{}},
+      testOuput = getCleanKeys(testInput)
+    ;
+
+    it('should return blank array if null', () => {
+      expect(getCleanKeys(null)).to.eql([]);
+    });
+
+    it('should not contain ignore key', () => {
+      expect(testOuput).to.not.contain('ignore');
+    });
+
+    it('should return what is expected', () => {
+      expect(testOuput).to.contain('test');
+      expect(testOuput).to.contain('one');
+    });
+
+  });
+
+  describe('getIntFromCommaString', () => {
+
+    it('should return null for null', () => {
+      expect(getIntFromCommaString(null)).to.be.null;
+    });
+
+    it('should handle being given an int', () => {
+      expect(getIntFromCommaString(999)).to.eq(999);
+    });
+
+    it('should handle being given a string without commas', () => {
+      expect(getIntFromCommaString('999')).to.eq(999);
+    });
+
+    it('should handle a string with commas', () => {
+      expect(getIntFromCommaString('9,999')).to.eq(9999);
+    });
+
+    it('should handle a string with multiple commas', () => {
+      expect(getIntFromCommaString('1,234,567,890')).to.eq(1234567890);
     });
 
   });

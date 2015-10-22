@@ -99,6 +99,14 @@ function getFipsFromStateCounty(state, county) {
   return fips;
 }
 
+function getCleanKeys(dirtyJSON) {
+  if(!dirtyJSON) { return []; }
+
+  // remove the 'ignore' before getting keys
+  delete dirtyJSON['ignore'];
+  return Object.keys(dirtyJSON)
+}
+
 function getRollupKey(key) {
   if(!key) { return null; }
   return key.replace(/_(national|state|county)/gi, '')
@@ -108,55 +116,63 @@ function getCleanJSON(dirtyJSON, props) {
   var
     slug        = props.slug,
     productJSON = dirtyJSON[slug],
-    keys        = null,
-    rollupKey   = null,
+    keys        = getCleanKeys(productJSON),
+    rollupKey   = getRollupKey(keys[0]),
     output      = {}
   ;
 
-  // remove the 'ignore' before getting keys
-  delete productJSON['ignore'];
-  keys = Object.keys(productJSON)
-
-  rollupKey = getRollupKey(keys[0]);
-
+  // initialize empty data structure
   output[slug] = {};
   output[slug][rollupKey] = {};
 
   keys.forEach(function(key) {
-    console.log(key);
-
     var
-      data      = productJSON[key]['data'],
-      units     = null
+      rollupOutput = {},
+      data         = productJSON[key]['data'],
+      units        = null
     ;
 
-    if(!data) { return false; }
+    if(!data) {
+      console.log("WARNING\tNo data found for [" + key + "]");
+      return false;
+    } else {
 
-    units = data[0]['unit_desc'];
+      // set units for all values in this group
+      rollupOutput['units'] = data[0]['unit_desc'];
 
-    output[slug][rollupKey]['units'] = {
-      units: units
-    };
+      data.forEach(function(region) {
+        var
+          state_fips_code = region['state_fips_code'] || null,
+          county_code     = region['county_code'] || null,
+          fips            = getFipsFromStateCounty(state_fips_code, county_code),
+          value           = region['value'] || null,
+          value_int       = getIntFromCommaString(value)
+        ;
 
-    data.forEach(function(region) {
-      var
-        state_fips_code = region['state_fips_code'] || null,
-        county_code     = region['county_code'] || null,
-        fips            = getFipsFromStateCounty(state_fips_code, county_code),
-        value           = region['value'] || null,
-        value_int       = parseInt(value.replace(/,/g, ''))
-      ;
+        // only record value if we've actually got a value
+        if(value_int >= 0) {
+          rollupOutput[fips] = value_int;
+        }
 
-      // only record value if we've actually got a value
-      if(value_int >= 0) {
-        output[slug][rollupKey][fips] = value_int;
-      }
+      });
 
-    });
+      output[slug][rollupKey] = rollupOutput;
+    }
   });
 
   return output;
 }
+
+function getIntFromCommaString(value) {
+  if(!value) { return null; }
+  var
+    value_str   = '' + value,
+    value_clean = value_str.replace(/,/g, ''),
+    value_int   = parseInt(value_clean)
+  ;
+  return value_int;
+}
+
 // old skewl way of exporting
 // wish I could use ES6 with gulp
 // I'm sure there's a way ...
@@ -172,6 +188,7 @@ module.exports.filterOptionValueForFilename = filterOptionValueForFilename;
 
 module.exports.getFipsFromStateCounty = getFipsFromStateCounty;
 
-module.exports.getCleanJSON = getCleanJSON;
-module.exports.getRollupKey = getRollupKey;
-
+module.exports.getCleanJSON          = getCleanJSON;
+module.exports.getRollupKey          = getRollupKey;
+module.exports.getCleanKeys          = getCleanKeys;
+module.exports.getIntFromCommaString = getIntFromCommaString;
