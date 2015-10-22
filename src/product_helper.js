@@ -1,3 +1,6 @@
+var
+  slug = require('slug')
+;
 
 function filterProducts(arr) {
   // return blank object if null or empty array
@@ -46,6 +49,23 @@ function filterOption(option, value) {
   return keep;
 }
 
+function filenameFromOptions(options) {
+  var
+    filtered = options.filter(filterOptionForFilename),
+    filename = filtered.map(v => slug(v.toLowerCase(), '_')).join('_')
+  ;
+  return filename;
+}
+
+function filterOptionForFilename(option) {
+  var
+    regex  = new RegExp('^(ALL|TOTAL|CENSUS|2012)', 'gi'),
+    ignore = regex.test(option),
+    keep   = (ignore == false)
+  ;
+  return keep;
+}
+
 // old skewl way of exporting
 // wish I could use ES6 with gulp
 // I'm sure there's a way ...
@@ -55,3 +75,6 @@ module.exports.productFilter  = productFilter;
 
 module.exports.filterOptions = filterOptions;
 module.exports.filterOption  = filterOption;
+
+module.exports.filenameFromOptions = filenameFromOptions;
+module.exports.filterOptionForFilename = filterOptionForFilename;
