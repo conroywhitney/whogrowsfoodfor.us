@@ -51,16 +51,16 @@ function filterOption(option, value) {
 
 function filenameFromOptions(options) {
   var
-    filtered = options.filter(filterOptionForFilename),
+    filtered = options.filter(filterOptionValueForFilename),
     filename = filtered.map(v => slug(v.toLowerCase(), '_')).join('_')
   ;
   return filename;
 }
 
-function filterOptionForFilename(option) {
+function filterOptionValueForFilename(value) {
   var
     regex  = new RegExp('^(ALL|TOTAL|CENSUS|2012)', 'gi'),
-    ignore = regex.test(option),
+    ignore = regex.test(value),
     keep   = (ignore == false)
   ;
   return keep;
@@ -77,4 +77,4 @@ module.exports.filterOptions = filterOptions;
 module.exports.filterOption  = filterOption;
 
 module.exports.filenameFromOptions = filenameFromOptions;
-module.exports.filterOptionForFilename = filterOptionForFilename;
+module.exports.filterOptionValueForFilename = filterOptionValueForFilename;

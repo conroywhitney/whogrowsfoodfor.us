@@ -161,8 +161,8 @@ gulp.task('product-combinations', function() {
 
     optionCombos.forEach(function(combo) {
       var
-        filename  = productHelper.filenameFromOptions(combo),
         zipped    = R.zip(optionKeys, combo),
+        filename  = productHelper.filenameFromOptions(zipped),
         encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
         qspair    = encoded.map(kv => kv.join('='))
         qsvars    = qspair.join('&')

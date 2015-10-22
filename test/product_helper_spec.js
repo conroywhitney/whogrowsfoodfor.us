@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionForFilename} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -162,26 +162,26 @@ describe('product helper', () => {
 
   });
 
-  describe('filterOptionForFilename', () => {
+  describe('filterOptionValueForFilename', () => {
 
     it('should omit _all_* values from filename', () => {
-      expect(filterOptionForFilename("ALL CLASSES")).to.be.false;
+      expect(filterOptionValueForFilename("ALL CLASSES")).to.be.false;
     });
 
     it('should omit _total_ values from filename', () => {
-      expect(filterOptionForFilename("TOTAL")).to.be.false;
+      expect(filterOptionValueForFilename("TOTAL")).to.be.false;
     });
 
     it('should omit _census_ from filename', () => {
-      expect(filterOptionForFilename("CENSUS")).to.be.false;
+      expect(filterOptionValueForFilename("CENSUS")).to.be.false;
     });
 
     it('should omit _2012_ from filename', () => {
-      expect(filterOptionForFilename("2012")).to.be.false;
+      expect(filterOptionValueForFilename("2012")).to.be.false;
     });
 
     it('should keep good words', () => {
-      expect(filterOptionForFilename("APPLES")).to.be.true;
+      expect(filterOptionValueForFilename("APPLES")).to.be.true;
     });
 
   });
