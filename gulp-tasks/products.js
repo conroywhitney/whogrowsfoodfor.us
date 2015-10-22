@@ -206,14 +206,12 @@ gulp.task('product-download', function() {
         url      = baseURL + query.querystring,
         filename = query.filename + '.json'
       ;
-      download(url)
-        .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
-          if(!json) { throw "Error\t[" + url + "]"; }
-          if(Object.keys(json).length == 0) { return false; }
-          return json;
-        }))
-        .pipe(rename(filename)) // set filename
-        .pipe(gulp.dest(props.folder)) // write to fs
+
+      setTimeout(function() {
+        download(url)
+          .pipe(rename(filename)) // set filename
+          .pipe(gulp.dest(props.folder)) // write to fs
+      }, 1000);
     });
 
   });
