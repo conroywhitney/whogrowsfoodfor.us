@@ -183,4 +183,33 @@ gulp.task('product-combinations', function() {
 
 });
 
+gulp.task('product-download', function() {
+  var
+    products = getFilteredProductList()
+  ;
+
+  products.forEach(function(product) {
+    var
+      props       = getProductProperties(product),
+      baseURL     = 'http://nass-api.azurewebsites.net/api/api_get?',
+      queriesFile = props.folder + '/' + props.slug + '_queries.json',
+      queriesRaw  = fs.readFileSync(queriesFile),
+      queriesJSON = JSON.parse(queriesRaw)
+      queries     = queriesJSON[props.slug]["queries"]
+    ;
+
+    queries.forEach(function(query) {
+      var
+        url      = baseURL + query.querystring,
+        filename = query.filename + '.json'
+      ;
+      download(url)
+        .pipe(rename(filename)) // set filename
+        .pipe(gulp.dest(props.folder)) // write to fs
+    });
+
+  });
+
+});
+
 gulp.task('products', gulpSequence('product-list', 'product-metadata', 'product-concat', 'product-combinations'));
