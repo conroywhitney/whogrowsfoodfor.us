@@ -66,6 +66,39 @@ function filterOptionValueForFilename(value) {
   return keep;
 }
 
+function getFipsFromStateCounty(state, county) {
+  if(!state) { return null; }
+
+  var
+    state_int  = parseInt(state),
+    county_int = parseInt(county),
+    fips       = '';
+  ;
+
+  // national level
+  if(state_int == 99) {
+    fips = '00000';
+  } else {
+
+    if(state_int >= 10) {
+      fips += state_int;
+    } else {
+      // left pad state fips
+      fips += '0' + state_int;
+    }
+
+    if(county_int >= 0) {
+      // left pad county fips
+      fips += ("000" + county_int).slice(-3);
+    } else {
+      // right pad to indicate no county (state-level)
+      fips += "000";
+    }
+  }
+
+  return fips;
+}
+
 // old skewl way of exporting
 // wish I could use ES6 with gulp
 // I'm sure there's a way ...
@@ -78,3 +111,5 @@ module.exports.filterOption  = filterOption;
 
 module.exports.filenameFromOptions = filenameFromOptions;
 module.exports.filterOptionValueForFilename = filterOptionValueForFilename;
+
+module.exports.getFipsFromStateCounty = getFipsFromStateCounty;

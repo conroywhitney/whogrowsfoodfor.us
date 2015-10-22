@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -54,7 +54,7 @@ describe('product helper', () => {
   describe('filterOptions', () => {
 
     var
-      desirable = ["AREA","AREA BEARING","AREA HARVESTED","OPERATIONS","SALES"]
+      desirable = ["AREA","AREA BEARING","AREA HARVESTED","SALES"]
     ;
 
     describe('known option key', () => {
@@ -184,6 +184,57 @@ describe('product helper', () => {
       expect(filterOptionValueForFilename("APPLES")).to.be.true;
     });
 
+  });
+
+  describe('getFipsFromStateCounty', () => {
+
+    it('should return null if given both nulls', () => {
+      expect(getFipsFromStateCounty(null, null)).to.be.null;
+    });
+
+    it('should return null if given both blank', () => {
+      expect(getFipsFromStateCounty('', '')).to.be.null;
+    });
+
+    it('should handle string and null', () => {
+      expect(getFipsFromStateCounty('41', null)).to.eq('41000');
+    });
+
+    it('should handle integer and null', () => {
+      expect(getFipsFromStateCounty(41, null)).to.eq('41000');
+    });
+
+    it('should handle both string', () => {
+      expect(getFipsFromStateCounty('41', '029')).to.eq('41029');
+    });
+
+    it('should handle integer and padded string', () => {
+      expect(getFipsFromStateCounty(41, '029')).to.eq('41029');
+    });
+
+    it('should handle integer and non-padded string', () => {
+      expect(getFipsFromStateCounty(41, '29')).to.eq('41029');
+    });
+
+    it('should handle string and integer', () => {
+      expect(getFipsFromStateCounty('41', 29)).to.eq('41029');
+    });
+
+    it('should not allow null and integer', () => {
+      expect(getFipsFromStateCounty(null, 29)).to.be.null;
+    });
+
+    it('should not allow null and string', () => {
+      expect(getFipsFromStateCounty(null, '029')).to.be.null;
+    });
+
+    it('should turn national into 00000', () => {
+      expect(getFipsFromStateCounty(99, null)).to.eq('00000');
+    });
+
+    it('should handle single digit state', () => {
+      expect(getFipsFromStateCounty(6, null)).to.eq('06000');
+    });
   });
 
 });

@@ -6,7 +6,7 @@ import {filterProducts, productFilter, filterOptions, filterOption} from '../src
 
 describe('products', () => {
 
-  const NUM_PRODUCTS = 174;
+  const NUM_PRODUCTS = 171;
 
   describe('productJSON', () => {
 
