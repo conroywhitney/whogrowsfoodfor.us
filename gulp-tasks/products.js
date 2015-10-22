@@ -204,6 +204,9 @@ gulp.task('product-download', function() {
         filename = query.filename + '.json'
       ;
       download(url)
+      // TODO: if have JSON, navigate into node
+      // if empty object {} then abort pipe so not write file
+      // if null response, log to console so can know failed request
         .pipe(rename(filename)) // set filename
         .pipe(gulp.dest(props.folder)) // write to fs
     });
