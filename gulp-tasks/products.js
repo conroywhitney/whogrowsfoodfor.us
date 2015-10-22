@@ -140,7 +140,7 @@ gulp.task('product-combinations', function() {
   products.forEach(function(product) {
     var
       props        = getProductProperties(product),
-      optionKeys   = ['year', 'source_desc', 'agg_level_desc', 'commodity_desc', 'class_desc', 'unit_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'domain_desc'],
+      optionKeys   = ['commodity_desc', 'class_desc', 'unit_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'domain_desc', 'year', 'source_desc', 'agg_level_desc'],
       optionFile   = props.folder + '/' + props.slug + '_options.json',
       outputFile   = props.folder + '/' + props.slug + '_queries.json',
       optionsRaw   = fs.readFileSync(optionFile),
@@ -161,8 +161,8 @@ gulp.task('product-combinations', function() {
 
     optionCombos.forEach(function(combo) {
       var
+        filename  = productHelper.filenameFromOptions(combo),
         zipped    = R.zip(optionKeys, combo),
-        filename  = productHelper.filenameFromOptions(zipped),
         encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
         qspair    = encoded.map(kv => kv.join('='))
         qsvars    = qspair.join('&')

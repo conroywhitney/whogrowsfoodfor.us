@@ -14,7 +14,7 @@ function filterProducts(arr) {
 
 function productFilter(product) {
   var
-    regex  = new RegExp('OTHER|TOTALS|REPAIRS|INTERNET|AREA|HYBRIDS|TAXES|OPERATIONS|LABOR|FARM|LAND|SPAWN|FACILITY|SOD|LOANS|ENERGY|INTEREST|PRINCIPAL|DEPRECIATION|OPERATORS|SERVICES|PROGRAMS|PRACTICES|RENT|FUELS|ORNAMENTAL FISH|TREES & SHORT|FEED|HAYLAGE|PIGEONS|TEMPLES', 'gi'),
+    regex  = new RegExp('OTHER|TOTALS|REPAIRS|INTERNET|AREA|HYBRIDS|TAXES|OPERATIONS|LABOR|FARM|LAND|SPAWN|FACILITY|SOD|LOANS|ENERGY|INTEREST|PRINCIPAL|DEPRECIATION|OPERATORS|SERVICES|PROGRAMS|PRACTICES|RENT|FUELS|ORNAMENTAL FISH|TREES & SHORT|FEED|HAYLAGE|PIGEONS|TEMPLES|TRANSPLANTS|HONEY|EQUINE', 'gi'),
     ignore = regex.test(product),
     keep   = (ignore == false)
   ;
@@ -36,11 +36,11 @@ function filterOptions(option, arr) {
 function filterOption(option, value) {
   var
     filters = {
-      "statisticcat_desc":   [ "AREA","AREA BEARING","AREA HARVESTED","OPERATIONS","SALES" ],
+      "statisticcat_desc":   [ "AREA","AREA BEARING","AREA HARVESTED",/*"OPERATIONS"*/,"SALES" ],
       "util_practice_desc":  [ "ALL UTILIZATION PRACTICES"/*, "RETAIL, COMMUNITY SUPPORTED AG"*/ ],
       "prodn_practice_desc": [ "ALL PRODUCTION PRACTICES"/*,"ORGANIC","ORGANIC, TRANSITIONING"*/ ],
-      "unit_desc":           [ "$", "ACRES", "TONS", "LB", "BU", "HEAD", "TREES", "OPERATIONS" ],
-      "domain_desc":         [ "TOTAL","AREA HARVESTED","AREA BEARING & NON-BEARING","AREA HARVESTED, FRESH MARKET & PROCESSING","SALES" ]
+      "unit_desc":           [ "ACRES", /*"TONS", "LB", "BU",*/ "HEAD", /*"TREES",*/ /*"OPERATIONS"*/ ],
+      "domain_desc":         [ "TOTAL",/*"AREA HARVESTED","AREA BEARING & NON-BEARING","AREA HARVESTED, FRESH MARKET & PROCESSING","SALES"*/ ]
     },
     filter = filters[option],
     keep  = !option || !filter || (filter.indexOf(value) > -1)
