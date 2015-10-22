@@ -20,8 +20,9 @@ var
   urlencode     = require('urlencode'),
   productHelper = require('../src/product_helper'),
   TEMPDIR       = './tmp/',
-  RAWDIR        = './data/raw/',
   DATADIR       = './data/',
+  RAWDIR        = './data/raw/',
+  PRODDIR       = './data/products/',
   OPTIONS       = ['class_desc', 'statisticcat_desc', 'util_practice_desc', 'prodn_practice_desc', 'unit_desc', 'domain_desc']
 ;
 
@@ -213,6 +214,26 @@ gulp.task('product-download', function() {
           .pipe(gulp.dest(props.folder)) // write to fs
       }, 1000);
     });
+
+  });
+
+});
+
+gulp.task('product-clean', function() {
+  var
+    products = getFilteredProductList()
+  ;
+
+  products.forEach(function(product) {
+    var
+      props = getProductProperties(product)
+    ;
+
+    gulp.src(props.folder + '/*{national,state,county}.json')
+      .pipe(concat(props.slug + '.json')) // combine all files into single options file
+      .pipe(gulp.dest(PRODDIR)) // write to fs
+      .pipe(jsonlint()) // ensure we created valid JSON object in file
+      .pipe(jsonlint.reporter())
 
   });
 
