@@ -99,6 +99,11 @@ function getFipsFromStateCounty(state, county) {
   return fips;
 }
 
+function getRollupKey(key) {
+  if(!key) { return null; }
+  return key.replace(/_(national|state|county)/gi, '')
+}
+
 function getCleanJSON(dirtyJSON, props) {
   var
     slug        = props.slug,
@@ -112,7 +117,7 @@ function getCleanJSON(dirtyJSON, props) {
   delete productJSON['ignore'];
   keys = Object.keys(productJSON)
 
-  rollupKey = keys[0].replace(/_(national|state|county)/gi, '');
+  rollupKey = getRollupKey(keys[0]);
 
   output[slug] = {};
   output[slug][rollupKey] = {};
@@ -168,3 +173,5 @@ module.exports.filterOptionValueForFilename = filterOptionValueForFilename;
 module.exports.getFipsFromStateCounty = getFipsFromStateCounty;
 
 module.exports.getCleanJSON = getCleanJSON;
+module.exports.getRollupKey = getRollupKey;
+

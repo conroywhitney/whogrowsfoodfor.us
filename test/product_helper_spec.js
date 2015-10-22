@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -235,6 +235,26 @@ describe('product helper', () => {
     it('should handle single digit state', () => {
       expect(getFipsFromStateCounty(6, null)).to.eq('06000');
     });
+  });
+
+  describe('getRollupKey', () => {
+
+    it('should return null if null', () => {
+      expect(getRollupKey(null)).to.be.null;
+    });
+
+    it('should chop of county', () => {
+      expect(getRollupKey('onions_dry_acres_area_harvested_county')).to.eq('onions_dry_acres_area_harvested');
+    });
+
+    it('should chop off national', () => {
+      expect(getRollupKey('onions_dry_acres_area_harvested_national')).to.eq('onions_dry_acres_area_harvested');
+    });
+
+    it('should chop off state', () => {
+      expect(getRollupKey('onions_dry_acres_area_harvested_state')).to.eq('onions_dry_acres_area_harvested');
+    });
+
   });
 
 });
