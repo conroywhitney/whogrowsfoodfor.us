@@ -3,7 +3,9 @@ var
   gulpSequence  = require('gulp-sequence'),
   fs            = require('fs'),
   download      = require('gulp-download'),
+  request       = require('request'),
   replace       = require('gulp-replace'),
+  source        = require('vinyl-source-stream'),
   insert        = require('gulp-insert'),
   parse         = require('csv-parse'),
   jeditor       = require("gulp-json-editor"),
@@ -17,7 +19,9 @@ var
   jsonlint      = require("gulp-jsonlint"),
   cartesian     = require('cartesian-product'),
   R             = require('ramda'),
+  q             = require('q'),
   urlencode     = require('urlencode'),
+  promise       = require("gulp-promise"),
   productHelper = require('../src/product_helper'),
   TEMPDIR       = './tmp/',
   DATADIR       = './data/',
@@ -187,7 +191,7 @@ gulp.task('product-combinations', function() {
 
 });
 
-gulp.task('product-download', function() {
+gulp.task('product-download', function(cb) {
   var
     products = getFilteredProductList()
   ;
@@ -199,8 +203,17 @@ gulp.task('product-download', function() {
       queriesFile = props.folder + '/' + props.slug + '_queries.json',
       queriesRaw  = fs.readFileSync(queriesFile),
       queriesJSON = JSON.parse(queriesRaw)
-      queries     = queriesJSON[props.slug]["queries"]
+      queries     = queriesJSON[props.slug]["queries"],
+      promiselist = []
     ;
+
+    queries.forEach(function(query) {
+      promiselist.push(query);
+    });
+
+    promise.makePromises(promiselist, function () {
+      if (cb) { cb(); }
+    });
 
     queries.forEach(function(query) {
       var
@@ -208,11 +221,21 @@ gulp.task('product-download', function() {
         filename = query.filename + '.json'
       ;
 
-      setTimeout(function() {
-        download(url)
-          .pipe(rename(filename)) // set filename
-          .pipe(gulp.dest(props.folder)) // write to fs
-      }, 1000);
+      request(url)
+        .on('response', function(response) {
+          console.log(filename);
+        })
+        .on('error', function(err) {
+          console.log("ERROR [" + filename + "]");
+          console.log(err);
+        })
+        .pipe(source(filename))
+        .pipe(insert.prepend('"' + query.filename + '": '))
+        .pipe(insert.append(','))
+        .pipe(gulp.dest(props.folder)) // write to fs
+        .pipe(promise.deliverPromise(query))
+      ;
+
     });
 
   });
@@ -231,6 +254,8 @@ gulp.task('product-clean', function() {
 
     gulp.src(props.folder + '/*{national,state,county}.json')
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
+      .pipe(insert.prepend('{ "' + props.slug + '": {'))
+      .pipe(insert.append('"ignore": {}}}'))
       .pipe(gulp.dest(PRODDIR)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
       .pipe(jsonlint.reporter())
