@@ -262,6 +262,7 @@ gulp.task('product-clean', function() {
           slug        = props.slug,
           productJSON = fullJSON[slug],
           keys        = null,
+          rollupKey   = null,
           output      = {}
         ;
 
@@ -269,21 +270,24 @@ gulp.task('product-clean', function() {
         delete productJSON['ignore'];
         keys = Object.keys(productJSON)
 
+        rollupKey = keys[0].replace(/_(national|state|county)/gi, '');
+
         output[slug] = {};
+        output[slug][rollupKey] = {};
 
         keys.forEach(function(key) {
           console.log(key);
 
           var
-            data  = productJSON[key]['data'],
-            units = null
+            data      = productJSON[key]['data'],
+            units     = null
           ;
 
           if(!data) { return false; }
 
           units = data[0]['unit_desc'];
 
-          output[slug][key] = {
+          output[slug][rollupKey]['units'] = {
             units: units
           };
 
@@ -298,7 +302,7 @@ gulp.task('product-clean', function() {
 
             // only record value if we've actually got a value
             if(value_int >= 0) {
-              output[slug][key][fips] = value_int;
+              output[slug][rollupKey][fips] = value_int;
             }
 
           });
