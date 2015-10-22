@@ -170,6 +170,7 @@ gulp.task('product-combinations', function() {
 
       optionURLs.push({
        filename:    filenames,
+       options:     zipped,
        querystring: qsvars
       });
     });
