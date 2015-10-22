@@ -83,7 +83,7 @@ gulp.task('product-list', function() {
 
 gulp.task('product-metadata', function() {
   var
-    products = getProductList()
+    products = getFilteredProductList()
   ;
 
   products.forEach(function(product) {
@@ -112,7 +112,7 @@ gulp.task('product-metadata', function() {
 
 gulp.task('product-concat', function() {
   var
-    products = getProductList()
+    products = getFilteredProductList()
   ;
 
   products.forEach(function(product) {
