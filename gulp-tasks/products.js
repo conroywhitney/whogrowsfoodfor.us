@@ -168,11 +168,14 @@ gulp.task('product-combinations', function() {
         qsvars    = qspair.join('&')
       ;
 
-      optionURLs.push(qsvars);
+      optionURLs.push({
+       filename:    filenames,
+       querystring: qsvars
+      });
     });
 
     result[props.slug] = {
-      query_urls: optionURLs
+      queries: optionURLs
     };
 
     fs.writeFileSync(outputFile, JSON.stringify(result));
@@ -180,4 +183,4 @@ gulp.task('product-combinations', function() {
 
 });
 
-gulp.task('products', gulpSequence('product-list', 'product-metadata'));
+gulp.task('products', gulpSequence('product-list', 'product-metadata', 'product-concat', 'product-combinations'));
