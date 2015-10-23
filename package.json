@@ -54,6 +54,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sequence": "^0.4.1",
+    "gulp-size": "^2.0.0",
+    "gulp-using": "0.0.1",
     "gulp-util": "^3.0.7",
     "http": "0.0.0",
     "jsdom": "^7.0.0",

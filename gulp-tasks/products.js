@@ -23,6 +23,8 @@ var
   q             = require('q'),
   urlencode     = require('urlencode'),
   promise       = require("gulp-promise"),
+  using         = require("gulp-using"),
+  $size        = require("gulp-size"),
   productHelper = require('../src/product_helper'),
   TEMPDIR       = './tmp/',
   DATADIR       = './data/',
@@ -266,6 +268,29 @@ gulp.task('product-clean', function() {
 
   });
 
+});
+
+gulp.task('product-sanity-check', function() {
+  gulp.src(PRODDIR + '*')
+      .pipe(jsonTransform(function(json) {
+        var
+          product = Object.keys(json)[0],
+          data    = json[product],
+          keys    = Object.keys(data)
+        ;
+
+        keys.forEach(function(key) {
+          var
+            totals       = data[key]['total']
+            total_string = JSON.stringify(totals)
+          ;
+          console.log(product + " => " + key + " => " + total_string);
+        });
+        return json;
+      }))
+      .pipe(jsonlint()) // ensure we created valid JSON object in file
+      .pipe(jsonlint.reporter())
+  ;
 });
 
 gulp.task('products', gulpSequence('product-list', 'product-metadata', 'product-concat', 'product-combinations'));
