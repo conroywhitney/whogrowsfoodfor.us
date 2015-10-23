@@ -260,7 +260,7 @@ gulp.task('product-clean', function() {
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
       .pipe(jsonTransform(function(dirtyJSON) {
-        return productHelper.getCleanJSON(dirtyJSON, props);
+        return productHelper.getCleanJSON(dirtyJSON);
       }))
       .pipe(gulp.dest(PRODDIR)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
@@ -279,24 +279,23 @@ gulp.task('product-sanity-check', function() {
           keys    = Object.keys(data)
         ;
 
-        console.log('json -------------------------------');
-        console.log(json);
-        console.log('product -------------------------------');
-        console.log(product);
-        console.log('data -------------------------------');
-        console.log(data);
-        console.log('keys -------------------------------');
-        console.log(keys);
-
         keys.forEach(function(key) {
-          console.log(key);
           var
-            totals   = data[key].stats.total,
-            national = totals.national.toLocaleString(),
-            state    = totals.state.toLocaleString(),
-            county   = totals.county.toLocaleString()
+            item     = data[key],
+            stats    = item.stats
           ;
-          console.log(product + " => " + key + " => ( " + national + ' / ' + state + ' / ' + county + ' )');
+
+          if(stats) {
+            var
+              totals   = stats.totals,
+              national = (totals.national || -1).toLocaleString(),
+              state    = (totals.state || -1).toLocaleString(),
+              county   = (totals.county || -1).toLocaleString()
+            ;
+            console.log(product + " => " + key + " => ( " + national + ' / ' + state + ' / ' + county + ' )');
+          } else {
+            console.log(product + " => " + key + " => ( no information available )");
+          }
         });
         return json;
       }))

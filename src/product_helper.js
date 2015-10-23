@@ -113,70 +113,76 @@ function getRollupKey(key) {
   return key.replace(/_(national|state|county)/gi, '')
 }
 
-function getCleanJSON(dirtyJSON, props) {
-  var
-    slug        = props.slug,
-    productJSON = dirtyJSON[slug],
-    keys        = getCleanKeys(productJSON),
-    rollupKey   = getRollupKey(keys[0]),
-    total       = { national: 0, state: 0, county: 0 },
-    output      = {}
-  ;
+function getCleanJSON(json) {
+  if(!json) { return {}; }
 
-  // initialize empty data structure
-  output[slug]            = {};
-  output[slug][rollupKey] = {};
-  output[slug].stats      = {};
+  if(json['data']) {
+    // if we see 'data', that means we are at a level deep enough to roll up
+    return rollupProductArray(json['data']);
+  } else {
+    // otherwise, recursively go through keys until we reach that deep level
 
-  keys.forEach(function(key) {
     var
-      rollupOutput = {},
-      data         = productJSON[key]['data']
+      // clean keys so we don't end up with the ignore: {} that might be sent down
+      keys = getCleanKeys(json),
+
+      // what we'll return at the very end
+      output = {}
     ;
 
-    if(!data) {
-      console.log("WARNING\tNo data found for [" + key + "]");
-      return false;
-    } else {
+    // these are like key_one_national, key_two_state, etc.
+    keys.forEach(function(key) {
+      var
+        // find a logical grouping for these so combine national, state, county
+        group = getRollupKey(key),
 
-      // set units for all values in this group
-      output[slug].stats.units = data[0]['unit_desc'];
+        // store values from this current iteration that we'll merge later into global output
+        iteration = {}
+      ;
+      // recursively call for each key and store for this iteration by group key
+      iteration[group] = getCleanJSON(json[key])
 
-      data.forEach(function(region) {
-        var
-          state_fips_code = region['state_fips_code'] || null,
-          county_code     = region['county_code'] || null,
-          fips            = getFipsFromStateCounty(state_fips_code, county_code),
-          fipsType        = getFipsType(fips),
-          value           = region['value'] || null,
-          value_int       = getIntFromCommaString(value)
-        ;
+      // merge iteration into absolute output that we'll return at the end
+      output = deepExtend(output, iteration);
+    });
+  }
 
-        // only record value if we've actually got a value
-        if(value_int >= 0) {
-          rollupOutput[fips] = value_int;
-          total[fipsType]   += value_int;
-        }
-      });
+  return output;
+}
 
+function rollupProductArray(arr) {
+  var
+    // logical structure that we'll return back up to our parent that called us
+    output = {
+      stats: {
+        units:  arr[0]['unit_desc'],
+        totals: {}
+      },
+      fips: {}
+    }
+  ;
 
-      /*
-      console.log("merging----[" + rollupKey + "]--------------------------------");
-      console.log(output[slug][rollupKey]);
-      console.log("and--------[" + key + "]----------------------------");
-      console.log(rollupOutput);
-      */
-      output[slug][rollupKey] = deepExtend(output[slug][rollupKey], rollupOutput);
-      /*
-      console.log("into------------------------------------");
-      console.log(output[slug][rollupKey]);
-      console.log("end------------------------------------");
-      */
+  // go through each item in my array and simplify attributes into { fips: value }
+  arr.forEach(function(item) {
+    var
+      state_fips_code = item['state_fips_code'] || null,
+      county_code     = item['county_code'] || null,
+      fips            = getFipsFromStateCounty(state_fips_code, county_code),
+      fipsType        = getFipsType(fips),
+      value           = item['value'] || null,
+      value_int       = getIntFromCommaString(value)
+    ;
+
+    // only record value if we've actually got a value (not (D) or (Z))
+    if(value_int >= 0) {
+      output['fips'][fips] = value_int;
+      // like ruby ||= except much uglier  :(
+      // necessary so that 0 values don't trounce actual values when deep merge later
+      output.stats.totals[getFipsType(fips)] = output.stats.totals[getFipsType(fips)] ? output.stats.totals[getFipsType(fips)] + value_int : value_int;
     }
   });
 
-  output[slug].stats.total = total;
-
+  // returning logical structure from above, but now with actual data!
   return output;
 }
 
@@ -233,3 +239,5 @@ module.exports.getFipsType    = getFipsType;
 module.exports.isFipsNational = isFipsNational;
 module.exports.isFipsState    = isFipsState;
 module.exports.isFipsCounty   = isFipsCounty;
+
+module.exports.getCleanJSON = getCleanJSON;

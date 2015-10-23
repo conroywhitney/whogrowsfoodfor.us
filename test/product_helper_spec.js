@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey, getCleanKeys, getIntFromCommaString, isFipsNational, isFipsState, isFipsCounty, getFipsType} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey, getCleanKeys, getIntFromCommaString, isFipsNational, isFipsState, isFipsCounty, getFipsType, getCleanJSON} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -389,6 +389,100 @@ describe('product helper', () => {
         expect(isFipsCounty(countyFIPS)).to.be.true;
       });
 
+    });
+
+  });
+
+  describe('getCleanJSON', () => {
+
+    var
+      dirtyJSON   = require('./fixtures/oranges.json'),
+      prodName    = 'oranges',
+      props       = { slug: prodName },
+      result      = getCleanJSON(dirtyJSON, props),
+      product     = result[prodName],
+      resultKeys  = Object.keys(result),
+      productKeys = Object.keys(product)
+    ;
+
+    it('should have product as outermost key', () => {
+      expect(resultKeys).to.have.length(1);
+      expect(resultKeys).to.contain(prodName);
+    });
+
+    it('should have keys for each type', () => {
+      expect(productKeys).to.have.length(3);
+      expect(productKeys).to.contain('oranges_acres_area_bearing');
+      expect(productKeys).to.contain('oranges_valencia_acres_area_bearing');
+      expect(productKeys).to.contain('oranges_mid_and_navel_acres_area_bearing');
+    });
+
+    it("should have fips key for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]).to.include.keys('fips');
+      });
+    });
+
+    it("should have fips set for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['fips']).to.be.ok;
+      });
+    });
+
+    it("should have fips values for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(Object.keys(product[key]['fips'])).to.have.length.above(0);
+      });
+    });
+
+    it('should have stats for each type', () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]).to.include.keys('stats');
+      });
+    });
+
+    it("should have units for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']).to.include.keys('units');
+      });
+    });
+
+    it("should have an actual value for units for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']['units']).to.be.ok;
+      });
+    });
+
+    it("should have totals for each type's stats", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']).to.include.keys('totals');
+      });
+    });
+
+    it("should have regions for each type's stats's totals", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']['totals']).to.include.keys('national');
+        expect(product[key]['stats']['totals']).to.include.keys('state');
+        expect(product[key]['stats']['totals']).to.include.keys('county');
+      });
+    });
+
+    it("should have numbers greater than 0 for national totals", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']['totals']['national']).to.be.above(0);
+      });
+    });
+
+    it("should have numbers greater than 0 for state totals", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']['totals']['state']).to.be.above(0);
+      });
+    });
+
+    it("should have numbers greater than 0 for county totals", () => {
+      productKeys.forEach(function(key) {
+        expect(product[key]['stats']['totals']['county']).to.be.above(0);
+      });
     });
 
   });
