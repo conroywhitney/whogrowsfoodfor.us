@@ -129,7 +129,8 @@ function getCleanJSON(dirtyJSON, props) {
     var
       rollupOutput = {},
       data         = productJSON[key]['data'],
-      units        = null
+      units        = null,
+      total        = { national: 0, state: 0, county: 0 }
     ;
 
     if(!data) {
@@ -145,6 +146,7 @@ function getCleanJSON(dirtyJSON, props) {
           state_fips_code = region['state_fips_code'] || null,
           county_code     = region['county_code'] || null,
           fips            = getFipsFromStateCounty(state_fips_code, county_code),
+          fipsType        = getFipsType(fips),
           value           = region['value'] || null,
           value_int       = getIntFromCommaString(value)
         ;
@@ -152,15 +154,37 @@ function getCleanJSON(dirtyJSON, props) {
         // only record value if we've actually got a value
         if(value_int >= 0) {
           rollupOutput[fips] = value_int;
+          total[fipsType]   += value_int;
         }
 
       });
+
+      rollupOutput['total'] = total;
 
       output[slug][rollupKey] = rollupOutput;
     }
   });
 
   return output;
+}
+
+function getFipsType(fips) {
+  if(isFipsNational(fips)) { return 'national'; }
+  if(isFipsState(fips))    { return 'state';    }
+  if(isFipsCounty(fips))   { return 'county';   }
+  return null;
+}
+
+function isFipsNational(fips) {
+  return (fips == '00000');
+}
+
+function isFipsState(fips) {
+  return /\d{2}000/.test(fips) && !isFipsNational(fips);
+}
+
+function isFipsCounty(fips) {
+  return /\d{5}/.test(fips) && !isFipsNational(fips) && !isFipsState(fips);
 }
 
 function getIntFromCommaString(value) {
@@ -192,3 +216,8 @@ module.exports.getCleanJSON          = getCleanJSON;
 module.exports.getRollupKey          = getRollupKey;
 module.exports.getCleanKeys          = getCleanKeys;
 module.exports.getIntFromCommaString = getIntFromCommaString;
+
+module.exports.getFipsType    = getFipsType;
+module.exports.isFipsNational = isFipsNational;
+module.exports.isFipsState    = isFipsState;
+module.exports.isFipsCounty   = isFipsCounty;

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey, getCleanKeys, getIntFromCommaString} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getFipsFromStateCounty, getRollupKey, getCleanKeys, getIntFromCommaString, isFipsNational, isFipsState, isFipsCounty, getFipsType} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -299,6 +299,96 @@ describe('product helper', () => {
 
     it('should handle a string with multiple commas', () => {
       expect(getIntFromCommaString('1,234,567,890')).to.eq(1234567890);
+    });
+
+  });
+
+  describe('fipsMethods', () => {
+
+    var
+      nationalFIPS = "00000",
+      stateFIPS    = "41000",
+      countyFIPS   = "41027"
+    ;
+
+    describe('getFipsType', () => {
+
+      it('should return null if given null', () => {
+        expect(getFipsType(null)).to.be.null;
+      });
+
+      it('should return national for national', () => {
+        expect(getFipsType(nationalFIPS)).to.eq('national');
+      });
+
+      it('should return state for state', () => {
+        expect(getFipsType(stateFIPS)).to.eq('state');
+      });
+
+      it('should return county for county', () => {
+        expect(getFipsType(countyFIPS)).to.eq('county');
+      });
+
+    });
+
+    describe('isFipsNational', () => {
+
+      it('should return false if given null', () => {
+        expect(isFipsNational(null)).to.be.false;
+      });
+
+      it('should return true for national', () => {
+        expect(isFipsNational(nationalFIPS)).to.be.true;
+      });
+
+      it('should return false for state', () => {
+        expect(isFipsNational(stateFIPS)).to.be.false;
+      });
+
+      it('should return false for county', () => {
+        expect(isFipsNational(countyFIPS)).to.be.false;
+      });
+
+    });
+
+    describe('isFipsState', () => {
+
+      it('should return false if given null', () => {
+        expect(isFipsState(null)).to.be.false;
+      });
+
+      it('should return false for national', () => {
+        expect(isFipsState(nationalFIPS)).to.be.false;
+      });
+
+      it('should return true for state', () => {
+        expect(isFipsState(stateFIPS)).to.be.true;
+      });
+
+      it('should return false for county', () => {
+        expect(isFipsState(countyFIPS)).to.be.false;
+      });
+
+    });
+
+    describe('isFipsCounty', () => {
+
+      it('should return false if given null', () => {
+        expect(isFipsCounty(null)).to.be.false;
+      });
+
+      it('should return false for national', () => {
+        expect(isFipsCounty(nationalFIPS)).to.be.false;
+      });
+
+      it('should return false for state', () => {
+        expect(isFipsCounty(stateFIPS)).to.be.false;
+      });
+
+      it('should return true for county', () => {
+        expect(isFipsCounty(countyFIPS)).to.be.true;
+      });
+
     });
 
   });
