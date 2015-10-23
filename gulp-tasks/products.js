@@ -279,12 +279,24 @@ gulp.task('product-sanity-check', function() {
           keys    = Object.keys(data)
         ;
 
+        console.log('json -------------------------------');
+        console.log(json);
+        console.log('product -------------------------------');
+        console.log(product);
+        console.log('data -------------------------------');
+        console.log(data);
+        console.log('keys -------------------------------');
+        console.log(keys);
+
         keys.forEach(function(key) {
+          console.log(key);
           var
-            totals       = data[key]['total']
-            total_string = JSON.stringify(totals)
+            totals   = data[key].stats.total,
+            national = totals.national.toLocaleString(),
+            state    = totals.state.toLocaleString(),
+            county   = totals.county.toLocaleString()
           ;
-          console.log(product + " => " + key + " => " + total_string);
+          console.log(product + " => " + key + " => ( " + national + ' / ' + state + ' / ' + county + ' )');
         });
         return json;
       }))

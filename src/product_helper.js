@@ -1,5 +1,6 @@
 var
-  slug = require('slug')
+  slug       = require('slug'),
+  deepExtend = require('deep-extend')
 ;
 
 function filterProducts(arr) {
@@ -118,19 +119,19 @@ function getCleanJSON(dirtyJSON, props) {
     productJSON = dirtyJSON[slug],
     keys        = getCleanKeys(productJSON),
     rollupKey   = getRollupKey(keys[0]),
+    total       = { national: 0, state: 0, county: 0 },
     output      = {}
   ;
 
   // initialize empty data structure
-  output[slug] = {};
+  output[slug]            = {};
   output[slug][rollupKey] = {};
+  output[slug].stats      = {};
 
   keys.forEach(function(key) {
     var
       rollupOutput = {},
-      data         = productJSON[key]['data'],
-      units        = null,
-      total        = { national: 0, state: 0, county: 0 }
+      data         = productJSON[key]['data']
     ;
 
     if(!data) {
@@ -139,7 +140,7 @@ function getCleanJSON(dirtyJSON, props) {
     } else {
 
       // set units for all values in this group
-      rollupOutput['units'] = data[0]['unit_desc'];
+      output[slug].stats.units = data[0]['unit_desc'];
 
       data.forEach(function(region) {
         var
@@ -156,14 +157,25 @@ function getCleanJSON(dirtyJSON, props) {
           rollupOutput[fips] = value_int;
           total[fipsType]   += value_int;
         }
-
       });
 
-      rollupOutput['total'] = total;
 
-      output[slug][rollupKey] = rollupOutput;
+      /*
+      console.log("merging----[" + rollupKey + "]--------------------------------");
+      console.log(output[slug][rollupKey]);
+      console.log("and--------[" + key + "]----------------------------");
+      console.log(rollupOutput);
+      */
+      output[slug][rollupKey] = deepExtend(output[slug][rollupKey], rollupOutput);
+      /*
+      console.log("into------------------------------------");
+      console.log(output[slug][rollupKey]);
+      console.log("end------------------------------------");
+      */
     }
   });
+
+  output[slug].stats.total = total;
 
   return output;
 }
