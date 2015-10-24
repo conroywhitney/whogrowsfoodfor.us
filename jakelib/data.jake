@@ -5,50 +5,32 @@ var
 
 namespace('data', function() {
 
-  const datadir           = 'data/';
-  const tmpdir            = 'tmp/';
-  const state_names_file  = tmpdir + 'state_names.json';
-  const county_names_file = tmpdir + 'county_names.json';
-  const labels_file       = datadir + 'labels.json';
+  const DATA_DIR = 'data/';
+  const TEMP_DIR = 'tmp/';
 
   desc('Creating a JSON file of regional labels from downloaded census information')
   task('labels', ['datadir', 'stateNames', 'countyNames'], function() {
     console.log('Creating a combined JSON file of state and county names from tmp files');
 
     var
-      states   = JSON.parse('{ "states": ' + fs.readFileSync(state_names_file, 'utf8') + '}')["states"],
-      counties = JSON.parse('{ "counties": ' + fs.readFileSync(county_names_file, 'utf8') + '}')["counties"],
-      // default values
-      output   = {"00000": { short: "The United States", long: "The United States of America"} }
+      transformer = require('../src/transformers/region_transformer'),
+      output      = transformer.transform()
     ;
 
-    // merge in states
-    for(i = 0; i < states.length; i++) {
-      var state = states[i];
-      output[state.fips] = {
-        short: state.short,
-        long:  state.long
-      };
-    }
-
-    // merge in counties
-    for(i = 0; i < counties.length; i++) {
-      var county = counties[i];
-      output[county.fips] = {
-        short: county.short,
-        long:  county.long
-      };
-    }
-
-    fs.writeFile(labels_file, JSON.stringify(output), 'utf-8', function(err) {
+    fs.writeFile(labels_file, output, 'utf-8', function(err) {
       if (err) throw err;
       console.log('...transformation complete');
     });
   });
 
   desc('Create tmp file of county names from census information');
-  task('countyNames', ['tmpdir'], { async: true }, function() {
+  task('countyNames', ['tmpdir', 'download:countyFIPS'], { async: true }, function() {
     console.log('Creating a tmp file of county names from downloaded census information');
+
+    fs.createReadStream(input_path)
+      .pipe(csvConverter)
+      .pipe(writer)
+    ;
 
     var
       download_task = jake.Task['download:countyFIPS'],

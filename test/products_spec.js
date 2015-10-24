@@ -2,10 +2,11 @@ import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
 import {productJSON, productList, productOptions, sectors} from '../src/products'
+import {filterProducts, productFilter, filterOptions, filterOption} from '../src/product_helper';
 
 describe('products', () => {
 
-  const NUM_PRODUCTS = 184;
+  const NUM_PRODUCTS = 171;
 
   describe('productJSON', () => {
 

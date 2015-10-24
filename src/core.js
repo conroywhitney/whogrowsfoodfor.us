@@ -23,3 +23,4 @@ export function product(state, productKey) {
     .set('product', product)
   ;
 };
+

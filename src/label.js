@@ -17,8 +17,6 @@ export function getLabel(state) {
 }
 
 function getRegionLabel(labels, fips) {
-  console.log("getting region label");
-  console.log(fips);
   return labels.getIn([fips, 'long']) || DEFAULT_LABEL;
 }
 
