@@ -1,6 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import d3 from 'd3'
+import transition from 'd3-transition'
 
 export default React.createClass({
 
@@ -40,15 +41,14 @@ export default React.createClass({
 
   d3ZoomIn: function(target) {
 
-var width = 960,
-    height = 500,
-    active = d3.select(null);
+var width = 900,
+    height = 400;
 
 var projection = d3.geo.albersUsa()
     .scale(1000)
     .translate([width / 2, height / 2]);
 
-var path = d3.geo.path()
+var d3path = d3.geo.path()
     .projection(projection);
 
 var d = JSON.parse(target.getAttribute('data-location'));
@@ -58,7 +58,7 @@ console.log(d);
 
     // transform / scale calculations for zooming to bounding box
     // TODO: fix  =(
-    var bounds    = path.bounds(d),
+    var bounds    = d3path.bounds(d),
         dx        = bounds[1][0] - bounds[0][0],
         dy        = bounds[1][1] - bounds[0][1],
         x         = (bounds[0][0] + bounds[1][0]) / 2,
@@ -70,7 +70,11 @@ console.log(d);
     console.log(bounds);
 
     var g = React.findDOMNode(this);
-    g.transition()
+
+    var wrapper = d3.select('g');
+    console.log(wrapper);
+
+    wrapper.transition()
         .duration(750)
         .style("stroke-width", 1.5 / scale + "px")
         .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
@@ -83,7 +87,7 @@ console.log(d);
 
     // handle fancy d3 stuff
     this.d3Unhighlight();
-    //this.d3ZoomOut();
+    this.d3ZoomOut();
   },
 
   d3Unhighlight: function() {
@@ -94,15 +98,26 @@ console.log(d);
   },
 
   d3ZoomOut: function() {
-    d3.transition()
+    var wrapper = d3.select('g');
+    wrapper.transition()
         .duration(750)
         .style("stroke-width", "1.5px")
         .attr("transform", "");
   },
 
   render: function() {
+
+var width = 900,
+    height = 400;
+
+var projection = d3.geo.albersUsa()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
+
+var d3path = d3.geo.path()
+    .projection(projection);
+
     var
-      d3path    = d3.geo.path().projection(d3.geo.albersUsa()),
       geography = this.props.topoJSON.features
     ;
 

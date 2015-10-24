@@ -38,38 +38,40 @@ export default React.createClass({
     return (
       <div className="map">
         <svg width={this.props.width} height={this.props.height}>
-          {this.showDetailLevel('land') ?
-            <MapLayer
-              topoJSON={landTopoJSON}
-              className="land"
-            />
-          : null }
-          {this.showDetailLevel('states') ?
-            <ClickableMapLayer
-              topoJSON={stateTopoJSON}
-              className="feature"
+          <g>
+            {this.showDetailLevel('land') ?
+              <MapLayer
+                topoJSON={landTopoJSON}
+                className="land"
+              />
+            : null }
+            {this.showDetailLevel('states') ?
+              <ClickableMapLayer
+                topoJSON={stateTopoJSON}
+                className="feature"
+                setRegion={this.props.setRegion}
+              />
+            : null }
+            {this.showDetailLevel('states') ?
+              <MapLayer
+                topoJSON={stateTopoMesh}
+                className="states"
+              />
+            : null }
+            {this.showDetailLevel('counties') ?
+              <MapLayer
+                topoJSON={countyTopoJSON}
+                className="counties"
+                data={this.props.productData}
+              />
+            : null }
+            <Bubbles
+              topoJSON={countyTopoJSON}
+              className="bubbles"
+              data={this.props.productData}
               setRegion={this.props.setRegion}
             />
-          : null }
-          {this.showDetailLevel('states') ?
-            <MapLayer
-              topoJSON={stateTopoMesh}
-              className="states"
-            />
-          : null }
-          {this.showDetailLevel('counties') ?
-            <MapLayer
-              topoJSON={countyTopoJSON}
-              className="counties"
-              data={this.props.productData}
-            />
-          : null }
-          <Bubbles
-            topoJSON={countyTopoJSON}
-            className="bubbles"
-            data={this.props.productData}
-            setRegion={this.props.setRegion}
-          />
+          </g>
         </svg>
       </div>
    );
