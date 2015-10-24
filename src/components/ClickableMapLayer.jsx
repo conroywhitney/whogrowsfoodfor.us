@@ -11,7 +11,6 @@ export default React.createClass({
   },
 
   handleClick: function(event) {
-    if (this.state.active.node() === this) return reset();
 
     var
       width      = 900,
@@ -19,16 +18,16 @@ export default React.createClass({
       d3path     = d3.geo.path(),
       domElement = React.findDOMNode(this),
       target     = event.target,
-      d3Data     = target.getAttribute('d')
+      d3Data     = target.getAttribute('d'),
+      again      = d3path(d3Data)
     ;
 
+    if (this.state.active.node() === target) return this.reset();
     this.state.active.classed("active", false);
 
     this.setState({
       active: d3.select(target).classed("active", true)
     });
-
-    console.log(d3Data);
 
     var bounds    = d3path.bounds(d3Data),
         dx        = bounds[1][0] - bounds[0][0],
@@ -39,9 +38,6 @@ export default React.createClass({
         translate = [width / 2 - scale * x, height / 2 - scale * y]
     ;
 
-    console.log('bounds zomg');
-    console.log(bounds);
-
     d3.transition()
         .duration(750)
         .style("stroke-width", 1.5 / scale + "px")
@@ -49,10 +45,13 @@ export default React.createClass({
   },
 
   reset: function() {
-    active.classed("active", false);
-    active = d3.select(null);
+    this.state.active.classed("active", false);
 
-    g.transition()
+    this.setState({
+      active: d3.select(null)
+    });
+
+    d3.transition()
         .duration(750)
         .style("stroke-width", "1.5px")
         .attr("transform", "");
