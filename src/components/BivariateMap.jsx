@@ -1,7 +1,8 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path} from '../geography.js'
+import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path, getTopoJSONFromFIPS} from '../geography.js'
+import {getStateFIPS}        from '../fips';
 
 import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -54,6 +55,20 @@ export default React.createClass({
     this.d3ZoomOut();
   },
 
+  getSelectedTopoJSON: function() {
+    var
+      stateFIPS = getStateFIPS(this.props.selectedFIPS),
+      topoJSON  = getTopoJSONFromFIPS(stateFIPS)
+    ;
+
+    console.log('getSelectedTopoJSON');
+    console.log(this.props.selectedFIPS);
+    console.log(stateFIPS);
+    console.log(topoJSON);
+
+    return topoJSON;
+  },
+
   d3Highlight: function(target) {
     // d3 updates for selecting state outline
     this.state.active.classed("active", false);
@@ -66,7 +81,7 @@ export default React.createClass({
     var
       width     = this.props.width,
       height    = this.props.height,
-      d         = JSON.parse(target.getAttribute('data-location')),
+      d         = this.getSelectedTopoJSON(),
       bounds    = d3path.bounds(d),
       dx        = bounds[1][0] - bounds[0][0],
       dy        = bounds[1][1] - bounds[0][1],

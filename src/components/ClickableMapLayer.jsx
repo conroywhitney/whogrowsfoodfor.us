@@ -20,7 +20,6 @@ export default React.createClass({
             id: location.id, // to actually use in application
             className: this.props.className,
             d: d3path(location),
-            'data-location': JSON.stringify(location),
             onClick: this.props.handleClick
           })
         }, this)

@@ -2,6 +2,7 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {Circle} from 'react-d3';
 import {d3path} from '../geography';
+import {getStateFIPS} from '../fips';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
@@ -21,7 +22,6 @@ export default React.createClass({
         key: this.props.fips, // to silence react warnings
         id: this.props.fips, // to actually use in application
         r: this.getRadius(),
-        'data-location': JSON.stringify(this.props.location),
         transform: `translate(${this.getCentroid()})`,
         onClick: this.props.handleClick
       })
