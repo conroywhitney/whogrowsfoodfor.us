@@ -10,7 +10,7 @@ export function select(state, fips) {
   ;
   return state
     .set('selected', fips)
-    .set('detail',   state.get('detail').push('counties'))
+    //.set('detail',   state.get('detail').push('counties'))
     .set('zoom',     getZoomXYZ(fips))
   ;
 }
