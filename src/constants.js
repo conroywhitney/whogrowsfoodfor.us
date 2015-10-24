@@ -1,4 +1,4 @@
-import {Map, List, fromJS} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
 
 export const DEFAULT_LABEL = 'The United States of America';
 
@@ -12,7 +12,7 @@ export const INITIAL_STATE = fromJS({
   stat: null,
   selected: null,
   zoom: null,
-  detail: ['land', 'states'],
+  detail: Set(['land', 'states']),
   histograms: [],
   // fetch: https://github.com/github/fetch
   // use async actions to dispatch spinning/requesting/loading/showing

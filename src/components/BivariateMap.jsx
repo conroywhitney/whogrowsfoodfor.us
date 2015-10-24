@@ -31,7 +31,7 @@ export default React.createClass({
   },
 
   showDetailLevel: function(level) {
-    return this.props.detailLevel.indexOf(level) > -1;
+    return this.props.detailLevel.includes(level);
   },
 
   render: function() {

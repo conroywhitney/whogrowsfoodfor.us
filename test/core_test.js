@@ -26,7 +26,10 @@ describe('application logic', () => {
     });
 
     it('should draw country and state boundaries', () => {
-      expect(INITIAL_STATE.get('detail')).to.eq(List(['land', 'states']));
+      var detailLayers = INITIAL_STATE.get('detail');
+      expect(detailLayers).to.contain('land');
+      expect(detailLayers).to.contain('states');
+      expect(detailLayers).to.not.contain('counties');
     });
 
     it('should not have any histograms', () => {
@@ -37,6 +40,23 @@ describe('application logic', () => {
 
   describe('select', () => {
 
+    describe('null', () => {
+
+      var newState = select(select(INITIAL_STATE, stateFIPS), null);
+
+      it('should remove id of selected region and set to national', () => {
+        expect(newState.get('selected')).to.eq('00000');
+      });
+
+      it('should remove counties from detail layers', () => {
+        var detailLayers = newState.get('detail');
+        expect(detailLayers).to.contain('land');
+        expect(detailLayers).to.contain('states');
+        expect(detailLayers).to.not.contain('counties');
+      });
+
+    });
+
     describe('state level', () => {
 
       var newState = select(INITIAL_STATE, stateFIPS);
@@ -45,8 +65,11 @@ describe('application logic', () => {
         expect(newState.get('selected')).to.eq(stateFIPS);
       });
 
-      xit('should draw county borders', () => {
-        expect(newState.get('detail')).to.eq(List(['land', 'states', 'counties']));
+      it('should draw county borders', () => {
+        var detailLayers = newState.get('detail');
+        expect(detailLayers).to.contain('land');
+        expect(detailLayers).to.contain('states');
+        expect(detailLayers).to.contain('counties');
       });
 
       it('should set zoom to XYZ of state', () => {
@@ -64,7 +87,10 @@ describe('application logic', () => {
       });
 
       xit('should draw county borders', () => {
-        expect(newState.get('detail')).to.eq(List(['land', 'states', 'counties']));
+        var detailLayers = newState.get('detail');
+        expect(detailLayers).to.contain('land');
+        expect(detailLayers).to.contain('states');
+        expect(detailLayers).to.contain('counties');
       });
 
       it('should set zoom to XYZ of state', () => {
