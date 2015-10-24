@@ -11,9 +11,9 @@ export default React.createClass({
 
   getDefaultProps: function() {
     return {
-      detail: ["land", "states", "counties"],
       width: 900,
-      height: 400
+      height: 400,
+      detailLevel: ['land', 'states']
     }
   },
 
@@ -30,26 +30,32 @@ export default React.createClass({
   },
 
   showDetailLevel: function(level) {
-    return this.props.detail.indexOf(level) > -1;
+    return this.props.detailLevel.indexOf(level) > -1;
   },
 
   render: function() {
     return (
       <div className="map">
         <svg width={this.props.width} height={this.props.height}>
-          <MapLayer
-            topoJSON={landTopoJSON}
-            className="land"
-          />
-          <MapLayer
-            topoJSON={stateTopoJSON}
-            className="states"
-          />
-          <MapLayer
-            topoJSON={countyTopoJSON}
-            className="counties"
-            data={this.props.productData}
-          />
+          {this.showDetailLevel('land') ?
+            <MapLayer
+              topoJSON={landTopoJSON}
+              className="land"
+            />
+          : null }
+          {this.showDetailLevel('states') ?
+            <MapLayer
+              topoJSON={stateTopoJSON}
+              className="states"
+            />
+          : null }
+          {this.showDetailLevel('counties') ?
+            <MapLayer
+              topoJSON={countyTopoJSON}
+              className="counties"
+              data={this.props.productData}
+            />
+          : null }
           <Bubbles
             topoJSON={countyTopoJSON}
             className="bubbles"
