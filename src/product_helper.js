@@ -1,7 +1,12 @@
 var
-  slug       = require('slug'),
-  deepExtend = require('deep-extend')
+  slug                   = require('slug'),
+  deepExtend             = require('deep-extend'),
+  fips                   = require('./fips.js'),
+  getFipsFromStateCounty = fips.getFipsFromStateCounty,
+  getFipsType            = fips.getFipsType
 ;
+
+
 
 function filterProducts(arr) {
   // return blank object if null or empty array
@@ -65,39 +70,6 @@ function filterOptionValueForFilename(value) {
     keep   = (ignore == false)
   ;
   return keep;
-}
-
-function getFipsFromStateCounty(state, county) {
-  if(!state) { return null; }
-
-  var
-    state_int  = parseInt(state),
-    county_int = parseInt(county),
-    fips       = '';
-  ;
-
-  // national level
-  if(state_int == 99) {
-    fips = '00000';
-  } else {
-
-    if(state_int >= 10) {
-      fips += state_int;
-    } else {
-      // left pad state fips
-      fips += '0' + state_int;
-    }
-
-    if(county_int >= 0) {
-      // left pad county fips
-      fips += ("000" + county_int).slice(-3);
-    } else {
-      // right pad to indicate no county (state-level)
-      fips += "000";
-    }
-  }
-
-  return fips;
 }
 
 function getCleanKeys(dirtyJSON) {
@@ -186,25 +158,6 @@ function rollupProductArray(arr) {
   return output;
 }
 
-function getFipsType(fips) {
-  if(isFipsNational(fips)) { return 'national'; }
-  if(isFipsState(fips))    { return 'state';    }
-  if(isFipsCounty(fips))   { return 'county';   }
-  return null;
-}
-
-function isFipsNational(fips) {
-  return (fips == '00000');
-}
-
-function isFipsState(fips) {
-  return /\d{2}000/.test(fips) && !isFipsNational(fips);
-}
-
-function isFipsCounty(fips) {
-  return /\d{5}/.test(fips) && !isFipsNational(fips) && !isFipsState(fips);
-}
-
 function getIntFromCommaString(value) {
   if(!value) { return null; }
   var
@@ -228,16 +181,9 @@ module.exports.filterOption  = filterOption;
 module.exports.filenameFromOptions = filenameFromOptions;
 module.exports.filterOptionValueForFilename = filterOptionValueForFilename;
 
-module.exports.getFipsFromStateCounty = getFipsFromStateCounty;
-
 module.exports.getCleanJSON          = getCleanJSON;
 module.exports.getRollupKey          = getRollupKey;
 module.exports.getCleanKeys          = getCleanKeys;
 module.exports.getIntFromCommaString = getIntFromCommaString;
-
-module.exports.getFipsType    = getFipsType;
-module.exports.isFipsNational = isFipsNational;
-module.exports.isFipsState    = isFipsState;
-module.exports.isFipsCounty   = isFipsCounty;
 
 module.exports.getCleanJSON = getCleanJSON;
