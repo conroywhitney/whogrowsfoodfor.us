@@ -27,7 +27,7 @@ export default React.createClass({
 
     // handle fancy d3 stuff
     this.d3Highlight(target);
-    //this.d3ZoomIn(target);
+    this.d3ZoomIn(target);
   },
 
   d3Highlight: function(target) {
@@ -39,13 +39,26 @@ export default React.createClass({
   },
 
   d3ZoomIn: function(target) {
+
+var width = 960,
+    height = 500,
+    active = d3.select(null);
+
+var projection = d3.geo.albersUsa()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var d = JSON.parse(target.getAttribute('data-location'));
+
+console.log('clickable d3ZoomIn ---- get dat d!');
+console.log(d);
+
     // transform / scale calculations for zooming to bounding box
     // TODO: fix  =(
-    var width     = 900,
-        height    = 400,
-        d3data    = target.getAttribute('d'),
-        d3path    = d3.geo.path().projection(d3.geo.albersUsa()),
-        bounds    = d3path.bounds(d3data),
+    var bounds    = path.bounds(d),
         dx        = bounds[1][0] - bounds[0][0],
         dy        = bounds[1][1] - bounds[0][1],
         x         = (bounds[0][0] + bounds[1][0]) / 2,
@@ -54,7 +67,10 @@ export default React.createClass({
         translate = [width / 2 - scale * x, height / 2 - scale * y]
     ;
 
-    d3.transition()
+    console.log(bounds);
+
+    var g = React.findDOMNode(this);
+    g.transition()
         .duration(750)
         .style("stroke-width", 1.5 / scale + "px")
         .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
@@ -98,6 +114,7 @@ export default React.createClass({
             id: location.id, // to actually use in application
             className: this.props.className,
             d: d3path(location),
+            'data-location': JSON.stringify(location),
             onClick: this.handleClick
           })
         }, this)
