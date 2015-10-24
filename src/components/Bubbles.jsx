@@ -1,6 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {Circle} from 'react-d3';
+import {normalizeFIPS} from '../fips';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
@@ -39,7 +40,7 @@ export default React.createClass({
 
     var
       data   = this.props.data.data,
-      fips   = '' + location.id, // ensure FIPS is a string
+      fips   = normalizeFIPS(location.id), // ensure FIPS is a string of expected format (I'm lookin' at you, Cali)
       value  = data[fips]
     ;
 
