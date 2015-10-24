@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
-import {getStateFIPS, normalizeFIPS} from '../src/fips'
+import {getStateFIPS, normalizeFIPS, FIPS_NATIONAL} from '../src/fips'
 
 describe('fips', () => {
 
@@ -33,45 +33,55 @@ describe('fips', () => {
 
   describe('normalizeFIPS', () => {
 
-    it('should handle null case', () => {
-      expect(normalizeFIPS(null)).to.be.null;
+    it('should return national if given null', () => {
+      expect(normalizeFIPS(null)).to.eq(FIPS_NATIONAL);
     });
 
-    it('should return null for negative numbers', () => {
-      expect(normalizeFIPS(-1)).to.be.null;
-    });
+    it('should return back the same 2-digit state FIPS code', () => {
+      var stateFIPS = '41000';
+      expect(normalizeFIPS(stateFIPS)).to.eq(stateFIPS);
+    })
 
-    it('should handle all zero case', () => {
-      expect(normalizeFIPS(0)).to.eq('00000');
-    });
-
-    it('should handle one digit', () => {
-      expect(normalizeFIPS(1)).to.eq('00001');
-    });
-
-    it('should handle two digits', () => {
-      expect(normalizeFIPS(10)).to.eq('00010');
-    });
-
-    it('should handle three digits', () => {
-      expect(normalizeFIPS(100)).to.eq('00100');
-    });
-
-    it('should handle four digits', () => {
-      expect(normalizeFIPS(1000)).to.eq('01000');
-    });
-
-    it('should handle five digits', () => {
-      expect(normalizeFIPS(10000)).to.eq('10000');
-    });
-
-    it('should balk at six digits', () => {
-      expect(normalizeFIPS(100000)).to.eq(null);
-    });
+    it('should return back the same 1-digit state FIPS code', () => {
+      var stateFIPS = '06000';
+      expect(normalizeFIPS(stateFIPS)).to.eq(stateFIPS);
+    })
 
     it('should return back the same county FIPS code', () => {
       var countyFIPS = '41029';
       expect(normalizeFIPS(countyFIPS)).to.eq(countyFIPS);
+    });
+
+    it('should return national if given national', () => {
+      expect(normalizeFIPS(FIPS_NATIONAL)).to.eq(FIPS_NATIONAL);
+    });
+
+    it('should return national if given as 99 state code string', () => {
+      expect(normalizeFIPS('99')).to.eq(FIPS_NATIONAL);
+    });
+
+    it('should return national if given as 99 state code int', () => {
+      expect(normalizeFIPS(99)).to.eq(FIPS_NATIONAL);
+    });
+
+    it('should handle 2-digit state fips if given as int', () => {
+      expect(normalizeFIPS(41)).to.eq('41000');
+    });
+
+    it('should handle 1-digit state fips if given as int', () => {
+      expect(normalizeFIPS(6)).to.eq('06000');
+    });
+
+    it('should handle 2-digit state fips if given as string', () => {
+      expect(normalizeFIPS('41')).to.eq('41000');
+    });
+
+    it('should handle 1-digit state fips if given as string', () => {
+      expect(normalizeFIPS('6')).to.eq('06000');
+    });
+
+    it('should handle county fips if given as int', () => {
+      expect(normalizeFIPS(41027)).to.eq('41027');
     });
 
   });

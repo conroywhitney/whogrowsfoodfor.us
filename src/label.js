@@ -1,7 +1,7 @@
 import {Map, List, fromJS} from 'immutable';
 
 import {DEFAULT_LABEL} from './constants';
-import {getStateFIPS} from './fips';
+import {normalizeFIPS} from './fips';
 
 export const labelJSON = require('../data/labels.json');
 
@@ -10,7 +10,7 @@ export function getLabel(state) {
 
   var
     labels       = labelJSON,
-    fips         = getStateFIPS(state.get('selected')),
+    fips         = normalizeFIPS(state.get('selected')),
     product      = state.get('product'),
     regionLabel  = getRegionLabel(labels, fips),
     productLabel = getProductLabel(product)
