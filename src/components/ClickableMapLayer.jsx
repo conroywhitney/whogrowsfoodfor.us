@@ -13,8 +13,6 @@ export default React.createClass({
 
   handleClick: function(event) {
     var
-      width      = 900,
-      height     = 400,
       target     = event.target,
       fips       = target.id
     ;
@@ -41,38 +39,20 @@ export default React.createClass({
 
   d3ZoomIn: function(target) {
 
-var width = 900,
-    height = 400;
-
-var projection = d3.geo.albersUsa()
-    .scale(1000)
-    .translate([width / 2, height / 2]);
-
-var d3path = d3.geo.path()
-    .projection(projection);
-
-var d = JSON.parse(target.getAttribute('data-location'));
-
-console.log('clickable d3ZoomIn ---- get dat d!');
-console.log(d);
-
-    // transform / scale calculations for zooming to bounding box
-    // TODO: fix  =(
-    var bounds    = d3path.bounds(d),
-        dx        = bounds[1][0] - bounds[0][0],
-        dy        = bounds[1][1] - bounds[0][1],
-        x         = (bounds[0][0] + bounds[1][0]) / 2,
-        y         = (bounds[0][1] + bounds[1][1]) / 2,
-        scale     = .9 / Math.max(dx / width, dy / height),
-        translate = [width / 2 - scale * x, height / 2 - scale * y]
+    var
+      width     = this.props.width,
+      height    = this.props.height,
+      d3path    = d3.geo.path(),
+      d         = JSON.parse(target.getAttribute('data-location')),
+      bounds    = d3path.bounds(d),
+      dx        = bounds[1][0] - bounds[0][0],
+      dy        = bounds[1][1] - bounds[0][1],
+      x         = (bounds[0][0] + bounds[1][0]) / 2,
+      y         = (bounds[0][1] + bounds[1][1]) / 2,
+      scale     = .9 / Math.max(dx / width, dy / height),
+      translate = [width / 2 - scale * x, height / 2 - scale * y],
+      wrapper   = d3.select('g')
     ;
-
-    console.log(bounds);
-
-    var g = React.findDOMNode(this);
-
-    var wrapper = d3.select('g');
-    console.log(wrapper);
 
     wrapper.transition()
         .duration(750)
@@ -98,26 +78,15 @@ console.log(d);
   },
 
   d3ZoomOut: function() {
-    var wrapper = d3.select('g');
-    wrapper.transition()
+    d3.select('g').transition()
         .duration(750)
         .style("stroke-width", "1.5px")
         .attr("transform", "");
   },
 
   render: function() {
-
-var width = 900,
-    height = 400;
-
-var projection = d3.geo.albersUsa()
-    .scale(1000)
-    .translate([width / 2, height / 2]);
-
-var d3path = d3.geo.path()
-    .projection(projection);
-
     var
+      d3path    = d3.geo.path(),
       geography = this.props.topoJSON.features
     ;
 

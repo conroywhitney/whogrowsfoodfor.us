@@ -12,8 +12,8 @@ export default React.createClass({
 
   getDefaultProps: function() {
     return {
-      width: 900,
-      height: 400,
+      width: 960,
+      height: 500,
       detailLevel: ['land', 'states']
     }
   },
@@ -50,6 +50,8 @@ export default React.createClass({
                 topoJSON={stateTopoJSON}
                 className="feature"
                 setRegion={this.props.setRegion}
+                width={this.props.width}
+                height={this.props.height}
               />
             : null }
             {this.showDetailLevel('states') ?
