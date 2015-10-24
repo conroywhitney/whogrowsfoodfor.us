@@ -1,9 +1,14 @@
-import React from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {Circle} from 'react-d3';
+import React              from 'react';
+import PureRenderMixin    from 'react-addons-pure-render-mixin';
+import {normalizeFIPS}    from '../fips';
+import Bubble             from './Bubble';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
+
+  scaleFunction: null,
+
+  colorFunction: null,
 
   componentWillMount: function() {
     var
@@ -11,40 +16,59 @@ export default React.createClass({
     ;
 
     // set scale method using max value from data
-    this.scale = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
+    this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
+
+    // TODO: set color range based on quantile
+    this.colorFunction = null;
   },
 
-  radius: function(location) {
-    if(!this.props.data) { return 0; }
-    if(!location)        { return 0; }
+  locationFIPS: function(location) {
+    return normalizeFIPS(location.id);
+  },
+
+  locationValue: function(location) {
+    if(!this.props.data) { return null; }
+    if(!location)        { return null; }
 
     var
       data   = this.props.data.data,
-      fips   = '' + location.id, // ensure FIPS is a string
-      value  = data[fips],
-      radius = this.scale(value)
+      fips   = this.locationFIPS(location),
+      value  = data[fips]
     ;
 
-    return radius;
+    return value;
   },
 
-  scale: null,
+  filteredLocations: function(locations) {
+    return locations.filter(location => this.filterLocation(location))
+  },
+
+  filterLocation: function(location) {
+    var value = this.locationValue(location);
+    return (value && value !== null && value !== undefined);
+  },
 
   render: function() {
     var
-      d3path    = d3.geo.path(),
-      geography = this.props.topoJSON.features
+      locations = this.props.topoJSON.features,
+      filtered  = this.filteredLocations(locations)
     ;
+
     return (
       React.DOM.g({
         className: "bubbles"
       },
-        geography.map(function(location) {
-          return React.DOM.circle({
-            className: "bubble",
-            r: this.radius(location),
-            transform: `translate(${d3path.centroid(location)})`
-          })
+        filtered.map(function(location) {
+          return (
+            <Bubble
+              location={location}
+              fips={this.locationFIPS(location)}
+              value={this.locationValue(location)}
+              scaleFunction={this.scaleFunction}
+              colorFunction={this.colorFunction}
+              handleClick={this.props.handleClick}
+            />
+          );
         }, this)
       )
     );

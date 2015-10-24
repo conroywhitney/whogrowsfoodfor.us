@@ -42,6 +42,10 @@ body {
   margin-bottom: 25px;
 }
 
+svg {
+  border: 1px solid #999;
+}
+
 .land {
   stroke: #999;
   fill: none;
@@ -58,14 +62,33 @@ body {
 .counties {
   fill: none;
   stroke: #CCC;
-  stroke-width: .5px;
+  stroke-width: .25px;
   stroke-linejoin: round;
 }
 
+.feature {
+  fill: #FFF;
+  cursor: pointer;
+}
+
+.feature:hover {
+  fill: orange;
+}
+
+.feature.active {
+}
+
 .bubble {
-  fill: #F0F;
-  stroke: none;
-  stroke-width: 0.5px;
+  fill: rgb(33,113,181);
+  cursor: pointer;
+}
+
+.bubble:hover {
+}
+
+.bubble.active {
+  stroke: #000;
+  stroke-width: 1px;
 }
 
 .blank {

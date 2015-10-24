@@ -15,6 +15,9 @@ export default React.createClass({
         height="500"
         productData={this.props.productData}
         detailLevel={this.props.detailLevel}
+        setRegion={this.props.setRegion}
+        selectedFIPS={this.props.selected}
+        countyLineFilter={this.props.countyLineFilter}
       />
     </div>;
   }

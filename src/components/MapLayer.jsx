@@ -5,16 +5,15 @@ import d3 from 'd3'
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  // react findDomNode helper in component#didMount
-  // attach event handler defined here
-
   render: function() {
     var d3path = d3.geo.path();
 
-    return React.DOM.path({
-      className: this.props.className,
-      d: d3path(this.props.topoJSON)
-    });
+    return (
+      React.DOM.path({
+        className: this.props.className,
+        d: d3path(this.props.topoJSON)
+      })
+    );
   }
 
 });

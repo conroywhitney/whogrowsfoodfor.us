@@ -1,13 +1,16 @@
 import {Map, List, fromJS} from 'immutable';
 
 import {DEFAULT_LABEL} from './constants';
+import {normalizeFIPS} from './fips';
+
+export const labelJSON = require('../data/labels.json');
 
 export function getLabel(state) {
   if(!state) { return null; }
 
   var
-    labels       = state.getIn(['data', 'labels']),
-    fips         = state.get('selected'),
+    labels       = labelJSON,
+    fips         = normalizeFIPS(state.get('selected')),
     product      = state.get('product'),
     regionLabel  = getRegionLabel(labels, fips),
     productLabel = getProductLabel(product)
@@ -17,7 +20,8 @@ export function getLabel(state) {
 }
 
 function getRegionLabel(labels, fips) {
-  return labels.getIn([fips, 'long']) || DEFAULT_LABEL;
+  if(!fips) { return DEFAULT_LABEL; }
+  return labels[fips]['long'] || DEFAULT_LABEL;
 }
 
 function getProductLabel(product) {

@@ -6,11 +6,12 @@ import {productJSON} from '../src/products';
 
 export function select(state, fips) {
   var
-    fips = normalizeFIPS(fips)
+    fips = normalizeFIPS(fips),
+    detailLayers = (fips == '00000') ? state.get('detail').delete('counties') : state.get('detail').add('counties')
   ;
   return state
     .set('selected', fips)
-    .set('detail',   state.get('detail').push('counties'))
+    .set('detail',   detailLayers)
     .set('zoom',     getZoomXYZ(fips))
   ;
 }
