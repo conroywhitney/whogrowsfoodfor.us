@@ -69,6 +69,11 @@ describe('fips', () => {
       expect(normalizeFIPS(100000)).to.eq(null);
     });
 
+    it('should return back the same county FIPS code', () => {
+      var countyFIPS = '41029';
+      expect(normalizeFIPS(countyFIPS)).to.eq(countyFIPS);
+    });
+
   });
 
 });

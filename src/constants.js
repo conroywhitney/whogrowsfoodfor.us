@@ -17,13 +17,7 @@ export const INITIAL_STATE = fromJS({
   // fetch: https://github.com/github/fetch
   // use async actions to dispatch spinning/requesting/loading/showing
   data: {
-    labels:    require('../data/labels.json'),
-    geography: require('../data/us-geography.topo.json'),
-    products:  require('../data/products.json'),
     avocados:  require('../data/products/avocados.json'),
-    raw: {
-      productList:  require('../data/raw/product-list.json')
-    }
   }
 });
 
