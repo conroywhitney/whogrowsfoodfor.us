@@ -37,6 +37,7 @@ const mapStateToProps = (state) => ({
   product:         state.get('product'),
   product_data:    state.getIn(['data', 'avocados', 'avocados', 'avocados_acres_area_bearing']).toJS(),
   selected:        state.get('selected'),
+  selected_state:  getStateFIPS(state.get('selected')),
   label:           getLabel(state),
   detail_level:    state.get('detail')
 });
