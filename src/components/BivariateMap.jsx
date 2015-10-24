@@ -48,6 +48,7 @@ export default React.createClass({
             <ClickableMapLayer
               topoJSON={stateTopoJSON}
               className="feature"
+              setRegion={this.props.setRegion}
             />
           : null }
           {this.showDetailLevel('states') ?

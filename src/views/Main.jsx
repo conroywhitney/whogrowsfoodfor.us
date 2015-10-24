@@ -20,6 +20,7 @@ export const MainNaked = React.createClass({
         label={this.props.label}
         productData={this.props.product_data}
         detailLevel={this.props.detail_level}
+        setRegion={this.props.setRegion}
       />
     </div>;
   },

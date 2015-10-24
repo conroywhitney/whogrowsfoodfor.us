@@ -10,7 +10,7 @@ export default React.createClass({
 
   render: function() {
     var
-      d3path = d3.geo.path().projection(null)
+      d3path = d3.geo.path().projection(d3.geo.albersUsa())
     ;
 
     return (

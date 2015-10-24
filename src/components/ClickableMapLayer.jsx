@@ -11,7 +11,6 @@ export default React.createClass({
   },
 
   handleClick: function(event) {
-
     var
       width      = 900,
       height     = 400,
@@ -19,16 +18,24 @@ export default React.createClass({
       domElement = React.findDOMNode(this),
       target     = event.target,
       d3Data     = target.getAttribute('d'),
-      bounds     = target.getAttribute('bounds')
+      bounds     = target.getAttribute('bounds'),
+      fips       = target.id
     ;
 
+    // if click same location again, should reset instead
     if (this.state.active.node() === target) return this.reset();
-    this.state.active.classed("active", false);
 
+    // the exciting part -- update global state with fips code!
+    this.props.setRegion(fips);
+
+    // d3 updates for selecting state outline
+    this.state.active.classed("active", false);
     this.setState({
       active: d3.select(target).classed("active", true)
     });
 
+    // transform / scale calculations for zooming to bounding box
+    // TODO: fix  =(
     var bounds    = d3path.bounds(d3Data),
         dx        = bounds[1][0] - bounds[0][0],
         dy        = bounds[1][1] - bounds[0][1],
@@ -51,6 +58,9 @@ export default React.createClass({
       active: d3.select(null)
     });
 
+    // the exciting part -- update global state to nothing!
+    this.props.setRegion(null);
+
     d3.transition()
         .duration(750)
         .style("stroke-width", "1.5px")
@@ -67,6 +77,7 @@ export default React.createClass({
       React.DOM.g({},
         geography.map(function(location) {
           return React.DOM.path({
+            id: location.id,
             className: this.props.className,
             d: d3path(location),
             onClick: this.handleClick
