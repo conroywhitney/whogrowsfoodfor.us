@@ -1,9 +1,10 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import {landTopoJSON, stateTopoJSON, countyTopoJSON} from '../geography.js'
+import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON} from '../geography.js'
 
 import MapLayer from './MapLayer';
+import ClickableMapLayer from './ClickableMapLayer';
 import Bubbles from './Bubbles';
 
 export default React.createClass({
@@ -44,8 +45,14 @@ export default React.createClass({
             />
           : null }
           {this.showDetailLevel('states') ?
-            <MapLayer
+            <ClickableMapLayer
               topoJSON={stateTopoJSON}
+              className="feature"
+            />
+          : null }
+          {this.showDetailLevel('states') ?
+            <MapLayer
+              topoJSON={stateTopoMesh}
               className="states"
             />
           : null }

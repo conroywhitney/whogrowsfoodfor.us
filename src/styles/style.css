@@ -62,6 +62,15 @@ body {
   stroke-linejoin: round;
 }
 
+.feature {
+  fill: #ccc;
+  cursor: pointer;
+}
+
+.feature.active {
+  fill: orange;
+}
+
 .bubble {
   fill: #F0F;
   stroke: none;
