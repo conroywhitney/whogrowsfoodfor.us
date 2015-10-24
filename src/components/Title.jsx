@@ -5,7 +5,7 @@ export default React.createClass({
   mixins: [PureRenderMixin],
 
   render: function() {
-    return <div className="title">
+    return <div className="ui huge label title">
       {this.props.label}
     </div>;
   }
