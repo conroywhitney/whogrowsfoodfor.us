@@ -5,15 +5,35 @@ import {Circle} from 'react-d3';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  radius: function(location) {
-    return 2;
+  componentWillMount: function() {
+    var
+      max = this.props.data.stats.max
+    ;
+
+    // set scale method using max value from data
+    this.scale = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
   },
+
+  radius: function(location) {
+    if(!this.props.data) { return 0; }
+    if(!location)        { return 0; }
+
+    var
+      data   = this.props.data.data,
+      fips   = '' + location.id, // ensure FIPS is a string
+      value  = data[fips],
+      radius = this.scale(value)
+    ;
+
+    return radius;
+  },
+
+  scale: null,
 
   render: function() {
     var
       d3path    = d3.geo.path(),
-      geography = this.props.topoJSON.features,
-      data      = this.props.data
+      geography = this.props.topoJSON.features
     ;
     return (
       React.DOM.g({
