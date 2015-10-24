@@ -5,6 +5,7 @@ import transition from 'd3-transition';
 import ease from 'd3-ease';
 
 export default React.createClass({
+  mixins: [PureRenderMixin],
 
   render: function() {
     var

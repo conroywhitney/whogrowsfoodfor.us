@@ -10,6 +10,7 @@ import FilteredMapLayer  from './FilteredMapLayer';
 import Bubbles           from './Bubbles';
 
 export default React.createClass({
+  mixins: [PureRenderMixin],
 
   getDefaultProps: function() {
     return {
@@ -32,17 +33,18 @@ export default React.createClass({
       clickedStateFIPS = getStateFIPS(clickedFIPS)
     ;
 
-    // if click same location again, should reset instead
     if(this.props.selectedFIPS === clickedStateFIPS) {
+      // if click same location again, should reset instead
       this.props.setRegion(null);
     } else {
-      // the exciting part -- update global state with fips code!
-      // this method has been passed down from the outermost container
+      // update app state based on clicked item
       this.props.setRegion(clickedFIPS);
     }
   },
 
   componentDidUpdate: function() {
+    // if there's a topoJSON object associated with this selected FIPS
+    // then go ahead and zoom into that region for a closer look
     if(this.getSelectedTopoJSON()) {
       this.d3ZoomIn();
     } else {
@@ -62,14 +64,6 @@ export default React.createClass({
     console.log(topoJSON);
 
     return topoJSON;
-  },
-
-  d3Highlight: function(target) {
-    // d3 updates for selecting state outline
-    this.state.active.classed("active", false);
-    this.setState({
-      active: d3.select(target).classed("active", true)
-    });
   },
 
   d3ZoomIn: function() {
@@ -93,13 +87,6 @@ export default React.createClass({
         .style("stroke-width", 1.5 / scale + "px")
         .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
     ;
-  },
-
-  d3Unhighlight: function() {
-    this.state.active.classed("active", false);
-    this.setState({
-      active: d3.select(null)
-    });
   },
 
   d3ZoomOut: function() {
