@@ -1,7 +1,8 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import d3 from 'd3'
-import transition from 'd3-transition'
+import d3 from 'd3';
+import transition from 'd3-transition';
+import ease from 'd3-ease';
 
 export default React.createClass({
 
@@ -14,19 +15,23 @@ export default React.createClass({
   handleClick: function(event) {
     var
       target     = event.target,
-      fips       = target.id
+      fips       = target.id,
+      component  = this
     ;
 
     // if click same location again, should reset instead
     if (this.state.active.node() === target) return this.reset();
 
-    // the exciting part -- update global state with fips code!
-    // this method has been passed down from the outermost container
-    this.props.setRegion(fips);
-
     // handle fancy d3 stuff
     this.d3Highlight(target);
-    this.d3ZoomIn(target);
+    this.d3ZoomIn(target, function() {
+    });
+
+    setTimeout(function() {
+      // the exciting part -- update global state with fips code!
+      // this method has been passed down from the outermost container
+      component.props.setRegion(fips);
+    }, 475);
   },
 
   d3Highlight: function(target) {
@@ -37,7 +42,7 @@ export default React.createClass({
     });
   },
 
-  d3ZoomIn: function(target) {
+  d3ZoomIn: function(target, callback) {
 
     var
       width     = this.props.width,
@@ -55,9 +60,12 @@ export default React.createClass({
     ;
 
     wrapper.transition()
-        .duration(750)
+        .duration(500)
+        .ease("linear-in")
         .style("stroke-width", 1.5 / scale + "px")
-        .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+        .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
+        .each('end', callback)
+    ;
   },
 
   reset: function() {
@@ -79,9 +87,11 @@ export default React.createClass({
 
   d3ZoomOut: function() {
     d3.select('g').transition()
-        .duration(750)
+        .duration(500)
+        .ease("linear-out")
         .style("stroke-width", "1.5px")
-        .attr("transform", "");
+        .attr("transform", "")
+    ;
   },
 
   render: function() {

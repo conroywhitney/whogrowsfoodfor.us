@@ -1,7 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON} from '../geography.js'
+import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh} from '../geography.js'
 
 import MapLayer from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -62,7 +62,7 @@ export default React.createClass({
             : null }
             {this.showDetailLevel('counties') ?
               <MapLayer
-                topoJSON={countyTopoJSON}
+                topoJSON={countyTopoMesh}
                 className="counties"
                 data={this.props.productData}
               />
