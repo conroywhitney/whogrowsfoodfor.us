@@ -2,7 +2,7 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path, getTopoJSONFromFIPS} from '../geography.js'
-import {getStateFIPS}        from '../fips';
+import {getStateFIPS, normalizeFIPS} from '../fips';
 
 import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -27,32 +27,27 @@ export default React.createClass({
 
   handleMapClick: function(event) {
     var
-      target     = event.target,
-      fips       = target.id
+      target           = event.target,
+      clickedFIPS      = normalizeFIPS(target.id),
+      clickedStateFIPS = getStateFIPS(clickedFIPS)
     ;
 
     // if click same location again, should reset instead
-    if(this.state.active.node() === target) {
-      return this.resetMap();
+    if(this.props.selectedFIPS === clickedStateFIPS) {
+      this.props.setRegion(null);
     } else {
       // the exciting part -- update global state with fips code!
       // this method has been passed down from the outermost container
-      this.props.setRegion(fips);
-
-      // handle fancy d3 stuff
-      this.d3Highlight(target);
-      this.d3ZoomIn(target);
+      this.props.setRegion(clickedFIPS);
     }
   },
 
-  resetMap: function() {
-    // the exciting part -- update global state to nothing!
-    // this function was passed down from the outermost container
-    this.props.setRegion(null);
-
-    // handle fancy d3 stuff
-    this.d3Unhighlight();
-    this.d3ZoomOut();
+  componentDidUpdate: function() {
+    if(this.getSelectedTopoJSON()) {
+      this.d3ZoomIn();
+    } else {
+      this.d3ZoomOut();
+    }
   },
 
   getSelectedTopoJSON: function() {
@@ -61,7 +56,7 @@ export default React.createClass({
       topoJSON  = getTopoJSONFromFIPS(stateFIPS)
     ;
 
-    console.log('getSelectedTopoJSON');
+    console.log('getSelectedTopoJSN');
     console.log(this.props.selectedFIPS);
     console.log(stateFIPS);
     console.log(topoJSON);
@@ -77,7 +72,7 @@ export default React.createClass({
     });
   },
 
-  d3ZoomIn: function(target) {
+  d3ZoomIn: function() {
     var
       width     = this.props.width,
       height    = this.props.height,
