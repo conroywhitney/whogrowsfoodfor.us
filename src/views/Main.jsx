@@ -19,6 +19,7 @@ export const MainNaked = React.createClass({
         selected={this.props.selected}
         label={this.props.label}
         productData={this.props.product_data}
+        detailLevel={this.props.detail_level}
       />
     </div>;
   },
@@ -26,10 +27,11 @@ export const MainNaked = React.createClass({
 });
 
 const mapStateToProps = (state) => ({
-  product:      state.get('product'),
-  product_data: state.getIn(['data', 'avocados', 'avocados', 'avocados_acres_area_bearing']).toJS(),
-  selected:     state.get('selected'),
-  label:        getLabel(state)
+  product:       state.get('product'),
+  product_data:  state.getIn(['data', 'avocados', 'avocados', 'avocados_acres_area_bearing']).toJS(),
+  selected:      state.get('selected'),
+  label:         getLabel(state),
+  detail_level:  state.get('detail')
 });
 
 export const Main = connect(mapStateToProps, actionCreators)(MainNaked);

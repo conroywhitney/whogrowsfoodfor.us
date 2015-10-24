@@ -10,7 +10,12 @@ export default React.createClass({
   render: function() {
     return <div className="map-container">
       <Title label={this.props.label} />
-      <BivariateMap width="960" height="500" productData={this.props.productData}/>
+      <BivariateMap
+        width="960"
+        height="500"
+        productData={this.props.productData}
+        detailLevel={this.props.detailLevel}
+      />
     </div>;
   }
 
