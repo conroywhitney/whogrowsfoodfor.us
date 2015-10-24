@@ -68,6 +68,7 @@ export default React.createClass({
             topoJSON={countyTopoJSON}
             className="bubbles"
             data={this.props.productData}
+            setRegion={this.props.setRegion}
           />
         </svg>
       </div>

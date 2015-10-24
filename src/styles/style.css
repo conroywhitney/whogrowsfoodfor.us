@@ -67,14 +67,27 @@ body {
   cursor: pointer;
 }
 
+.feature:hover {
+  fill: orange;
+}
+
 .feature.active {
   fill: orange;
 }
 
 .bubble {
-  fill: #F0F;
-  stroke: none;
-  stroke-width: 0.5px;
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
+  cursor: pointer;
+}
+
+.bubble:hover {
+  fill: orange;
+}
+
+.bubble.active {
+  fill: orange;
 }
 
 .blank {

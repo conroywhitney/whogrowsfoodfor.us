@@ -16,6 +16,23 @@ export default React.createClass({
 
   scale: null,
 
+  handleClick: function(event) {
+    var
+      target     = event.target,
+      fips       = target.id
+    ;
+
+    // the exciting part -- update global state with fips code!
+    // this method has been passed down from the outermost container
+    this.props.setRegion(fips);
+  },
+
+  reset: function() {
+    // the exciting part -- update global state to nothing!
+    // this function was passed down from the outermost container
+    this.props.setRegion(null);
+  },
+
   location_value: function(location) {
     if(!this.props.data) { return null; }
     if(!location)        { return null; }
@@ -59,7 +76,8 @@ export default React.createClass({
               id: location.id, // to actually use in application
               className: "bubble",
               r: this.radius(location),
-              transform: `translate(${d3path.centroid(location)})`
+              transform: `translate(${d3path.centroid(location)})`,
+              onClick: this.handleClick
             })
           },
           this
