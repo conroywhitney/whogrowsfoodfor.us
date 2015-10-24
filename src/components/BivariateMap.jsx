@@ -34,22 +34,29 @@ export default React.createClass({
   },
 
   render: function() {
-    return <div className="map">
-      <svg width={this.props.width} height={this.props.height}>
-        <MapLayer
-          topoJSON={landTopoJSON}
-          className="land"
-        />
-        <MapLayer
-          topoJSON={stateTopoJSON}
-          className="states"
-        />
-        <MapLayer
-          topoJSON={countyTopoJSON}
-          className="counties"
-        />
-      </svg>
-    </div>
-    ;
+    return (
+      <div className="map">
+        <svg width={this.props.width} height={this.props.height}>
+          <MapLayer
+            topoJSON={landTopoJSON}
+            className="land"
+          />
+          <MapLayer
+            topoJSON={stateTopoJSON}
+            className="states"
+          />
+          <MapLayer
+            topoJSON={countyTopoJSON}
+            className="counties"
+            data={this.props.productData}
+          />
+          <Bubbles
+            topoJSON={countyTopoJSON}
+            className="bubbles"
+            data={this.props.productData}
+          />
+        </svg>
+      </div>
+   );
   }
 });

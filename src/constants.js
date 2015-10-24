@@ -20,6 +20,7 @@ export const INITIAL_STATE = fromJS({
     labels:    require('../data/labels.json'),
     geography: require('../data/us-geography.topo.json'),
     products:  require('../data/products.json'),
+    avocados:  require('../data/products/avocados.json'),
     raw: {
       productList:  require('../data/raw/product-list.json')
     }

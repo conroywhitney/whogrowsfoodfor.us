@@ -63,7 +63,7 @@ body {
 }
 
 .bubble {
-  fill: none;
+  fill: #F0F;
   stroke: none;
   stroke-width: 0.5px;
 }
