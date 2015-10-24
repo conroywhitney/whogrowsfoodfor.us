@@ -42,6 +42,10 @@ body {
   margin-bottom: 25px;
 }
 
+svg {
+  border: 1px solid #999;
+}
+
 .land {
   stroke: #999;
   fill: none;
@@ -72,22 +76,19 @@ body {
 }
 
 .feature.active {
-  fill: orange;
 }
 
 .bubble {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px;
+  fill: rgb(33,113,181);
   cursor: pointer;
 }
 
 .bubble:hover {
-  fill: orange;
 }
 
 .bubble.active {
-  fill: orange;
+  stroke: #000;
+  stroke-width: 1px;
 }
 
 .blank {
