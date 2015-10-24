@@ -15,11 +15,11 @@ export default React.createClass({
     var
       width      = 900,
       height     = 400,
-      d3path     = d3.geo.path(),
+      d3path     = d3.geo.path().projection(d3.geo.albersUsa()),
       domElement = React.findDOMNode(this),
       target     = event.target,
       d3Data     = target.getAttribute('d'),
-      again      = d3path(d3Data)
+      bounds     = target.getAttribute('bounds')
     ;
 
     if (this.state.active.node() === target) return this.reset();
@@ -59,7 +59,7 @@ export default React.createClass({
 
   render: function() {
     var
-      d3path    = d3.geo.path(),
+      d3path    = d3.geo.path().projection(d3.geo.albersUsa()),
       geography = this.props.topoJSON.features
     ;
 
