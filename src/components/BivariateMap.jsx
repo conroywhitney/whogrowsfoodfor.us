@@ -2,7 +2,7 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path, getTopoJSONFromFIPS} from '../geography.js'
-import {getStateFIPS, normalizeFIPS} from '../fips';
+import {getStateFIPS, normalizeFIPS, isFipsState} from '../fips';
 
 import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -33,8 +33,9 @@ export default React.createClass({
       clickedStateFIPS = getStateFIPS(clickedFIPS)
     ;
 
-    if(this.props.selectedFIPS === clickedStateFIPS) {
+    if(isFipsState(clickedFIPS) && (this.props.selectedFIPS === clickedFIPS)) {
       // if click same location again, should reset instead
+      // also, only if you click a state
       this.props.setRegion(null);
     } else {
       // update app state based on clicked item
@@ -57,11 +58,6 @@ export default React.createClass({
       stateFIPS = getStateFIPS(this.props.selectedFIPS),
       topoJSON  = getTopoJSONFromFIPS(stateFIPS)
     ;
-
-    console.log('getSelectedTopoJSN');
-    console.log(this.props.selectedFIPS);
-    console.log(stateFIPS);
-    console.log(topoJSON);
 
     return topoJSON;
   },
