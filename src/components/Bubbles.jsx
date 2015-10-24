@@ -14,21 +14,33 @@ export default React.createClass({
     this.scale = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
   },
 
-  radius: function(location) {
-    if(!this.props.data) { return 0; }
-    if(!location)        { return 0; }
+  scale: null,
+
+  location_value: function(location) {
+    if(!this.props.data) { return null; }
+    if(!location)        { return null; }
 
     var
       data   = this.props.data.data,
       fips   = '' + location.id, // ensure FIPS is a string
-      value  = data[fips],
-      radius = this.scale(value)
+      value  = data[fips]
     ;
 
+    return value;
+  },
+
+  radius: function(location) {
+    var
+      value  = this.location_value(location),
+      radius = this.scale(value)
+    ;
     return radius;
   },
 
-  scale: null,
+  include_location: function(location) {
+    var value = this.location_value(location);
+    return (value && value !== null && value !== undefined);
+  },
 
   render: function() {
     var
@@ -39,13 +51,19 @@ export default React.createClass({
       React.DOM.g({
         className: "bubbles"
       },
-        geography.map(function(location) {
-          return React.DOM.circle({
-            className: "bubble",
-            r: this.radius(location),
-            transform: `translate(${d3path.centroid(location)})`
-          })
-        }, this)
+        geography
+          .filter(g => this.include_location(g))
+          .map(function(location) {
+            return React.DOM.circle({
+              key: location.id, // to silence react warnings
+              id: location.id, // to actually use in application
+              className: "bubble",
+              r: this.radius(location),
+              transform: `translate(${d3path.centroid(location)})`
+            })
+          },
+          this
+        )
       )
     );
   }

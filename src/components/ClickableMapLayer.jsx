@@ -94,7 +94,8 @@ export default React.createClass({
       React.DOM.g({},
         geography.map(function(location) {
           return React.DOM.path({
-            id: location.id,
+            key: location.id, // to silence warnings
+            id: location.id, // to actually use in application
             className: this.props.className,
             d: d3path(location),
             onClick: this.handleClick
