@@ -66,6 +66,7 @@ export default React.createClass({
               value={this.locationValue(location)}
               scaleFunction={this.scaleFunction}
               colorFunction={this.colorFunction}
+              handleClick={this.props.handleClick}
             />
           );
         }, this)

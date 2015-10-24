@@ -6,23 +6,6 @@ import {d3path} from '../geography';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  handleClick: function(event) {
-    var
-      target     = event.target,
-      fips       = target.id
-    ;
-
-    // the exciting part -- update global state with fips code!
-    // this method has been passed down from the outermost container
-    this.props.setRegion(fips);
-  },
-
-  reset: function() {
-    // the exciting part -- update global state to nothing!
-    // this function was passed down from the outermost container
-    this.props.setRegion(null);
-  },
-
   getCentroid: function() {
     return d3path.centroid(this.props.location);
   },
@@ -39,7 +22,7 @@ export default React.createClass({
         id: this.props.fips, // to actually use in application
         r: this.getRadius(),
         transform: `translate(${this.getCentroid()})`,
-        onClick: this.handleClick
+        onClick: this.props.handleClick
       })
     );
   }
