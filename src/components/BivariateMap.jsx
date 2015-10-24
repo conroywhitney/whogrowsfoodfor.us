@@ -1,7 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh} from '../geography.js'
+import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path} from '../geography.js'
 
 import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -42,7 +42,6 @@ export default React.createClass({
       this.d3Highlight(target);
       this.d3ZoomIn(target);
     }
-
   },
 
   resetMap: function() {
@@ -67,7 +66,6 @@ export default React.createClass({
     var
       width     = this.props.width,
       height    = this.props.height,
-      d3path    = d3.geo.path(),
       d         = JSON.parse(target.getAttribute('data-location')),
       bounds    = d3path.bounds(d),
       dx        = bounds[1][0] - bounds[0][0],

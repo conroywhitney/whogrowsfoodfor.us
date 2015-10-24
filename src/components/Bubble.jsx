@@ -21,6 +21,7 @@ export default React.createClass({
         key: this.props.fips, // to silence react warnings
         id: this.props.fips, // to actually use in application
         r: this.getRadius(),
+        'data-location': JSON.stringify(this.props.location),
         transform: `translate(${this.getCentroid()})`,
         onClick: this.props.handleClick
       })
