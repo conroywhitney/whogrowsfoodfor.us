@@ -113,7 +113,7 @@ export default React.createClass({
   render: function() {
     return (
       <div className="map">
-        <svg width={this.props.width} height={this.props.height}>
+        <svg width={this.props.width} height={this.props.height} onClick={this.handleMapClick}>
           <g>
             {this.showDetailLevel('land') ?
               <MapLayer
