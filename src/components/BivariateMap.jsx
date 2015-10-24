@@ -3,9 +3,10 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh} from '../geography.js'
 
-import MapLayer from './MapLayer';
+import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
-import Bubbles from './Bubbles';
+import FilteredMapLayer  from './FilteredMapLayer';
+import Bubbles           from './Bubbles';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
@@ -61,10 +62,11 @@ export default React.createClass({
               />
             : null }
             {this.showDetailLevel('counties') ?
-              <MapLayer
-                topoJSON={countyTopoMesh}
+              <FilteredMapLayer
+                topoJSON={countyTopoJSON}
                 className="counties"
                 data={this.props.productData}
+                filterFunction={this.props.countyLineFilter}
               />
             : null }
             <Bubbles

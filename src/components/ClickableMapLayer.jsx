@@ -22,16 +22,13 @@ export default React.createClass({
     // if click same location again, should reset instead
     if (this.state.active.node() === target) return this.reset();
 
+    // the exciting part -- update global state with fips code!
+    // this method has been passed down from the outermost container
+    component.props.setRegion(fips);
+
     // handle fancy d3 stuff
     this.d3Highlight(target);
-    this.d3ZoomIn(target, function() {
-    });
-
-    setTimeout(function() {
-      // the exciting part -- update global state with fips code!
-      // this method has been passed down from the outermost container
-      component.props.setRegion(fips);
-    }, 475);
+    this.d3ZoomIn(target);
   },
 
   d3Highlight: function(target) {
@@ -42,7 +39,7 @@ export default React.createClass({
     });
   },
 
-  d3ZoomIn: function(target, callback) {
+  d3ZoomIn: function(target) {
 
     var
       width     = this.props.width,
@@ -64,7 +61,6 @@ export default React.createClass({
         .ease("linear-in")
         .style("stroke-width", 1.5 / scale + "px")
         .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
-        .each('end', callback)
     ;
   },
 
