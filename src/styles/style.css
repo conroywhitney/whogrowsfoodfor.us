@@ -67,7 +67,7 @@ body {
   cursor: pointer;
 }
 
-g.active .feature {
+.feature.active {
   fill: orange;
 }
 

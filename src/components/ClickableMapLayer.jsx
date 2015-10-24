@@ -14,18 +14,18 @@ export default React.createClass({
     if (this.state.active.node() === this) return reset();
 
     var
+      width      = 900,
+      height     = 400,
       d3path     = d3.geo.path(),
       domElement = React.findDOMNode(this),
-      innerPath  = domElement.firstChild,
-      d3Data     = innerPath.getAttribute('d'),
-      width      = 900,
-      height     = 400
+      target     = event.target,
+      d3Data     = target.getAttribute('d')
     ;
 
     this.state.active.classed("active", false);
 
     this.setState({
-      active: d3.select(domElement).classed("active", true)
+      active: d3.select(target).classed("active", true)
     });
 
     console.log(d3Data);
@@ -39,6 +39,7 @@ export default React.createClass({
         translate = [width / 2 - scale * x, height / 2 - scale * y]
     ;
 
+    console.log('bounds zomg');
     console.log(bounds);
 
     d3.transition()

@@ -9,4 +9,3 @@ export const stateTopoJSON  = topojson.feature(topoJSON, topoJSON.objects.states
 export const stateTopoMesh  = topojson.mesh(topoJSON,
                                       topoJSON.objects.states,
                                       function(a, b) { return a.id !== b.id; });
-
