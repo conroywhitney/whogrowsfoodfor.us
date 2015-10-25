@@ -304,4 +304,16 @@ gulp.task('product-sanity-check', function() {
   ;
 });
 
+gulp.task('product-combine-all', function() {
+  gulp.src(PRODDIR + '*')
+      .pipe(insert.append(','))
+      .pipe(concat('all_products.json')) // combine all files into single options file
+      .pipe(insert.prepend('{ "products": ['))
+      .pipe(insert.append(' {"ignore": {}} ] }'))
+      .pipe(gulp.dest(DATADIR))
+      .pipe(jsonlint())
+      .pipe(jsonlint.reporter())
+  ;
+});
+
 gulp.task('products', gulpSequence('product-list', 'product-metadata', 'product-concat', 'product-combinations'));
