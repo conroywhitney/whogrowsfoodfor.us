@@ -11,20 +11,48 @@ export const MainNaked = React.createClass({
   mixins: [PureRenderMixin],
 
   render: function() {
-    return <div className="main container" ref="main">
-      <ProductDropdown
-        product={this.props.product}
-        handleChange={this.props.setProduct}
-      />
-      <MapContainer
-        selected={this.props.selected}
-        label={this.props.label}
-        productData={this.props.product_data}
-        detailLevel={this.props.detail_level}
-        setRegion={this.props.setRegion}
-        countyLineFilter={this.countyLineFilter}
-      />
-    </div>;
+    return (
+      <div className="ui container">
+
+        <div className="ui stackable divided grid">
+
+          <div className="ui row">
+            <div className="sixteen wide column">
+              <MapContainer
+                selected={this.props.selected}
+                label={this.props.label}
+                productData={this.props.product_data}
+                detailLevel={this.props.detail_level}
+                setRegion={this.props.setRegion}
+                countyLineFilter={this.countyLineFilter}
+              />
+            </div>
+          </div>
+
+          <div className="ui row">
+            <div className="eight wide column">
+              <h3>Product</h3>
+              <ProductDropdown
+                product={this.props.product}
+                handleChange={this.props.setProduct}
+              />
+              <iframe src="http://bl.ocks.org/mbostock/raw/7341714/"></iframe>
+            </div>
+
+            <div className="eight wide column">
+              <h3>Context</h3>
+              <ProductDropdown
+                product={this.props.product}
+                handleChange={this.props.setProduct}
+              />
+              <iframe src="http://bl.ocks.org/mbostock/raw/7341714/"></iframe>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    );
   },
 
   countyLineFilter: function(location) {

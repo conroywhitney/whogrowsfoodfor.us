@@ -42,6 +42,10 @@ body {
   margin-top: 25px;
 }
 
+.title.label {
+  background: #FFF;
+}
+
 #controls {
   margin-bottom: 25px;
 }
@@ -115,3 +119,6 @@ svg {
   text-anchor: middle;
 }
 
+iframe {
+  border: 0px;
+}
