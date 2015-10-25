@@ -47,25 +47,25 @@ body {
 }
 
 svg {
-  border: 1px solid #999;
+  background: rgba(50, 50, 50, 0.05);
 }
 
 .land {
-  stroke: #999;
+  stroke: #d7d7d7;
   fill: none;
   stroke-width: .75px;
 }
 
 .states {
   fill: none;
-  stroke: #999;
+  stroke: #d7d7d7;
   stroke-width: .75px;
   stroke-linejoin: round;
 }
 
 .counties {
   fill: none;
-  stroke: #CCC;
+  stroke: #333;
   stroke-width: .25px;
   stroke-linejoin: round;
 }
