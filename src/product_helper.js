@@ -55,16 +55,33 @@ function filterOption(option, value) {
   return keep;
 }
 
-function filenameFromOptions(options) {
+function filenameFromOptions(zipped) {
   var
-    filtered = options.filter(filterOptionValueForFilename),
-    filename = filtered.map(v => slug(v.toLowerCase(), '_')).join('_')
+    filtered = zipped.filter(filterOptionValueForFilename),
+    filename = filtered.map(filenamePartFromOptionValue).join('_')
   ;
   return filename;
 }
 
-function filterOptionValueForFilename(value) {
+function filenamePartFromOptionValue(zip) {
   var
+    option     = zip[0],
+    value      = zip[1],
+    value_slug = slug(value.toLowerCase(), '_')
+  ;
+
+  if(option == 'class_desc') {
+    // return with parens around
+    return `(${value_slug})`
+  } else {
+    return value_slug;
+  }
+}
+
+function filterOptionValueForFilename(zip) {
+  var
+    option = zip[0],
+    value  = zip[1],
     regex  = new RegExp('^(ALL|TOTAL|CENSUS|2012)', 'gi'),
     ignore = regex.test(value),
     keep   = (ignore == false)
@@ -179,6 +196,7 @@ module.exports.filterOptions = filterOptions;
 module.exports.filterOption  = filterOption;
 
 module.exports.filenameFromOptions = filenameFromOptions;
+module.exports.filenamePartFromOptionValue = filenamePartFromOptionValue;
 module.exports.filterOptionValueForFilename = filterOptionValueForFilename;
 
 module.exports.getCleanJSON          = getCleanJSON;

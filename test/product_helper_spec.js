@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getRollupKey, getCleanKeys, getIntFromCommaString, getCleanJSON} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, filenamePartFromOptionValue, getRollupKey, getCleanKeys, getIntFromCommaString, getCleanJSON} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -160,28 +160,57 @@ describe('product helper', () => {
       expect(filename).to.not.contain('2012');
     });
 
+    describe('product with specific class', () => {
+      var
+        options = [['year', "2012"],['source_desc', "CENSUS"],['agg_level_desc', "NATIONAL"],['commodity_desc', "LETTUCE"],['class_desc', "ROMAINE"],['unit_desc', "ACRES"],['statisticcat_desc', "AREA HARVESTED"],['util_practice_desc', "ALL UTILIZATION PRACTICES"],['prodn_practice_desc', "ALL PRODUCTION PRACTICES"],['domain_desc', "TOTAL"]],
+        filename = filenameFromOptions(options)
+      ;
+
+      it('should put parenthesis around class', () => {
+        expect(filename).to.contain('(');
+        expect(filename).to.contain(')');
+      });
+
+      it('should have the class in the filename', () => {
+        expect(filename).to.contain('romaine');
+      });
+
+    });
+
+  });
+
+  describe('filenamePartFromOptionValue', () => {
+
+    it('should return just the value if regular option', () => {
+      expect(filenamePartFromOptionValue(['unit_desc', 'ACRES'])).to.eq('acres');
+    });
+
+    it('should return class name wrapped in parenthesis', () => {
+      expect(filenamePartFromOptionValue(['class_desc', 'ROMAINE'])).to.eq('(romaine)');
+    });
+
   });
 
   describe('filterOptionValueForFilename', () => {
 
     it('should omit _all_* values from filename', () => {
-      expect(filterOptionValueForFilename("ALL CLASSES")).to.be.false;
+      expect(filterOptionValueForFilename(['class_desc', "ALL CLASSES"])).to.be.false;
     });
 
     it('should omit _total_ values from filename', () => {
-      expect(filterOptionValueForFilename("TOTAL")).to.be.false;
+      expect(filterOptionValueForFilename(['domain_desc', "TOTAL"])).to.be.false;
     });
 
     it('should omit _census_ from filename', () => {
-      expect(filterOptionValueForFilename("CENSUS")).to.be.false;
+      expect(filterOptionValueForFilename(['source_desc', "CENSUS"])).to.be.false;
     });
 
     it('should omit _2012_ from filename', () => {
-      expect(filterOptionValueForFilename("2012")).to.be.false;
+      expect(filterOptionValueForFilename(['year', "2012"])).to.be.false;
     });
 
     it('should keep good words', () => {
-      expect(filterOptionValueForFilename("APPLES")).to.be.true;
+      expect(filterOptionValueForFilename(['commodity_desc', "APPLES"])).to.be.true;
     });
 
   });
