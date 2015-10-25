@@ -8,6 +8,7 @@ import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
 import FilteredMapLayer  from './FilteredMapLayer';
 import Bubbles           from './Bubbles';
+import BubbleLegend      from './BubbleLegend';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
@@ -41,6 +42,23 @@ export default React.createClass({
       // update app state based on clicked item
       this.props.setRegion(clickedFIPS);
     }
+  },
+
+  scaleFunction: null,
+
+  colorFunction: null,
+
+  componentWillMount: function() {
+    var
+      max       = this.props.productData.stats.max,
+      quantiles = null
+    ;
+
+    // set scale method using max value from data
+    this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
+
+    // TODO: set color range based on quantile
+    this.colorFunction = null;
   },
 
   componentDidUpdate: function() {
@@ -147,6 +165,13 @@ export default React.createClass({
               className="bubbles"
               data={this.props.productData}
               handleClick={this.handleMapClick}
+              scaleFunction={this.scaleFunction}
+            />
+            <BubbleLegend
+              data={this.props.productData}
+              cx={this.props.width - 50}
+              cy={this.props.height - 20}
+              scaleFunction={this.scaleFunction}
             />
           </g>
         </svg>

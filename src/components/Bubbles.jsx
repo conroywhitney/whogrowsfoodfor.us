@@ -6,22 +6,6 @@ import Bubble             from './Bubble';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  scaleFunction: null,
-
-  colorFunction: null,
-
-  componentWillMount: function() {
-    var
-      max = this.props.data.stats.max
-    ;
-
-    // set scale method using max value from data
-    this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
-
-    // TODO: set color range based on quantile
-    this.colorFunction = null;
-  },
-
   locationFIPS: function(location) {
     return normalizeFIPS(location.id);
   },
@@ -64,8 +48,8 @@ export default React.createClass({
               location={location}
               fips={this.locationFIPS(location)}
               value={this.locationValue(location)}
-              scaleFunction={this.scaleFunction}
-              colorFunction={this.colorFunction}
+              scaleFunction={this.props.scaleFunction}
+              colorFunction={this.props.colorFunction}
               handleClick={this.props.handleClick}
             />
           );
