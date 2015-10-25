@@ -31,7 +31,6 @@ export const MainNaked = React.createClass({
 
           <div className="ui row">
             <div className="eight wide column">
-              <h3>Product</h3>
               <ProductDropdown
                 product={this.props.product}
                 handleChange={this.props.setProduct}
@@ -40,7 +39,6 @@ export const MainNaked = React.createClass({
             </div>
 
             <div className="eight wide column">
-              <h3>Context</h3>
               <ProductDropdown
                 product={this.props.product}
                 handleChange={this.props.setProduct}
