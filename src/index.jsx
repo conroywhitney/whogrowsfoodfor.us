@@ -28,9 +28,11 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>{routes}</Router>
     </Provider>
-    <DebugPanel top right bottom>
+    { false ?
+    <DebugPanel top left bottom>
       <DevTools store={store} monitor={LogMonitor} />
     </DebugPanel>
+    : null }
   </div>,
   document.getElementById('app')
 );
