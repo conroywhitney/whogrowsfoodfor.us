@@ -51,22 +51,22 @@ svg {
 }
 
 .land {
-  stroke: #d7d7d7;
+  stroke: #CCC;
   fill: none;
   stroke-width: .75px;
 }
 
 .states {
   fill: none;
-  stroke: #d7d7d7;
-  stroke-width: .75px;
+  stroke: #999;
+  stroke-width: .25px;
   stroke-linejoin: round;
 }
 
 .counties {
   fill: none;
   stroke: #333;
-  stroke-width: .25px;
+  stroke-width: .3px;
   stroke-linejoin: round;
 }
 
