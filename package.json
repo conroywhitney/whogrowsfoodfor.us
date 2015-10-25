@@ -70,6 +70,7 @@
     "request": "^2.65.0",
     "require-dir": "^0.3.0",
     "slug": "^0.9.1",
+    "streamify": "^0.2.5",
     "style-loader": "^0.12.4",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.12.2",

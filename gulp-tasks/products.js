@@ -6,6 +6,7 @@ var
   request       = require('request'),
   replace       = require('gulp-replace'),
   source        = require('vinyl-source-stream'),
+  streamify     = require('streamify'),
   insert        = require('gulp-insert'),
   parse         = require('csv-parse'),
   jeditor       = require("gulp-json-editor"),
@@ -24,7 +25,7 @@ var
   urlencode     = require('urlencode'),
   promise       = require("gulp-promise"),
   using         = require("gulp-using"),
-  $size        = require("gulp-size"),
+  $size         = require("gulp-size"),
   productHelper = require('../src/product_helper'),
   TEMPDIR       = './tmp/',
   DATADIR       = './data/',
@@ -89,9 +90,9 @@ gulp.task('product-list', function() {
     .pipe(gulp.dest(RAWDIR))
 });
 
-gulp.task('product-metadata', function() {
+gulp.task('product-metadata', function(cb) {
   var
-    products = getFilteredProductList()
+    products    = getFilteredProductList()
   ;
 
   products.forEach(function(product) {
@@ -169,14 +170,12 @@ gulp.task('product-combinations', function() {
 
     optionCombos.forEach(function(combo) {
       var
-        filename  = productHelper.filenameFromOptions(combo),
         zipped    = R.zip(optionKeys, combo),
+        filename  = productHelper.filenameFromOptions(zipped),
         encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
         qspair    = encoded.map(kv => kv.join('='))
         qsvars    = qspair.join('&')
       ;
-
-      console.log(filename);
 
       optionURLs.push({
        filename:    filename,
@@ -224,13 +223,12 @@ gulp.task('product-download', function(cb) {
         filename = query.filename + '.json'
       ;
 
-      request(url)
+      request(url, {timeout: 120000})
         .on('response', function(response) {
           console.log(filename);
         })
         .on('error', function(err) {
-          console.log("ERROR [" + filename + "]");
-          console.log(err);
+          console.log("ERROR [" + filename + "]", 'connection timeout?', (err.connect === true), err);
         })
         .pipe(source(filename))
         .pipe(insert.prepend('"' + query.filename + '": '))
