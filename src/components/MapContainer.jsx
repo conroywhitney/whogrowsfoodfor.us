@@ -1,6 +1,5 @@
 import React           from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {connect}       from 'react-redux';
 import Title           from './Title';
 import BivariateMap    from './BivariateMap';
 
