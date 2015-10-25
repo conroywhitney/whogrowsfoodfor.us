@@ -78,8 +78,8 @@ export default React.createClass({
     ;
 
     wrapper.transition()
-        .duration(500)
-        .ease("linear-in")
+        .duration(750)
+        .ease("circle-in-out")
         .style("stroke-width", 1.5 / scale + "px")
         .attr("transform", "translate(" + translate + ")scale(" + scale + ")")
     ;
@@ -87,8 +87,8 @@ export default React.createClass({
 
   d3ZoomOut: function() {
     d3.select('g').transition()
-        .duration(500)
-        .ease("linear-out")
+        .duration(750)
+        .ease("circle-in-out")
         .style("stroke-width", "1.5px")
         .attr("transform", "")
     ;

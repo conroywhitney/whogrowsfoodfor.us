@@ -11,8 +11,8 @@ export const countyTopoMesh = topojson.mesh(topoJSON, topoJSON.objects.counties,
 export const stateTopoJSON  = topojson.feature(topoJSON, topoJSON.objects.states);
 export const stateTopoMesh  = topojson.mesh(topoJSON, topoJSON.objects.states, function(a, b) { return a.id !== b.id; });
 
-
-export const d3path = d3.geo.path();
+export const projection = d3.geo.albersUsa();
+export const d3path     = d3.geo.path().projection(projection);
 
 export const stateTopoJSONByFIPS = stateTopoJSON.features
                                         .map(state => ({fips: normalizeFIPS(state.id), topoJSON: state}))
