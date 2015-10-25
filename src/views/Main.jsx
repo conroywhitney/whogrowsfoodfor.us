@@ -1,11 +1,11 @@
-import React                 from 'react';
-import PureRenderMixin       from 'react-addons-pure-render-mixin';
-import {connect}             from 'react-redux';
-import ProductDropdown       from '../components/ProductDropdown';
-import MapContainer          from '../components/MapContainer';
-import * as actionCreators   from '../action_creators';
-import {getLabel}            from '../label';
-import {getStateFIPS}        from '../fips';
+import React                      from 'react';
+import PureRenderMixin            from 'react-addons-pure-render-mixin';
+import {connect}                  from 'react-redux';
+import ProductDropdown            from '../components/ProductDropdown';
+import MapContainer               from '../components/MapContainer';
+import * as actionCreators        from '../action_creators';
+import {getLabel}                 from '../label';
+import {getStateFIPS}             from '../fips';
 
 export const MainNaked = React.createClass({
   mixins: [PureRenderMixin],
