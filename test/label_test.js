@@ -3,7 +3,8 @@ import {Map, List, fromJS} from 'immutable';
 
 import {INITIAL_STATE, DEFAULT_LABEL} from '../src/constants';
 import {select, product} from '../src/core';
-import {getLabel} from '../src/label';
+import {getLabel, getProductLabel} from '../src/label';
+import {productKeys} from '../src/products';
 
 describe('label', () => {
 
@@ -45,7 +46,7 @@ describe('label', () => {
 
     it('should set the product name in the label', () => {
       var
-      productKey    = 'corn',
+        productKey  = 'corn',
         productName = 'Corn',
         newState    = product(INITIAL_STATE, 'corn')
       ;
@@ -66,6 +67,32 @@ describe('label', () => {
         newState    = select(newState, regionFIPS)
       ;
       expect(getLabel(newState)).to.eq(`${productName} production in ${regionName}`);
+    });
+
+  });
+
+  describe('getProductLabel', () => {
+
+    it('should return blank if null value', () => {
+      expect(getProductLabel(null)).to.eq('');
+    });
+
+    it('should return blank if unknown value', () => {
+      expect(getProductLabel(null)).to.eq('');
+    });
+
+    it('should return correct value if valid key', () => {
+      expect(getProductLabel('tomatoes')).to.eq('Tomatoes');
+    });
+
+    it('should handle keys with underscores', () => {
+      expect(getProductLabel('sweet_corn')).to.eq('Sweet Corn');
+    });
+
+    it("should have a key for all of the ones we'll use in the dropdown", () => {
+      productKeys.forEach(function(key) {
+        expect(getProductLabel(key)).to.be.ok;
+      });
     });
 
   });

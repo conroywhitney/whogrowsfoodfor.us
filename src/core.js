@@ -2,7 +2,7 @@ import {Map, List, fromJS} from 'immutable';
 
 import {getStateFIPS, normalizeFIPS} from '../src/fips';
 import {getZoomXYZ} from '../src/zoom';
-import {productJSON} from '../src/products';
+import {productMeta} from '../src/products';
 
 export function select(state, fips) {
   var
@@ -17,11 +17,8 @@ export function select(state, fips) {
 }
 
 export function product(state, productKey) {
-  var
-    product = productJSON[productKey]
-  ;
   return state
-    .set('product', product)
+    .set('product', productKey)
   ;
 };
 

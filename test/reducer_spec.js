@@ -28,7 +28,6 @@ describe('reducer', () => {
   describe('setProduct', () => {
 
     const productKey  = 'spinach';
-    const productName = 'Spinach';
 
     it('sets product field', () => {
       const action    = {type: ACTIONS.setProduct, product: productKey};
@@ -36,7 +35,7 @@ describe('reducer', () => {
 
       // simplest thing to make this pass is checking 'selected'
       // checking other attributes of state will make this too brittle
-      expect(nextState.get('product').name).to.equal(productName);
+      expect(nextState.get('product')).to.equal(productKey);
     });
 
   });

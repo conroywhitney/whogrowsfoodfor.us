@@ -4,7 +4,7 @@ import topojson          from 'topojson';
 import {normalizeFIPS}   from './fips';
 import d3                from 'd3';
 
-export const topoJSON       = require('../data/us-geography.topo.json');
+export const topoJSON       = require('../data/geo/us-geography.topo.json');
 export const landTopoJSON   = topojson.feature(topoJSON, topoJSON.objects.land);
 export const countyTopoJSON = topojson.feature(topoJSON, topoJSON.objects.counties);
 export const countyTopoMesh = topojson.mesh(topoJSON, topoJSON.objects.counties, function(a, b) { return a.id !== b.id; });
