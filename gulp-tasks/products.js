@@ -2,6 +2,7 @@ var
   gulp          = require('gulp-param')(require('gulp'), process.argv),
   gulpSequence  = require('gulp-sequence'),
   fs            = require('fs'),
+  fileExists    = require('file-exists'),
   download      = require('gulp-download'),
   request       = require('request'),
   replace       = require('gulp-replace'),
@@ -103,17 +104,23 @@ gulp.task('product-metadata', function(cb) {
     OPTIONS.forEach(function(option) {
       var
         url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' + option + '&commodity_desc=' + props.qsVar,
-        filename = getOptionFilename(props.slug, option)
+        filename = getOptionFilename(props.slug, option),
+        filepath = props.folder + '/' + filename
       ;
 
-      download(url)
-        .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
-          if(!json || !json["data"]) { return []; }
-          return json["data"][0]["Values"];
-        }))
-        .pipe(insert.prepend('"' + option + '":')) // add option name before value array
-        .pipe(rename(filename)) // set filename
-        .pipe(gulp.dest(props.folder)) // write to fs
+      if(fileExists(filepath)) {
+        // skip
+      } else {
+        download(url)
+          .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
+            if(!json || !json["data"]) { return []; }
+            return json["data"][0]["Values"];
+          }))
+          .pipe(insert.prepend('"' + option + '":')) // add option name before value array
+          .pipe(rename(filename)) // set filename
+          .pipe(gulp.dest(props.folder)) // write to fs
+      }
+
     });
   });
 
@@ -220,22 +227,27 @@ gulp.task('product-download', function(cb) {
     queries.forEach(function(query) {
       var
         url      = baseURL + query.querystring,
-        filename = query.filename + '.json'
+        filename = query.filename + '.json',
+        filepath = props.folder + '/' + filename
       ;
 
-      request(url, {timeout: 120000})
-        .on('response', function(response) {
-          console.log(filename);
-        })
-        .on('error', function(err) {
-          console.log("ERROR [" + filename + "]", 'connection timeout?', (err.connect === true), err);
-        })
-        .pipe(source(filename))
-        .pipe(insert.prepend('"' + query.filename + '": '))
-        .pipe(insert.append(','))
-        .pipe(gulp.dest(props.folder)) // write to fs
-        .pipe(promise.deliverPromise(query))
-      ;
+      if(fileExists(filepath)) {
+        // skip
+      } else {
+        request(url, {timeout: 120000})
+          .on('response', function(response) {
+            console.log(filename);
+          })
+          .on('error', function(err) {
+            console.log("ERROR [" + err.code + "]", "Please run script again", query.filename);
+          })
+          .pipe(source(filename))
+          .pipe(insert.prepend('"' + query.filename + '": '))
+          .pipe(insert.append(','))
+          .pipe(gulp.dest(props.folder)) // write to fs
+          .pipe(promise.deliverPromise(query))
+        ;
+      }
 
     });
 
