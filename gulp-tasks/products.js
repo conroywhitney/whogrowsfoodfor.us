@@ -3,6 +3,7 @@ var
   gulpSequence  = require('gulp-sequence'),
   fs            = require('fs'),
   fileExists    = require('file-exists'),
+  flatten       = require('flat'),
   download      = require('gulp-download'),
   request       = require('request'),
   replace       = require('gulp-replace'),
@@ -116,7 +117,8 @@ gulp.task('product-metadata', function(cb) {
             if(!json || !json["data"]) { return []; }
             return json["data"][0]["Values"];
           }))
-          .pipe(insert.prepend('"' + option + '":')) // add option name before value array
+          .pipe(insert.prepend('{ "' + props.slug + '": { "' + option + '":')) // add option name before value array
+          .pipe(insert.append('}}')) // add option name before value array
           .pipe(rename(filename)) // set filename
           .pipe(gulp.dest(props.folder)) // write to fs
       }
@@ -137,7 +139,17 @@ gulp.task('product-concat', function() {
     ;
 
     gulp.src(props.folder + '/*.json')
-      .pipe(insert.append(',')) // add , to end of each of the files in the folder
+      .pipe(jsonTransform(function(json) {
+        if(!json || !json[props.slug]) { return []; }
+        var
+          value           = json[props.slug],
+          value_string    = JSON.stringify(json[props.slug]),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
+      .pipe(insert.append(','))
       .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
       .pipe(insert.prepend('{"' + props.slug + '":{ "commodity_desc": ["' + product + '"], "source_desc": ["CENSUS"], "year": ["2012"], ')) // wrap object with product name
       .pipe(insert.append('"agg_level_desc": ["NATIONAL", "STATE", "COUNTY"]}}')) // add item and end object
@@ -278,6 +290,12 @@ gulp.task('product-clean', function() {
 
   });
 
+});
+
+gulp.task('product-jsonlint', function() {
+  gulp.src(DATADIR + '/**/*.json')
+    .pipe(jsonlint()) // ensure we created valid JSON object in file
+    .pipe(jsonlint.reporter())
 });
 
 gulp.task('product-sanity-check', function() {
