@@ -55,18 +55,18 @@ function filterOption(option, value) {
   return keep;
 }
 
-function filenameFromOptions(zipped) {
+function filenameFromOptions(hashArray) {
   var
-    filtered = zipped.filter(filterOptionValueForFilename),
+    filtered = hashArray.filter(filterOptionValueForFilename),
     filename = filtered.map(filenamePartFromOptionValue).join('_')
   ;
   return filename;
 }
 
-function filenamePartFromOptionValue(zip) {
+function filenamePartFromOptionValue(hash) {
   var
-    option     = zip[0],
-    value      = zip[1],
+    option     = hash.option,
+    value      = hash.value,
     value_slug = slug(value.toLowerCase(), '_')
   ;
 
@@ -78,10 +78,10 @@ function filenamePartFromOptionValue(zip) {
   }
 }
 
-function filterOptionValueForFilename(zip) {
+function filterOptionValueForFilename(hash) {
   var
-    option = zip[0],
-    value  = zip[1],
+    option = hash.option,
+    value  = hash.value,
     regex  = new RegExp('^(ALL|TOTAL|CENSUS|2012)', 'gi'),
     ignore = regex.test(value),
     keep   = (ignore == false)

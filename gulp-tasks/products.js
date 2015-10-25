@@ -190,15 +190,16 @@ gulp.task('product-combinations', function() {
     optionCombos.forEach(function(combo) {
       var
         zipped    = R.zip(optionKeys, combo),
-        filename  = productHelper.filenameFromOptions(zipped),
+        zipHash   = zipped.map(kv => ({option: kv[0], value: kv[1]})),
+        name      = productHelper.filenameFromOptions(zipHash),
         encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
-        qspair    = encoded.map(kv => kv.join('='))
+        qspair    = encoded.map(kv => kv.join('=')),
         qsvars    = qspair.join('&')
       ;
 
       optionURLs.push({
-       filename:    filename,
-       options:     zipped,
+       name:        name,
+       options:     zipHash,
        querystring: qsvars
       });
     });
@@ -239,7 +240,7 @@ gulp.task('product-download', function(cb) {
     queries.forEach(function(query) {
       var
         url      = baseURL + query.querystring,
-        filename = query.filename + '.json',
+        filename = query.name + '.json',
         filepath = props.folder + '/' + filename
       ;
 
@@ -251,10 +252,10 @@ gulp.task('product-download', function(cb) {
             console.log(filename);
           })
           .on('error', function(err) {
-            console.log("ERROR [" + err.code + "]", "Please run script again", query.filename);
+            console.log("ERROR [" + err.code + "]", "Please run script again", query.name);
           })
           .pipe(source(filename))
-          .pipe(insert.prepend('"' + query.filename + '": '))
+          .pipe(insert.prepend('"' + query.name + '": '))
           .pipe(insert.append(','))
           .pipe(gulp.dest(props.folder)) // write to fs
           .pipe(promise.deliverPromise(query))
