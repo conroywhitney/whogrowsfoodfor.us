@@ -4,7 +4,7 @@ import '../styles/react-select.css';
 
 export default React.createClass({
   render: function() {
-    return <div className="ui container">
+    return <div>
       {this.props.children}
     </div>;
   }

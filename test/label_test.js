@@ -10,7 +10,7 @@ describe('label', () => {
 	describe('defaults', () => {
 
     it('should have default label by default', () => {
-      expect(getLabel(INITIAL_STATE)).to.eq('Map of The United States of America');
+      expect(getLabel(INITIAL_STATE)).to.eq('The United States of America');
     });
 
     it('should return null if given no state', () => {
@@ -27,7 +27,7 @@ describe('label', () => {
         stateName = 'Oregon',
         newState  = select(INITIAL_STATE, stateFIPS)
       ;
-      expect(getLabel(newState)).to.eq(`Map of ${stateName}`);
+      expect(getLabel(newState)).to.eq(stateName);
     });
 
     it('should set a county-related label', () => {
@@ -36,7 +36,7 @@ describe('label', () => {
         countyName = 'Jackson County, OR',
         newState   = select(INITIAL_STATE, countyFIPS)
       ;
-      expect(getLabel(newState)).to.eq(`Map of ${countyName}`);
+      expect(getLabel(newState)).to.eq(countyName);
     });
 
   });
@@ -49,7 +49,7 @@ describe('label', () => {
         productName = 'Corn',
         newState    = product(INITIAL_STATE, 'corn')
       ;
-      expect(getLabel(newState)).to.eq(`Map of ${productName} production in ${DEFAULT_LABEL}`);
+      expect(getLabel(newState)).to.eq(`${productName} production in ${DEFAULT_LABEL}`);
     });
 
   });
@@ -65,7 +65,7 @@ describe('label', () => {
         newState    = product(INITIAL_STATE, productKey),
         newState    = select(newState, regionFIPS)
       ;
-      expect(getLabel(newState)).to.eq(`Map of ${productName} production in ${regionName}`);
+      expect(getLabel(newState)).to.eq(`${productName} production in ${regionName}`);
     });
 
   });

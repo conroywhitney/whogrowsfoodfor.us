@@ -16,7 +16,7 @@ export function getLabel(state) {
     productLabel = getProductLabel(product)
   ;
 
-  return `Map of ${productLabel}${regionLabel}`
+  return `${productLabel}${regionLabel}`
 }
 
 export function getRegionLabel(fips) {
