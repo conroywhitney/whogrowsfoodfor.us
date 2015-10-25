@@ -18,6 +18,7 @@ export const INITIAL_STATE = fromJS({
   // use async actions to dispatch spinning/requesting/loading/showing
   data: {
     avocados:  require('../data/products/avocados.json'),
+    spinach:   require('../data/products/spinach.json'),
   }
 });
 
