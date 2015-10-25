@@ -1,6 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import d3 from 'd3';
+import {d3path} from '../geography';
 import transition from 'd3-transition';
 import ease from 'd3-ease';
 
@@ -9,7 +10,6 @@ export default React.createClass({
 
   render: function() {
     var
-      d3path    = d3.geo.path(),
       geography = this.props.topoJSON.features
     ;
 
