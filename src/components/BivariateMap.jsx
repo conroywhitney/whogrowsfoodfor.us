@@ -3,6 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import {landTopoJSON, stateTopoJSON, stateTopoMesh, countyTopoJSON, countyTopoMesh, d3path, getTopoJSONFromFIPS} from '../geography.js'
 import {getStateFIPS, normalizeFIPS, isFipsState} from '../fips';
+import {getDataFilterBySelectedFIPS, dataFilterCounties} from '../data';
 
 import MapLayer          from './MapLayer';
 import ClickableMapLayer from './ClickableMapLayer';
@@ -50,8 +51,12 @@ export default React.createClass({
 
   componentWillMount: function() {
     var
-      max       = this.props.productData.stats.max,
-      quantiles = null
+      // I'm not sure what I was thinking with this one ...
+      //dataFilter   = getDataFilterBySelectedFIPS(this.props.selectedFIPS),
+      filteredData = dataFilterCounties(this.props.productData.data),
+      fipsKeys     = Object.keys(filteredData),
+      values       = fipsKeys.map(key => filteredData[key]),
+      max          = Math.max.apply(null, values)  // seriously? wtf
     ;
 
     // set scale method using max value from data
