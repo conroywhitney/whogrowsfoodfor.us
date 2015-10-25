@@ -12,19 +12,19 @@ export function getLabel(state) {
     labels       = labelJSON,
     fips         = normalizeFIPS(state.get('selected')),
     product      = state.get('product'),
-    regionLabel  = getRegionLabel(labels, fips),
+    regionLabel  = getRegionLabel(fips),
     productLabel = getProductLabel(product)
   ;
 
   return `Map of ${productLabel}${regionLabel}`
 }
 
-function getRegionLabel(labels, fips) {
+export function getRegionLabel(fips) {
   if(!fips) { return DEFAULT_LABEL; }
-  return labels[fips]['long'] || DEFAULT_LABEL;
+  return labelJSON[fips]['long'] || DEFAULT_LABEL;
 }
 
-function getProductLabel(product) {
+export function getProductLabel(product) {
   if(!product) { return ''; }
   return product.name + ' production in ';
 }
