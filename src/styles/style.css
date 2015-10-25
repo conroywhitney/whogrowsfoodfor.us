@@ -103,3 +103,15 @@ svg {
   width: 325px;
   margin-bottom: 25px;
 }
+
+.legend circle {
+  fill: none;
+  stroke: #ccc;
+}
+
+.legend text {
+  fill: #777;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
