@@ -38,7 +38,10 @@ export default React.createClass({
             yPos           = i * barHeight,
             formattedValue = formatFunction(d.value),
             groupPosition  = "translate(" + xPos + "," + yPos + ")",
-            label          = barWidth > 50 ? formattedValue : ''
+            labelUnits     = ' acres',
+            label          = barWidth > 50 ? formattedValue + labelUnits : '',
+            labelX         = 3,
+            labelY         = barHeight / 2
           ;
 
           return (
@@ -51,8 +54,8 @@ export default React.createClass({
                 height: barHeight - 1
               }),
               React.DOM.text({
-                x: barWidth - 3,
-                y: barHeight / 2,
+                x: labelX,
+                y: labelY,
                 dy: "0.35em"
               }, label)
             )
