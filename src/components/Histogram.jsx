@@ -9,28 +9,34 @@ export default React.createClass({
     // thanks to http://bl.ocks.org/mbostock/3885304
 
     var
-      data      = this.props.data || [],
-      sorted    = data.sort(function(a, b) { return b.value - a.value }), // descending
-      width     = this.props.width,
-      barHeight = 20,
-      height    = barHeight * data.length,
-      x         = d3.scale.linear().range([0, width])
+      data        = this.props.data || [],
+      sorted      = data.sort(function(a, b) { return b.value - a.value }), // descending
+      chartWidth  = this.props.width,
+      barHeight   = 20,
+      chartHeight = barHeight * data.length,
+      x           = d3.scale.linear().range([0, chartWidth])
     ;
 
     x.domain([0, d3.max(data, function(d) { return d.value; })])
 
     return (
       React.DOM.svg({
-        width: width,
-        height: height,
+        width: chartWidth,
+        height: chartHeight,
         className: "chart"
       },
         sorted.map(function(d, i) {
+          var
+            barWidth = x(d.value),
+            xPos = chartWidth - barWidth,
+            yPos = i * barHeight
+          ;
+
           return (
-            <g transform={"translate(0," + i * barHeight + ")"}>
+            <g transform={"translate(" + xPos + "," + yPos + ")"}>
               <rect
                 className="bar"
-                width={x(d.value)}
+                width={barWidth}
                 height={barHeight - 1}
               />
             </g>
