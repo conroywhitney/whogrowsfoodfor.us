@@ -8,30 +8,24 @@ import {isFipsState}    from '../fips';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  transformTreemap: function() {
-    if(!this.props.productData.fips) { return false; }
+  dataForBarChart: function() {
+    var data = this.props.productData.fips;
+    console.log('transform bar chart', data);
 
-    console.log('transform treemap');
+    if(!data) { return false; }
+
     var
-      data      = this.props.productData.fips,
-      keys      = Object.keys(data),
+      keys = Object.keys(data),
       stateKeys = keys.filter(key => isFipsState(key))
     ;
-    return stateKeys.map(key => ({label: getRegionLabel(key), value: data[key]}))
+    console.log(stateKeys);
+
+    return stateKeys.map(key => ({ label: getRegionLabel(key), v: data[key] }));
   },
 
   render: function() {
     return (
       <div className="stats-container">
-        <Treemap
-          data={this.transformTreemap()}
-          width={450}
-          height={250}
-          textColor="#484848"
-          fontSize="12px"
-          title="Treemap"
-          hoverAnimation={false}
-        />
       </div>
     );
   }
