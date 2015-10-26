@@ -1,1 +1,1 @@
-{"corn":{"corn_acres_area_harvested":{"stats":{"units":"ACRES","totals":{"national":94609673}},"data":{"00000":94609673}},"corn_acres_sales":{}}}
+{"corn":{"corn_acres_area_harvested":{"stats":{"units":"ACRES","totals":{"national":94609673}},"fips":{"00000":94609673}},"corn_acres_sales":{}}}
