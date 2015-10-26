@@ -58,8 +58,10 @@ resolve and download everything.*
    responses from Step #6 into smaller files which represent the
 information we want to work with. Specifically, we need to know the
 product name, class, and data values for National (FIPS 00000), State
-(FIPS XX000), and County (FIPS XXYYY) levels. Saves to
-`data/products/{product}.json`.
+(FIPS XX000), and County (FIPS XXYYY) levels. Look in the `getCleanJSON` method of `src/product_helper.js` to
+see the transformation from raw API data to smaller JSON files. Check
+out corresponding tests in `test/product_helper_spec.js` to see how the
+function is expected to behave. Saves to `data/products/{product}.json`.
 9. `product-combine-all`: Combine all product JSON files into one giant
    file to be included with the application. *Note: Some applications may just want a handful of
    product JSON files, or may choose to load them individually to save
