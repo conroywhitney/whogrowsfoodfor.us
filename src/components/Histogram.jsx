@@ -17,7 +17,8 @@ export default React.createClass({
       data           = this.props.data || [],
       sorted         = data.sort(function(a, b) { return b.value - a.value }), // descending
       chartWidth     = this.props.width,
-      barHeight      = 20,
+      barHeight      = 24,
+      barPadding     = 4,
       chartHeight    = barHeight * data.length,
       xScaleFunction = d3.scale.linear().range([0, chartWidth]),
       formatFunction = this.numberWithCommas
@@ -39,9 +40,9 @@ export default React.createClass({
             formattedValue = formatFunction(d.value),
             groupPosition  = "translate(" + xPos + "," + yPos + ")",
             labelUnits     = ' acres',
-            label          = barWidth > 50 ? formattedValue + labelUnits : '',
+            label          = barWidth > 100 ? formattedValue + labelUnits : '',
             labelX         = 3,
-            labelY         = barHeight / 2,
+            labelY         = barHeight / 2 - 2,
             regionName     = d.label,
             regionX        = barWidth + 50,
             regionY        = barHeight / 2 + 2
@@ -54,7 +55,7 @@ export default React.createClass({
               React.DOM.rect({
                 className: "bar",
                 width: barWidth,
-                height: barHeight - 1
+                height: barHeight - barPadding
               }),
               React.DOM.text({
                 className: "valueLabel",
