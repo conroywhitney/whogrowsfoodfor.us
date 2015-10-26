@@ -64,7 +64,7 @@ export default React.createClass({
     ;
 
     // set scale method using max value from data
-    this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
+    this.scaleFunction = d3.scale.quantile().domain([0, max]).range([1, 4, 9, 16])
 
     // TODO: set color range based on quantile
     this.colorFunction = null;
