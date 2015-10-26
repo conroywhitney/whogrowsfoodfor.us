@@ -10,6 +10,7 @@ export default React.createClass({
 
     var
       data      = this.props.data || [],
+      sorted    = data.sort(function(a, b) { return b.value - a.value }), // descending
       width     = this.props.width,
       barHeight = 20,
       height    = barHeight * data.length,
@@ -24,7 +25,7 @@ export default React.createClass({
         height: height,
         className: "chart"
       },
-        data.map(function(d, i) {
+        sorted.map(function(d, i) {
           return (
             <g transform={"translate(0," + i * barHeight + ")"}>
               <rect
