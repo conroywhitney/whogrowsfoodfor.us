@@ -59,11 +59,13 @@ export default React.createClass({
       // I'm not sure what I was thinking with this one ...
       //dataFilter   = getDataFilterBySelectedFIPS(this.props.selectedFIPS),
       newDataPoints = nextProps.productData.fips,
-      filteredData  = dataFilterCounties(nextProps.newDataPoints),
+      filteredData  = dataFilterCounties(newDataPoints),
       fipsKeys      = Object.keys(filteredData),
       values        = fipsKeys.map(key => filteredData[key]),
       max           = Math.max.apply(null, values)  // seriously? wtf
     ;
+
+    console.log('bivariate map : component will update', max);
 
     // set scale method using max value from data
     this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
