@@ -127,7 +127,7 @@ iframe {
 }
 
 .stats-container svg {
-  overflow: visible;
+  overflow: hidden;
   margin-top: -75px;
 }
 
