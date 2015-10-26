@@ -3,6 +3,7 @@ import PureRenderMixin            from 'react-addons-pure-render-mixin';
 import {connect}                  from 'react-redux';
 import ProductDropdown            from '../components/ProductDropdown';
 import MapContainer               from '../components/MapContainer';
+import StatsContainer             from '../components/StatsContainer';
 import * as actionCreators        from '../action_creators';
 import {getLabel}                 from '../label';
 import {getStateFIPS}             from '../fips';
@@ -15,7 +16,7 @@ export const MainNaked = React.createClass({
     return (
       <div className="ui container">
 
-        <div className="ui stackable divided grid">
+        <div className="ui stackable grid">
 
           <div className="ui row">
             <div className="sixteen wide column">
@@ -36,7 +37,9 @@ export const MainNaked = React.createClass({
                 product={this.props.product}
                 handleChange={this.props.setProduct}
               />
-              <iframe src="http://bl.ocks.org/mbostock/raw/7341714/"></iframe>
+              <StatsContainer
+                productData={this.props.product_data}
+              />
             </div>
 
             <div className="eight wide column">

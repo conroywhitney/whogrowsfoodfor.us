@@ -50,7 +50,7 @@ body {
   margin-bottom: 25px;
 }
 
-svg {
+.map svg {
   background: rgba(50, 50, 50, 0.05);
   border: 1px solid #999;
 }
@@ -122,4 +122,23 @@ svg {
 
 iframe {
   border: 0px;
+}
+
+.stats-container svg {
+  overflow: visible;
+}
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text.valueLabel {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: start;
+}
+
+.chart text.regionLabel {
+  fill: black;
+  font: 18px sans-serif;
 }
