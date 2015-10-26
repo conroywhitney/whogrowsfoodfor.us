@@ -6,17 +6,11 @@ import {d3path} from '../geography';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
-  componentWillUpdate: function(nextProps, nextState) {
-    console.log('filtered map layer : component will update');
-  },
-
   render: function() {
     var
       geography = this.props.topoJSON.features,
       selected  = this.props.selectedFIPS
     ;
-
-    console.log('filtered map layer : render');
 
     return (
       React.DOM.g({},

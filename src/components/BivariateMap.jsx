@@ -50,8 +50,6 @@ export default React.createClass({
   colorFunction: null,
 
   componentWillUpdate: function(nextProps, nextState) {
-    console.log('bivariate map : component will update', nextProps.productData);
-
     // no need to do anything if we ain't got no data!
     if(!nextProps.productData) { return true; }
 
@@ -65,8 +63,6 @@ export default React.createClass({
       max           = Math.max.apply(null, values)  // seriously? wtf
     ;
 
-    console.log('bivariate map : component will update', max);
-
     // set scale method using max value from data
     this.scaleFunction = d3.scale.quantile().domain([0, max]).range([2, 4, 9, 16])
 
@@ -75,8 +71,6 @@ export default React.createClass({
   },
 
   componentDidUpdate: function() {
-    console.log('bivariate map : component did update');
-
     // if there's a topoJSON object associated with this selected FIPS
     // then go ahead and zoom into that region for a closer look
     if(this.getSelectedTopoJSON()) {
@@ -144,7 +138,6 @@ export default React.createClass({
   },
 
   render: function() {
-    console.log('bivariate map : render');
     return (
       <div className="map">
         <svg width={this.props.width} height={this.props.height} onClick={this.handleMapClick}>

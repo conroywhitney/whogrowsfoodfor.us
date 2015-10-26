@@ -38,8 +38,6 @@ export default React.createClass({
       filtered  = this.filteredLocations(locations)
     ;
 
-    console.log('bubbles : render', filtered);
-
     return (
       React.DOM.g({
         className: "bubbles"
