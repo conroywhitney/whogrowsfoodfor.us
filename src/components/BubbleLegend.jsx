@@ -23,6 +23,7 @@ export default React.createClass({
             radius = scaleFunction(value),
             cy     = -radius
           ;
+          console.log(radius, value);
           return React.DOM.circle({
             r: radius,
             cy: cy

@@ -43,11 +43,7 @@ export const MainNaked = React.createClass({
             </div>
 
             <div className="eight wide column">
-              <ProductDropdown
-                product={this.props.product}
-                handleChange={this.props.setProduct}
-              />
-              <iframe src="http://bl.ocks.org/mbostock/raw/7341714/"></iframe>
+
             </div>
           </div>
 
