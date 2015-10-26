@@ -174,6 +174,7 @@ export default React.createClass({
                 className="counties"
                 data={this.props.productData}
                 filterFunction={this.props.countyLineFilter}
+                selectedFIPS={this.props.selectedFIPS}
               />
             : null }
             <Bubbles
