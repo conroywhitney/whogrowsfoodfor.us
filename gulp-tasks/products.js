@@ -356,10 +356,25 @@ gulp.task('product-sanity-check', function() {
 
 gulp.task('product-combine-all', function() {
   gulp.src(PRODDIR + '*')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+        var
+          value           = json,
+          value_string    = JSON.stringify(value),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
       .pipe(insert.append(','))
-      .pipe(concat('all_products.json')) // combine all files into single options file
-      .pipe(insert.prepend('{ "products": ['))
-      .pipe(insert.append(' {"ignore": {}} ] }'))
+      .pipe(concat('products.json')) // combine all files into single options file
+      .pipe(insert.prepend('{ "products": {'))
+      .pipe(insert.append(' "ignore": {} }}'))
+      .pipe(jsonTransform(function(json) {
+        // was just a placeholder for concat
+        delete json.products.ignore;
+        return json;
+      }))
       .pipe(gulp.dest(DATADIR))
       .pipe(jsonlint())
       .pipe(jsonlint.reporter())
