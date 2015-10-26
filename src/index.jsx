@@ -32,7 +32,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>{routes}</Router>
     </Provider>
-    { true ?
+    { false ?
     <DebugPanel top right bottom>
       <DevTools store={store} monitor={LogMonitor} />
     </DebugPanel>
