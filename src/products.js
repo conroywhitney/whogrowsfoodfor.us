@@ -1,15 +1,18 @@
 import {Map, List, toJS} from 'immutable';
 import {INITIAL_STATE} from './constants'
 import {filterProducts, productFilter} from './product_helper'
+import {getQueryLabel} from './label';
 
-export const productJSON = require('../data/products.json');
+export const productMeta    = require('../data/meta/product_meta.json');
+export const productData    = require('../data/products.json').products;
+export const productQueries = Object.keys(productData).sort();
+export const productOptions = productQueries
+                                  .map(key => ({
+                                    value: key,
+                                    label: getQueryLabel(key)
+                                  }));
 
-export const rawProductList   = require('../data/raw/product-list.json')["data"][0]["Values"];
-
-export const filteredProducts = filterProducts(rawProductList);
-export const productList      = Object.keys(filteredProducts);
-export const productOptions   = productList.map(p =>
-                                  ({value: p, label: p})
-                                );
-
-
+export function getDataForQuery(query) {
+  if(!query) { return []; }
+  return productData[query] || [];
+}

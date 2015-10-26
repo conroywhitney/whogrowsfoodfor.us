@@ -28,8 +28,8 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>{routes}</Router>
     </Provider>
-    { false ?
-    <DebugPanel top left bottom>
+    { true ?
+    <DebugPanel top right bottom>
       <DevTools store={store} monitor={LogMonitor} />
     </DebugPanel>
     : null }

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, getRollupKey, getCleanKeys, getIntFromCommaString, getCleanJSON} from '../src/product_helper';
+import {filterProducts, productFilter, filterOptions, filterOption, filenameFromOptions, filterOptionValueForFilename, filenamePartFromOptionValue, getRollupKey, getCleanKeys, getIntFromCommaString, getCleanJSON} from '../src/product_helper';
 
 describe('product helper', () => {
 
@@ -140,7 +140,7 @@ describe('product helper', () => {
   describe('filenameFromOptions', () => {
 
     var
-      options = ["2012","CENSUS","NATIONAL","APPLES","ALL CLASSES","ACRES","AREA BEARING","ALL UTILIZATION PRACTICES","ALL PRODUCTION PRACTICES","TOTAL"],
+      options = [ { "option": "commodity_desc", "value": "LETTUCE" }, { "option": "class_desc", "value": "ROMAINE" }, { "option": "unit_desc", "value": "ACRES" }, { "option": "statisticcat_desc", "value": "AREA HARVESTED" }, { "option": "util_practice_desc", "value": "ALL UTILIZATION PRACTICES" }, { "option": "prodn_practice_desc", "value": "ALL PRODUCTION PRACTICES" }, { "option": "domain_desc", "value": "TOTAL" }, { "option": "year", "value": "2012" }, { "option": "source_desc", "value": "CENSUS" }, { "option": "agg_level_desc", "value": "NATIONAL" } ],
       filename = filenameFromOptions(options)
     ;
 
@@ -160,28 +160,53 @@ describe('product helper', () => {
       expect(filename).to.not.contain('2012');
     });
 
+    describe('product with specific class', () => {
+
+      it('should put parenthesis around class', () => {
+        expect(filename).to.contain('(');
+        expect(filename).to.contain(')');
+      });
+
+      it('should have the class in the filename', () => {
+        expect(filename).to.contain('romaine');
+      });
+
+    });
+
+  });
+
+  describe('filenamePartFromOptionValue', () => {
+
+    it('should return just the value if regular option', () => {
+      expect(filenamePartFromOptionValue({'option': 'unit_desc', 'value': 'ACRES'})).to.eq('acres');
+    });
+
+    it('should return class name wrapped in parenthesis', () => {
+      expect(filenamePartFromOptionValue({'option': 'class_desc', 'value': 'ROMAINE'})).to.eq('(romaine)');
+    });
+
   });
 
   describe('filterOptionValueForFilename', () => {
 
     it('should omit _all_* values from filename', () => {
-      expect(filterOptionValueForFilename("ALL CLASSES")).to.be.false;
+      expect(filterOptionValueForFilename({'option': 'class_desc', 'value': "ALL CLASSES"})).to.be.false;
     });
 
     it('should omit _total_ values from filename', () => {
-      expect(filterOptionValueForFilename("TOTAL")).to.be.false;
+      expect(filterOptionValueForFilename({'option': 'domain_desc', 'value': "TOTAL"})).to.be.false;
     });
 
     it('should omit _census_ from filename', () => {
-      expect(filterOptionValueForFilename("CENSUS")).to.be.false;
+      expect(filterOptionValueForFilename({'option': 'source_desc', 'value': "CENSUS"})).to.be.false;
     });
 
     it('should omit _2012_ from filename', () => {
-      expect(filterOptionValueForFilename("2012")).to.be.false;
+      expect(filterOptionValueForFilename({'option': 'year', 'value': "2012"})).to.be.false;
     });
 
     it('should keep good words', () => {
-      expect(filterOptionValueForFilename("APPLES")).to.be.true;
+      expect(filterOptionValueForFilename({'option': 'commodity_desc', 'value': "APPLES"})).to.be.true;
     });
 
   });

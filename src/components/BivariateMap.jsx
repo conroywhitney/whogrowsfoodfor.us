@@ -49,14 +49,18 @@ export default React.createClass({
 
   colorFunction: null,
 
-  componentWillMount: function() {
+  componentWillUpdate: function(nextProps, nextState) {
+    // no need to do anything if we ain't got no data!
+    if(!nextProps.productData) { return true; }
+
     var
       // I'm not sure what I was thinking with this one ...
       //dataFilter   = getDataFilterBySelectedFIPS(this.props.selectedFIPS),
-      filteredData = dataFilterCounties(this.props.productData.data),
-      fipsKeys     = Object.keys(filteredData),
-      values       = fipsKeys.map(key => filteredData[key]),
-      max          = Math.max.apply(null, values)  // seriously? wtf
+      newDataPoints = nextProps.productData.fips,
+      filteredData  = dataFilterCounties(newDataPoints),
+      fipsKeys      = Object.keys(filteredData),
+      values        = fipsKeys.map(key => filteredData[key]),
+      max           = Math.max.apply(null, values)  // seriously? wtf
     ;
 
     // set scale method using max value from data
@@ -163,6 +167,7 @@ export default React.createClass({
                 className="counties"
                 data={this.props.productData}
                 filterFunction={this.props.countyLineFilter}
+                selectedFIPS={this.props.selectedFIPS}
               />
             : null }
             <Bubbles

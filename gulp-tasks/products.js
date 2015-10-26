@@ -2,10 +2,13 @@ var
   gulp          = require('gulp-param')(require('gulp'), process.argv),
   gulpSequence  = require('gulp-sequence'),
   fs            = require('fs'),
+  fileExists    = require('file-exists'),
+  flatten       = require('flat'),
   download      = require('gulp-download'),
   request       = require('request'),
   replace       = require('gulp-replace'),
   source        = require('vinyl-source-stream'),
+  streamify     = require('streamify'),
   insert        = require('gulp-insert'),
   parse         = require('csv-parse'),
   jeditor       = require("gulp-json-editor"),
@@ -24,7 +27,7 @@ var
   urlencode     = require('urlencode'),
   promise       = require("gulp-promise"),
   using         = require("gulp-using"),
-  $size        = require("gulp-size"),
+  $size         = require("gulp-size"),
   productHelper = require('../src/product_helper'),
   TEMPDIR       = './tmp/',
   DATADIR       = './data/',
@@ -89,9 +92,9 @@ gulp.task('product-list', function() {
     .pipe(gulp.dest(RAWDIR))
 });
 
-gulp.task('product-metadata', function() {
+gulp.task('product-metadata', function(cb) {
   var
-    products = getFilteredProductList()
+    products    = getFilteredProductList()
   ;
 
   products.forEach(function(product) {
@@ -102,17 +105,24 @@ gulp.task('product-metadata', function() {
     OPTIONS.forEach(function(option) {
       var
         url      = 'http://nass-api.azurewebsites.net/api/get_dependent_param_values?source_desc=CENSUS&year=2012&freq_desc=ANNUAL&agg_level_desc=COUNTY&distinctParams=' + option + '&commodity_desc=' + props.qsVar,
-        filename = getOptionFilename(props.slug, option)
+        filename = getOptionFilename(props.slug, option),
+        filepath = props.folder + '/' + filename
       ;
 
-      download(url)
-        .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
-          if(!json || !json["data"]) { return []; }
-          return json["data"][0]["Values"];
-        }))
-        .pipe(insert.prepend('"' + option + '":')) // add option name before value array
-        .pipe(rename(filename)) // set filename
-        .pipe(gulp.dest(props.folder)) // write to fs
+      if(fileExists(filepath)) {
+        // skip
+      } else {
+        download(url)
+          .pipe(jeditor(function(json) { // get meat and potatoes of JSON object
+            if(!json || !json["data"]) { return []; }
+            return json["data"][0]["Values"];
+          }))
+          .pipe(insert.prepend('{ "' + props.slug + '": { "' + option + '":')) // add option name before value array
+          .pipe(insert.append('}}')) // add option name before value array
+          .pipe(rename(filename)) // set filename
+          .pipe(gulp.dest(props.folder)) // write to fs
+      }
+
     });
   });
 
@@ -129,7 +139,17 @@ gulp.task('product-concat', function() {
     ;
 
     gulp.src(props.folder + '/*.json')
-      .pipe(insert.append(',')) // add , to end of each of the files in the folder
+      .pipe(jsonTransform(function(json) {
+        if(!json || !json[props.slug]) { return []; }
+        var
+          value           = json[props.slug],
+          value_string    = JSON.stringify(json[props.slug]),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
+      .pipe(insert.append(','))
       .pipe(concat(props.slug + '_options.json')) // combine all files into single options file
       .pipe(insert.prepend('{"' + props.slug + '":{ "commodity_desc": ["' + product + '"], "source_desc": ["CENSUS"], "year": ["2012"], ')) // wrap object with product name
       .pipe(insert.append('"agg_level_desc": ["NATIONAL", "STATE", "COUNTY"]}}')) // add item and end object
@@ -169,18 +189,17 @@ gulp.task('product-combinations', function() {
 
     optionCombos.forEach(function(combo) {
       var
-        filename  = productHelper.filenameFromOptions(combo),
         zipped    = R.zip(optionKeys, combo),
+        zipHash   = zipped.map(kv => ({option: kv[0], value: kv[1]})),
+        name      = productHelper.filenameFromOptions(zipHash),
         encoded   = zipped.map(kv => [kv[0], urlencode(kv[1])]),
-        qspair    = encoded.map(kv => kv.join('='))
+        qspair    = encoded.map(kv => kv.join('=')),
         qsvars    = qspair.join('&')
       ;
 
-      console.log(filename);
-
       optionURLs.push({
-       filename:    filename,
-       options:     zipped,
+       name:        name,
+       options:     zipHash,
        querystring: qsvars
       });
     });
@@ -221,23 +240,27 @@ gulp.task('product-download', function(cb) {
     queries.forEach(function(query) {
       var
         url      = baseURL + query.querystring,
-        filename = query.filename + '.json'
+        filename = query.name + '.json',
+        filepath = props.folder + '/' + filename
       ;
 
-      request(url)
-        .on('response', function(response) {
-          console.log(filename);
-        })
-        .on('error', function(err) {
-          console.log("ERROR [" + filename + "]");
-          console.log(err);
-        })
-        .pipe(source(filename))
-        .pipe(insert.prepend('"' + query.filename + '": '))
-        .pipe(insert.append(','))
-        .pipe(gulp.dest(props.folder)) // write to fs
-        .pipe(promise.deliverPromise(query))
-      ;
+      if(fileExists(filepath)) {
+        // skip
+      } else {
+        request(url, {timeout: 120000})
+          .on('response', function(response) {
+            console.log(filename);
+          })
+          .on('error', function(err) {
+            console.log("ERROR [" + err.code + "]", "Please run script again", query.name);
+          })
+          .pipe(source(filename))
+          .pipe(insert.prepend('{ "' + query.name + '": '))
+          .pipe(insert.append('}'))
+          .pipe(gulp.dest(props.folder)) // write to fs
+          .pipe(promise.deliverPromise(query))
+        ;
+      }
 
     });
 
@@ -256,6 +279,17 @@ gulp.task('product-clean', function() {
     ;
 
     gulp.src(props.folder + '/*{national,state,county}.json')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+        var
+          value           = json,
+          value_string    = JSON.stringify(value),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
+      .pipe(insert.append(','))
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
@@ -265,9 +299,25 @@ gulp.task('product-clean', function() {
       .pipe(gulp.dest(PRODDIR)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
       .pipe(jsonlint.reporter())
-
   });
 
+});
+
+gulp.task('product-jsonlint', function() {
+  gulp.src(DATADIR + '/**/*.json')
+    .pipe(jsonlint()) // ensure we created valid JSON object in file
+    .pipe(jsonlint.reporter())
+});
+
+gulp.task('product-jsonlint-clean', function() {
+  gulp.src(DATADIR + '/**/*.json')
+    .pipe(jsonlint()) // ensure we created valid JSON object in file
+    .pipe(jsonlint.reporter(function(file) {
+      if(file.success !== true) {
+        fs.unlinkSync(file.path);
+        console.log('deleted', file.path);
+      }
+    }))
 });
 
 gulp.task('product-sanity-check', function() {
@@ -300,6 +350,34 @@ gulp.task('product-sanity-check', function() {
         return json;
       }))
       .pipe(jsonlint()) // ensure we created valid JSON object in file
+      .pipe(jsonlint.reporter())
+  ;
+});
+
+gulp.task('product-combine-all', function() {
+  gulp.src(PRODDIR + '*')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+        var
+          keys            = Object.keys(json),
+          value           = json[keys[0]],
+          value_string    = JSON.stringify(value),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
+      .pipe(insert.append(','))
+      .pipe(concat('products.json')) // combine all files into single options file
+      .pipe(insert.prepend('{ "products": {'))
+      .pipe(insert.append(' "ignore": {} }}'))
+      .pipe(jsonTransform(function(json) {
+        // was just a placeholder for concat
+        delete json.products.ignore;
+        return json;
+      }))
+      .pipe(gulp.dest(DATADIR))
+      .pipe(jsonlint())
       .pipe(jsonlint.reporter())
   ;
 });

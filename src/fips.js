@@ -1,6 +1,6 @@
-export const FIPS_NATIONAL = '00000';
+const FIPS_NATIONAL = '00000';
 
-export function getStateFIPS(string) {
+function getStateFIPS(string) {
   // FIPS codes are in the thousands
   // Starting with Alabama at 01000
   // and ending with Puerto Rico at 72000
@@ -19,7 +19,7 @@ export function getStateFIPS(string) {
   }
 }
 
-export function normalizeFIPS(fips) {
+function normalizeFIPS(fips) {
   if(!fips) { return FIPS_NATIONAL; }
 
   var
@@ -38,7 +38,7 @@ export function normalizeFIPS(fips) {
   return fips_string;
 }
 
-export function getFipsFromStateCounty(state, county) {
+function getFipsFromStateCounty(state, county) {
   if(!state) { return null; }
 
   var
@@ -71,22 +71,34 @@ export function getFipsFromStateCounty(state, county) {
   return fips;
 }
 
-export function getFipsType(fips) {
+function getFipsType(fips) {
   if(isFipsNational(fips)) { return 'national'; }
   if(isFipsState(fips))    { return 'state';    }
   if(isFipsCounty(fips))   { return 'county';   }
   return null;
 }
 
-export function isFipsNational(fips) {
+function isFipsNational(fips) {
   return (fips == '00000');
 }
 
-export function isFipsState(fips) {
+function isFipsState(fips) {
   return /\d{2}000/.test(fips) && !isFipsNational(fips);
 }
 
-export function isFipsCounty(fips) {
+function isFipsCounty(fips) {
   return /\d{5}/.test(fips) && !isFipsNational(fips) && !isFipsState(fips);
 }
 
+
+//
+// *sigh*
+//
+module.exports.FIPS_NATIONAL          = FIPS_NATIONAL;
+module.exports.getStateFIPS           = getStateFIPS;
+module.exports.normalizeFIPS          = normalizeFIPS;
+module.exports.getFipsFromStateCounty = getFipsFromStateCounty;
+module.exports.getFipsType            = getFipsType;
+module.exports.isFipsNational         = isFipsNational;
+module.exports.isFipsState            = isFipsState;
+module.exports.isFipsCounty           = isFipsCounty;

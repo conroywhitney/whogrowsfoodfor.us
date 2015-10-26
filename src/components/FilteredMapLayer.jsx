@@ -8,7 +8,8 @@ export default React.createClass({
 
   render: function() {
     var
-      geography = this.props.topoJSON.features
+      geography = this.props.topoJSON.features,
+      selected  = this.props.selectedFIPS
     ;
 
     return (

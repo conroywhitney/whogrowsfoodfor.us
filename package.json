@@ -38,6 +38,8 @@
     "csvtojson": "^0.4.3",
     "deep-extend": "^0.4.0",
     "fast-csv": "^0.6.0",
+    "file-exists": "^0.1.1",
+    "flat": "^1.6.0",
     "fs": "0.0.2",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
@@ -70,6 +72,7 @@
     "request": "^2.65.0",
     "require-dir": "^0.3.0",
     "slug": "^0.9.1",
+    "streamify": "^0.2.5",
     "style-loader": "^0.12.4",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.12.2",
@@ -91,6 +94,7 @@
     "react-select": "^0.7.0",
     "redux": "^3.0.2",
     "semantic-ui-css": "^2.1.4",
+    "titlecase": "^1.0.2",
     "topojson": "^1.6.19"
   }
 }
