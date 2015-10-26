@@ -70,8 +70,8 @@ body {
 
 .counties {
   fill: none;
-  stroke: #333;
-  stroke-width: .3px;
+  stroke: #CCC;
+  stroke-width: .10px;
   stroke-linejoin: round;
 }
 
@@ -81,8 +81,8 @@ body {
 }
 
 .feature:hover {
-  fill: orange;
-  fill-opacity: 0.2;
+  stroke: orange;
+  stroke-width: .5;
 }
 
 .feature.active {
