@@ -16,7 +16,7 @@ export const MainNaked = React.createClass({
     return (
       <div className="ui container">
 
-        <div className="ui stackable divided grid">
+        <div className="ui stackable grid">
 
           <div className="ui row">
             <div className="sixteen wide column">

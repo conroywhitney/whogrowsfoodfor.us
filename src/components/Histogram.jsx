@@ -41,7 +41,10 @@ export default React.createClass({
             labelUnits     = ' acres',
             label          = barWidth > 50 ? formattedValue + labelUnits : '',
             labelX         = 3,
-            labelY         = barHeight / 2
+            labelY         = barHeight / 2,
+            regionName     = d.label,
+            regionX        = barWidth + 50,
+            regionY        = barHeight / 2 + 2
           ;
 
           return (
@@ -54,10 +57,17 @@ export default React.createClass({
                 height: barHeight - 1
               }),
               React.DOM.text({
+                className: "valueLabel",
                 x: labelX,
                 y: labelY,
                 dy: "0.35em"
-              }, label)
+              }, label),
+              React.DOM.text({
+                className: "regionLabel",
+                x: regionX,
+                y: regionY,
+                dy: "0.35em"
+              }, regionName)
             )
           )
         })

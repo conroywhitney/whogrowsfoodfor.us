@@ -124,12 +124,21 @@ iframe {
   border: 0px;
 }
 
+.stats-container svg {
+  overflow: visible;
+}
+
 .chart rect {
   fill: steelblue;
 }
 
-.chart text {
+.chart text.valueLabel {
   fill: white;
   font: 10px sans-serif;
   text-anchor: start;
+}
+
+.chart text.regionLabel {
+  fill: black;
+  font: 18px sans-serif;
 }
