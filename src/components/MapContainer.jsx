@@ -7,6 +7,8 @@ export default React.createClass({
   mixins: [PureRenderMixin],
 
   render: function() {
+    console.log('map container : render');
+    console.log(this.props.productData);
     return <div className="map-container">
       <Title label={this.props.label} />
       <BivariateMap

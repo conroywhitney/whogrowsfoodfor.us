@@ -11,11 +11,11 @@ export default React.createClass({
   },
 
   locationValue: function(location) {
-    if(!this.props.data) { return null; }
-    if(!location)        { return null; }
+    if(!this.props.data.fips) { return null; }
+    if(!location)             { return null; }
 
     var
-      data   = this.props.data.data,
+      data   = this.props.data.fips,
       fips   = this.locationFIPS(location),
       value  = data[fips]
     ;
@@ -37,6 +37,8 @@ export default React.createClass({
       locations = this.props.topoJSON.features,
       filtered  = this.filteredLocations(locations)
     ;
+
+    console.log('bubbles : render', filtered);
 
     return (
       React.DOM.g({

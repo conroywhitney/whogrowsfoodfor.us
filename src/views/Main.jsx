@@ -22,7 +22,7 @@ export const MainNaked = React.createClass({
               <MapContainer
                 selected={this.props.selected}
                 label={this.props.label}
-                productData={this.product_data}
+                productData={this.props.product_data}
                 detailLevel={this.props.detail_level}
                 setRegion={this.props.setRegion}
                 countyLineFilter={this.countyLineFilter}

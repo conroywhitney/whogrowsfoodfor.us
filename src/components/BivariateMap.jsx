@@ -49,17 +49,20 @@ export default React.createClass({
 
   colorFunction: null,
 
-  componentWillMount: function() {
+  componentWillUpdate: function(nextProps, nextState) {
+    console.log('bivariate map : component will update', nextProps.productData);
+
     // no need to do anything if we ain't got no data!
-    if(!this.props.produtData) { return true; }
+    if(!nextProps.productData) { return true; }
 
     var
       // I'm not sure what I was thinking with this one ...
       //dataFilter   = getDataFilterBySelectedFIPS(this.props.selectedFIPS),
-      filteredData = dataFilterCounties(this.props.productData),
-      fipsKeys     = Object.keys(filteredData),
-      values       = fipsKeys.map(key => filteredData[key]),
-      max          = Math.max.apply(null, values)  // seriously? wtf
+      newDataPoints = nextProps.productData.fips,
+      filteredData  = dataFilterCounties(nextProps.newDataPoints),
+      fipsKeys      = Object.keys(filteredData),
+      values        = fipsKeys.map(key => filteredData[key]),
+      max           = Math.max.apply(null, values)  // seriously? wtf
     ;
 
     // set scale method using max value from data
@@ -70,6 +73,8 @@ export default React.createClass({
   },
 
   componentDidUpdate: function() {
+    console.log('bivariate map : component did update');
+
     // if there's a topoJSON object associated with this selected FIPS
     // then go ahead and zoom into that region for a closer look
     if(this.getSelectedTopoJSON()) {
@@ -137,6 +142,7 @@ export default React.createClass({
   },
 
   render: function() {
+    console.log('bivariate map : render');
     return (
       <div className="map">
         <svg width={this.props.width} height={this.props.height} onClick={this.handleMapClick}>

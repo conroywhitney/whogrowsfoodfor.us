@@ -14,5 +14,6 @@ export const productOptions = productQueries
 
 export function getDataForQuery(query) {
   if(!query) { return []; }
+  console.log('get data for query', query, productData[query]);
   return productData[query] || [];
 }
