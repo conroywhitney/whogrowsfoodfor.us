@@ -359,7 +359,8 @@ gulp.task('product-combine-all', function() {
       .pipe(jsonTransform(function(json) {
         if(!json) { return '!error!'; }
         var
-          value           = json,
+          keys            = Object.keys(json),
+          value           = json[keys[0]],
           value_string    = JSON.stringify(value),
           value_substring = value_string.substring(1, value_string.length - 1),
           value_return    = value_substring
