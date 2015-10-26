@@ -9,6 +9,10 @@ import reducer                                   from './reducer';
 import Layout                                    from './layouts/Layout';
 import {Main}                                    from './views/Main';
 
+import './index.html';
+import './styles/style.css';
+import './styles/react-select.css';
+
 // https://github.com/gaearon/redux-devtools
 const finalCreateStore = compose(
   // Provides support for DevTools:
