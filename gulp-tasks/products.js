@@ -279,6 +279,17 @@ gulp.task('product-clean', function() {
     ;
 
     gulp.src(props.folder + '/*{national,state,county}.json')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+        var
+          value           = json,
+          value_string    = JSON.stringify(value),
+          value_substring = value_string.substring(1, value_string.length - 1),
+          value_return    = value_substring
+        ;
+        return value_return;
+      }))
+      .pipe(insert.append(','))
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
@@ -288,7 +299,6 @@ gulp.task('product-clean', function() {
       .pipe(gulp.dest(PRODDIR)) // write to fs
       .pipe(jsonlint()) // ensure we created valid JSON object in file
       .pipe(jsonlint.reporter())
-
   });
 
 });
