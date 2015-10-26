@@ -72,3 +72,20 @@ This ensures that we can use any or all of these files in our
 application without worring about causing any runtime parsing errors.
 
 
+## Data Discussion
+The data used in this application is a filtered version of what is
+available from the NASS QuickStats API. Specifically, products, query
+options, and result values are omitted from the final dataset for
+reasons of brevity (not all products need to be shown), simplicity
+(conflating multiple variables such as areas planted vs. harvested), and
+practicality (removing `(D)` values since they are too low to be
+considered statistically valid).
+
+For this reason, if you look closely, you will realize that not all of
+the numbers add up. Specifically, the state numbers will not add up to
+the national numbers, and the county numbers will not add up to the
+state numbers. This is because the NASS QuickStats API omits values on
+the county level which it includes in the state level, and omits some
+state values that are counted in the national number. When in doubt,
+click the `View in NASS QuickStats API` link in the application to view
+the raw query which produced the data shown.
