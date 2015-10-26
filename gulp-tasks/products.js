@@ -255,8 +255,8 @@ gulp.task('product-download', function(cb) {
             console.log("ERROR [" + err.code + "]", "Please run script again", query.name);
           })
           .pipe(source(filename))
-          .pipe(insert.prepend('"' + query.name + '": '))
-          .pipe(insert.append(','))
+          .pipe(insert.prepend('{ "' + query.name + '": '))
+          .pipe(insert.append('}'))
           .pipe(gulp.dest(props.folder)) // write to fs
           .pipe(promise.deliverPromise(query))
         ;
@@ -297,6 +297,17 @@ gulp.task('product-jsonlint', function() {
   gulp.src(DATADIR + '/**/*.json')
     .pipe(jsonlint()) // ensure we created valid JSON object in file
     .pipe(jsonlint.reporter())
+});
+
+gulp.task('product-jsonlint-clean', function() {
+  gulp.src(DATADIR + '/**/*.json')
+    .pipe(jsonlint()) // ensure we created valid JSON object in file
+    .pipe(jsonlint.reporter(function(file) {
+      if(file.success !== true) {
+        fs.unlinkSync(file.path);
+        console.log('deleted', file.path);
+      }
+    }))
 });
 
 gulp.task('product-sanity-check', function() {
