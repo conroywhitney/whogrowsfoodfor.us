@@ -50,7 +50,7 @@ describe('label', () => {
         productName = 'Corn',
         newState    = product(INITIAL_STATE, 'corn')
       ;
-      expect(getLabel(newState)).to.eq(`${productName} production in ${DEFAULT_LABEL}`);
+      expect(getLabel(newState)).to.eq(`${productName} - ${DEFAULT_LABEL}`);
     });
 
   });
@@ -66,7 +66,7 @@ describe('label', () => {
         newState    = product(INITIAL_STATE, productKey),
         newState    = select(newState, regionFIPS)
       ;
-      expect(getLabel(newState)).to.eq(`${productName} production in ${regionName}`);
+      expect(getLabel(newState)).to.eq(`${productName} - ${regionName}`);
     });
 
   });

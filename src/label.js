@@ -15,11 +15,11 @@ export function getLabel(state) {
     fips         = normalizeFIPS(state.get('selected')),
     product      = state.get('product'),
     regionLabel  = getRegionLabel(fips),
-    productLabel = getProductLabel(product),
+    productLabel = getQueryLabel(product),
     label        = '';
   ;
 
-  if(productLabel) { label += `${productLabel} production in `; }
+  if(productLabel) { label += `${productLabel} - `; }
   if(regionLabel)  { label += regionLabel; }
 
   return label;
