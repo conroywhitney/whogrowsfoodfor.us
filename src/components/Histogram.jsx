@@ -39,6 +39,12 @@ export default React.createClass({
                 width={barWidth}
                 height={barHeight - 1}
               />
+              <text
+                x={barWidth - 3}
+                y={barHeight / 2}
+                dy="0.35em">
+                {d.value}
+              </text>
             </g>
           )
         })
