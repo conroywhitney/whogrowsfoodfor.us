@@ -50,10 +50,13 @@ export default React.createClass({
   colorFunction: null,
 
   componentWillMount: function() {
+    // no need to do anything if we ain't got no data!
+    if(!this.props.produtData) { return true; }
+
     var
       // I'm not sure what I was thinking with this one ...
       //dataFilter   = getDataFilterBySelectedFIPS(this.props.selectedFIPS),
-      filteredData = dataFilterCounties(this.props.productData.data),
+      filteredData = dataFilterCounties(this.props.productData),
       fipsKeys     = Object.keys(filteredData),
       values       = fipsKeys.map(key => filteredData[key]),
       max          = Math.max.apply(null, values)  // seriously? wtf

@@ -9,7 +9,7 @@ export default React.createClass({
       legendCx      = this.props.cx,
       legendCy      = this.props.cy,
       scaleFunction = this.props.scaleFunction,
-      quantiles     = scaleFunction.quantiles()
+      quantiles     = scaleFunction ? scaleFunction.quantiles() : []
     ;
 
     return (
