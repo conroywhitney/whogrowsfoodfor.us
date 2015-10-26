@@ -16,6 +16,12 @@ export default React.createClass({
     var
       data           = this.props.data || [],
       sorted         = data.sort(function(a, b) { return b.value - a.value }), // descending
+      totalItems     = sorted.length,
+      maxItems       = 40,
+      itemOverage    = totalItems - maxItems,
+      tooManyItems   = itemOverage > 0,
+      sliced         = tooManyItems ? sorted.slice(0, maxItems - 1) : sorted,
+      overageLabel   = tooManyItems ? (itemOverage + 1) + ' locations not shown' : '',
       chartWidth     = this.props.width,
       chartHeight    = this.props.height,
       barWidth       = 24,
@@ -32,7 +38,7 @@ export default React.createClass({
         height: chartHeight,
         className: "chart"
       },
-        sorted.map(function(d, i) {
+        sliced.map(function(d, i) {
           var
             barHeight      = yScaleFunction(d.value),
             xOffset        = (i * barWidth) + barWidth - barPadding,  // make sure lines up on far-right without going over
@@ -77,7 +83,14 @@ export default React.createClass({
               }, regionName)
             )
           )
-        })
+        }),
+        React.DOM.text({
+          className: "overageLabel",
+          x: -205,
+          y: 15,
+          dy: "0.35em",
+          transform: "rotate(" + 270 + ")"
+        }, overageLabel)
       )
     );
   }

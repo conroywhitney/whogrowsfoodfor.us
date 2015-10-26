@@ -160,3 +160,9 @@ iframe {
   font: 14px sans-serif;
   text-anchor: end;
 }
+
+.chart text.overageLabel {
+  fill: black;
+  font: 14px sans-serif;
+  text-anchor: end;
+}
