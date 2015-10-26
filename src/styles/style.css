@@ -128,6 +128,7 @@ iframe {
 
 .stats-container svg {
   overflow: visible;
+  margin-top: -75px;
 }
 
 .chart rect {
