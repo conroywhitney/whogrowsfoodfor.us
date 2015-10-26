@@ -89,6 +89,8 @@ body {
 }
 
 .bubble {
+  stroke: #FFF;
+  stroke-width: 0.25;
   fill: rgb(33,113,181);
   cursor: pointer;
 }
