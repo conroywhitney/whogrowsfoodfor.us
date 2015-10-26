@@ -36,23 +36,26 @@ export default React.createClass({
             barWidth       = xScaleFunction(d.value),
             xPos           = chartWidth - barWidth,
             yPos           = i * barHeight,
-            formattedValue = formatFunction(d.value)
+            formattedValue = formatFunction(d.value),
+            groupPosition  = "translate(" + xPos + "," + yPos + ")"
           ;
 
           return (
-            <g transform={"translate(" + xPos + "," + yPos + ")"}>
-              <rect
-                className="bar"
-                width={barWidth}
-                height={barHeight - 1}
-              />
-              <text
-                x={barWidth - 3}
-                y={barHeight / 2}
-                dy="0.35em">
-                {formattedValue}
-              </text>
-            </g>
+            React.DOM.g({
+              transform: groupPosition
+            },
+              React.DOM.rect({
+                className: "bar",
+                width: barWidth,
+                height: barHeight - 1
+              },
+                React.DOM.text({
+                  x: barWidth - 3,
+                  y: barHeight / 2,
+                  dy: "0.35em"
+                })
+              )
+            )
           )
         })
       )
