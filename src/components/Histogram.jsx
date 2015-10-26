@@ -5,19 +5,25 @@ import d3 from 'd3';
 export default React.createClass({
   mixins: [PureRenderMixin],
 
+  // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+  numberWithCommas: function(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  },
+
   render: function() {
     // thanks to http://bl.ocks.org/mbostock/3885304
 
     var
-      data        = this.props.data || [],
-      sorted      = data.sort(function(a, b) { return b.value - a.value }), // descending
-      chartWidth  = this.props.width,
-      barHeight   = 20,
-      chartHeight = barHeight * data.length,
-      x           = d3.scale.linear().range([0, chartWidth])
+      data           = this.props.data || [],
+      sorted         = data.sort(function(a, b) { return b.value - a.value }), // descending
+      chartWidth     = this.props.width,
+      barHeight      = 20,
+      chartHeight    = barHeight * data.length,
+      xScaleFunction = d3.scale.linear().range([0, chartWidth]),
+      formatFunction = this.numberWithCommas
     ;
 
-    x.domain([0, d3.max(data, function(d) { return d.value; })])
+    xScaleFunction.domain([0, d3.max(data, function(d) { return d.value; })])
 
     return (
       React.DOM.svg({
@@ -27,9 +33,10 @@ export default React.createClass({
       },
         sorted.map(function(d, i) {
           var
-            barWidth = x(d.value),
-            xPos = chartWidth - barWidth,
-            yPos = i * barHeight
+            barWidth       = xScaleFunction(d.value),
+            xPos           = chartWidth - barWidth,
+            yPos           = i * barHeight,
+            formattedValue = formatFunction(d.value)
           ;
 
           return (
@@ -43,7 +50,7 @@ export default React.createClass({
                 x={barWidth - 3}
                 y={barHeight / 2}
                 dy="0.35em">
-                {d.value}
+                {formattedValue}
               </text>
             </g>
           )
