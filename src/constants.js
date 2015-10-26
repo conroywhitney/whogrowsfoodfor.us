@@ -1,7 +1,5 @@
 import {Map, List, Set, fromJS} from 'immutable';
 
-export const DEFAULT_LABEL = 'The United States of America';
-
 export const ACTIONS = {
   setRegion: 'SET_REGION',
   setProduct: 'SET_PRODUCT'
