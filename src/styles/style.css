@@ -50,7 +50,7 @@ body {
   margin-bottom: 25px;
 }
 
-svg {
+.map svg {
   background: rgba(50, 50, 50, 0.05);
   border: 1px solid #999;
 }
@@ -124,25 +124,12 @@ iframe {
   border: 0px;
 }
 
-.bar {
+.chart rect {
   fill: steelblue;
 }
 
-.bar:hover {
-  fill: brown;
-}
-
-.axis {
+.chart text {
+  fill: white;
   font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
+  text-anchor: end;
 }

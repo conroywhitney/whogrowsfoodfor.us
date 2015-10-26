@@ -29,8 +29,7 @@ export default React.createClass({
       <div className="stats-container">
         <Histogram
           data={this.dataForBarChart()}
-          width="400"
-          height="1000"
+          width={400}
         />
       </div>
     );
