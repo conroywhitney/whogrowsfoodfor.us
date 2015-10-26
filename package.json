@@ -94,6 +94,7 @@
     "react-select": "^0.7.0",
     "redux": "^3.0.2",
     "semantic-ui-css": "^2.1.4",
+    "titlecase": "^1.0.2",
     "topojson": "^1.6.19"
   }
 }

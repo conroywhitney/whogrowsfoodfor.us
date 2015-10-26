@@ -1,4 +1,5 @@
 import {Map, List, fromJS} from 'immutable';
+import {toTitleCase} from 'titlecase';
 
 import {DEFAULT_LABEL} from './constants';
 import {normalizeFIPS} from './fips';
@@ -38,4 +39,16 @@ export function getProductLabel(productKey) {
   ;
 
   return label;
+}
+
+export function getQueryLabel(query) {
+  if(!query) { return null; }
+
+  var
+  splits  = query.split(/_(acres|head)/gi),
+  product = splits[0]
+              .replace(/_/gi, ' ')
+  ;
+
+  return toTitleCase(product);
 }

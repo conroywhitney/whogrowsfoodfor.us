@@ -6,6 +6,7 @@ import MapContainer               from '../components/MapContainer';
 import * as actionCreators        from '../action_creators';
 import {getLabel}                 from '../label';
 import {getStateFIPS}             from '../fips';
+import {productData, getDataForQuery} from '../products';
 
 export const MainNaked = React.createClass({
   mixins: [PureRenderMixin],
@@ -21,7 +22,7 @@ export const MainNaked = React.createClass({
               <MapContainer
                 selected={this.props.selected}
                 label={this.props.label}
-                productData={this.props.product_data}
+                productData={this.product_data}
                 detailLevel={this.props.detail_level}
                 setRegion={this.props.setRegion}
                 countyLineFilter={this.countyLineFilter}
@@ -61,7 +62,7 @@ export const MainNaked = React.createClass({
 
 const mapStateToProps = (state) => ({
   product:         state.get('product'),
-  product_data:    state.getIn(['data', 'spinach', 'spinach', 'spinach_acres_area_harvested']).toJS(),
+  product_data:    getDataForQuery(state.get('product')),
   selected:        state.get('selected'),
   selected_state:  getStateFIPS(state.get('selected')),
   label:           getLabel(state),
