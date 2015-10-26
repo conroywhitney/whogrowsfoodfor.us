@@ -37,7 +37,8 @@ export default React.createClass({
             xPos           = chartWidth - barWidth,
             yPos           = i * barHeight,
             formattedValue = formatFunction(d.value),
-            groupPosition  = "translate(" + xPos + "," + yPos + ")"
+            groupPosition  = "translate(" + xPos + "," + yPos + ")",
+            label          = barWidth > 50 ? formattedValue : ''
           ;
 
           return (
@@ -48,13 +49,12 @@ export default React.createClass({
                 className: "bar",
                 width: barWidth,
                 height: barHeight - 1
-              },
-                React.DOM.text({
-                  x: barWidth - 3,
-                  y: barHeight / 2,
-                  dy: "0.35em"
-                })
-              )
+              }),
+              React.DOM.text({
+                x: barWidth - 3,
+                y: barHeight / 2,
+                dy: "0.35em"
+              }, label)
             )
           )
         })
