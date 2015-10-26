@@ -147,7 +147,7 @@ iframe {
 
 .chart text.exterior {
   text-anchor: start;
-  fill: #000;
+  fill: #333;
 }
 
 .chart text.interior {
@@ -156,13 +156,22 @@ iframe {
 }
 
 .chart text.regionLabel {
-  fill: black;
+  fill: #333;
   font: 14px sans-serif;
   text-anchor: end;
 }
 
 .chart text.overageLabel {
-  fill: black;
+  fill: #333;
   font: 14px sans-serif;
   text-anchor: end;
 }
+
+.chart g.vertical-bar {
+  cursor: pointer;
+}
+
+.chart g.vertical-bar:hover rect {
+  fill: orange;
+}
+

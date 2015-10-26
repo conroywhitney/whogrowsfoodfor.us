@@ -11,6 +11,18 @@ export default React.createClass({
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
+  handleBarClicked: function(event) {
+    return this.props.onFIPSClick(this.getEventFIPS(event));
+  },
+
+  handleBarHover: function(event) {
+    return this.props.onFIPSHover(this.getEventFIPS(event));
+  },
+
+  getEventFIPS: function(event) {
+    return event.target.getAttribute('data-fips');
+  },
+
   render: function() {
     // thanks to http://bl.ocks.org/mbostock/3885304
 
@@ -26,7 +38,9 @@ export default React.createClass({
       chartWidth     = this.props.width,
       chartHeight    = this.props.height,
       yScaleFunction = d3.scale.linear().range([0, chartHeight]),
-      formatFunction = this.numberWithCommas
+      formatFunction = this.numberWithCommas,
+      handleClick    = this.handleBarClicked,
+      handleHover    = this.handleBarHover
     ;
 
     yScaleFunction.domain([0, d3.max(data, function(d) { return d.value; })])
@@ -40,6 +54,7 @@ export default React.createClass({
         sliced.map(function(d, barIndex) {
           return (
             <VerticalHistogramBar
+              fips={d.fips}
               value={d.value}
               label={d.label}
               barIndex={barIndex}
@@ -49,6 +64,8 @@ export default React.createClass({
               chartHeight={chartHeight}
               formatFunction={formatFunction}
               scaleFunction={yScaleFunction}
+              onClick={handleClick}
+              onHover={handleHover}
             />
           )
         }),

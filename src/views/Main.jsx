@@ -51,6 +51,7 @@ export const MainNaked = React.createClass({
             <div className="fourteen wide centered column">
               <StatsContainer
                 productData={this.props.product_data}
+                onFIPSClick={this.props.setRegion}
               />
             </div>
           </div>

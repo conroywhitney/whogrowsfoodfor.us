@@ -28,12 +28,17 @@ export default React.createClass({
 
     return (
       React.DOM.g({
-        transform: groupPosition
+        transform:   groupPosition,
+        className:   'vertical-bar',
+        onClick:     this.props.onClick,
+        onMouseOver: this.props.onHover,
+        "data-fips": this.props.fips
       },
         React.DOM.rect({
           className: "bar",
           width: this.props.width - this.props.padding,
-          height: barHeight
+          height: barHeight,
+          "data-fips": this.props.fips
         }),
         React.DOM.text({
           className: "valueLabel " + labelClass,
@@ -41,13 +46,15 @@ export default React.createClass({
           y: labelY,
           dy: "0.35em",
           transform: "rotate(" + labelRotate + ")",
+          "data-fips": this.props.fips
         }, label),
         React.DOM.text({
           className: "regionLabel",
           x: regionX,
           y: regionY,
           dy: "0.35em",
-          transform: "rotate(" + labelRotate + ")"
+          transform: "rotate(" + labelRotate + ")",
+          "data-fips": this.props.fips
         }, regionName)
       )
     );

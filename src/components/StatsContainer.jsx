@@ -19,7 +19,7 @@ export default React.createClass({
       stateKeys = keys.filter(key => isFipsState(key))
     ;
 
-    return stateKeys.map(key => ({ label: getRegionLabel(key), value: data[key] }));
+    return stateKeys.map(key => ({ fips: key, label: getRegionLabel(key), value: data[key] }));
   },
 
   render: function() {
@@ -29,6 +29,8 @@ export default React.createClass({
           data={this.dataForBarChart()}
           width={960}
           height={200}
+          onFIPSClick={this.props.onFIPSClick}
+          onFIPSHover={this.props.onFIPSHover}
         />
       </div>
     );
