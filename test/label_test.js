@@ -10,12 +10,12 @@ describe('label', () => {
 
 	describe('defaults', () => {
 
-    it('should have default label by default', () => {
-      expect(getLabel(INITIAL_STATE)).to.eq('The United States of America');
+    it('should have blank label by default', () => {
+      expect(getLabel(INITIAL_STATE)).to.eq('');
     });
 
-    it('should return null if given no state', () => {
-      expect(getLabel(null, '000000')).to.be.null;
+    it('should return blank string if given no state', () => {
+      expect(getLabel(null, '000000')).to.eq('');
     });
 
   });
@@ -50,7 +50,7 @@ describe('label', () => {
         productName = 'Corn',
         newState    = product(INITIAL_STATE, 'corn')
       ;
-      expect(getLabel(newState)).to.eq(`${productName} - ${DEFAULT_LABEL}`);
+      expect(getLabel(newState)).to.eq(`${productName}`);
     });
 
   });

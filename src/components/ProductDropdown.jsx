@@ -17,6 +17,7 @@ export default  React.createClass({
             options={productOptions}
             onChange={this.props.handleChange}
             className="ui dropdown"
+            placeholder="Select agricultural product..."
         />
       </div>
     );

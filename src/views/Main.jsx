@@ -1,12 +1,13 @@
-import React                      from 'react';
-import PureRenderMixin            from 'react-addons-pure-render-mixin';
-import {connect}                  from 'react-redux';
-import ProductDropdown            from '../components/ProductDropdown';
-import MapContainer               from '../components/MapContainer';
-import StatsContainer             from '../components/StatsContainer';
-import * as actionCreators        from '../action_creators';
-import {getLabel}                 from '../label';
-import {getStateFIPS}             from '../fips';
+import React                          from 'react';
+import PureRenderMixin                from 'react-addons-pure-render-mixin';
+import {connect}                      from 'react-redux';
+import ProductDropdown                from '../components/ProductDropdown';
+import MapContainer                   from '../components/MapContainer';
+import StatsContainer                 from '../components/StatsContainer';
+import Title                          from '../components/Title';
+import * as actionCreators            from '../action_creators';
+import {getLabel}                     from '../label';
+import {getStateFIPS}                 from '../fips';
 import {productData, getDataForQuery} from '../products';
 
 export const MainNaked = React.createClass({
@@ -19,7 +20,16 @@ export const MainNaked = React.createClass({
         <div className="ui stackable grid">
 
           <div className="ui row">
-            <div className="sixteen wide column">
+            <div className="fourteen wide centered column">
+              <ProductDropdown
+                product={this.props.product}
+                handleChange={this.props.setProduct}
+              />
+            </div>
+          </div>
+
+          <div className="ui row">
+            <div className="fourteen wide centered column">
               <MapContainer
                 selected={this.props.selected}
                 label={this.props.label}
@@ -32,18 +42,16 @@ export const MainNaked = React.createClass({
           </div>
 
           <div className="ui row">
-            <div className="eight wide column">
-              <ProductDropdown
-                product={this.props.product}
-                handleChange={this.props.setProduct}
-              />
+            <div className="fourteen wide centered column">
+              <Title label={this.props.label} />
+            </div>
+          </div>
+
+          <div className="ui row">
+            <div className="fourteen wide centered column">
               <StatsContainer
                 productData={this.props.product_data}
               />
-            </div>
-
-            <div className="eight wide column">
-
             </div>
           </div>
 

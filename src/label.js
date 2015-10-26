@@ -1,14 +1,13 @@
 import {Map, List, fromJS} from 'immutable';
 import {toTitleCase} from 'titlecase';
 
-import {DEFAULT_LABEL} from './constants';
-import {normalizeFIPS} from './fips';
+import {normalizeFIPS, FIPS_NATIONAL} from './fips';
 import {productMeta} from './products';
 
 export const labelJSON = require('../data/meta/geo_labels.json');
 
 export function getLabel(state) {
-  if(!state) { return null; }
+  if(!state) { return ''; }
 
   var
     labels       = labelJSON,
@@ -16,22 +15,22 @@ export function getLabel(state) {
     product      = state.get('product'),
     regionLabel  = getRegionLabel(fips),
     productLabel = getQueryLabel(product),
-    label        = '';
+    label        = [];
   ;
 
-  if(productLabel) { label += `${productLabel} - `; }
-  if(regionLabel)  { label += regionLabel; }
+  if(productLabel) { label.push(productLabel); }
+  if(regionLabel)  { label.push(regionLabel); }
 
-  return label;
+  return label.join(' - ');
 }
 
 export function getRegionLabel(fips) {
-  if(!fips) { return DEFAULT_LABEL; }
-  return labelJSON[fips]['long'] || DEFAULT_LABEL;
+  if(!fips || fips == FIPS_NATIONAL) { return null; }
+  return labelJSON[fips]['long'];
 }
 
 export function getProductLabel(productKey) {
-  if(!productKey) { return ''; }
+  if(!productKey) { return null; }
 
   var
     product = productMeta[productKey],

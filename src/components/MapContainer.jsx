@@ -1,6 +1,5 @@
 import React           from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Title           from './Title';
 import BivariateMap    from './BivariateMap';
 
 export default React.createClass({
@@ -8,7 +7,6 @@ export default React.createClass({
 
   render: function() {
     return <div className="map-container">
-      <Title label={this.props.label} />
       <BivariateMap
         width="960"
         height="500"
