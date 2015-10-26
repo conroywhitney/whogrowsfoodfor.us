@@ -48,8 +48,8 @@ export default React.createClass({
             labelClass     = barTooShort ? 'exterior' : 'interior',
             labelRotate    = 270,
             regionName     = d.label,
-            regionX        = labelX,
-            regionY        = yPos - 50
+            regionX        = -(barHeight + 5),
+            regionY        = labelY
           ;
 
           return (
@@ -67,14 +67,14 @@ export default React.createClass({
                 y: labelY,
                 dy: "0.35em",
                 transform: "rotate(" + labelRotate + ")",
-              }, label)/*,
+              }, label),
               React.DOM.text({
                 className: "regionLabel",
                 x: regionX,
                 y: regionY,
                 dy: "0.35em",
-                transform: "rotate(90)"
-              }, regionName)*/
+                transform: "rotate(" + labelRotate + ")"
+              }, regionName)
             )
           )
         })

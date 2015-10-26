@@ -126,9 +126,14 @@ iframe {
   border: 0px;
 }
 
+.stats-container {
+  min-height: 275px;
+}
+
 .stats-container svg {
-  overflow: hidden;
+  overflow: visible;
   margin-top: -75px;
+  border-bottom: 1px solid #333;
 }
 
 .chart rect {
@@ -140,11 +145,6 @@ iframe {
   font: 12px sans-serif;
 }
 
-.chart text.regionLabel {
-  fill: black;
-  font: 18px sans-serif;
-}
-
 .chart text.exterior {
   text-anchor: start;
   fill: #000;
@@ -153,4 +153,10 @@ iframe {
 .chart text.interior {
   text-anchor: end;
   fill: #FFF;
+}
+
+.chart text.regionLabel {
+  fill: black;
+  font: 14px sans-serif;
+  text-anchor: end;
 }
