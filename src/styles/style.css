@@ -137,8 +137,9 @@ iframe {
 
 .chart text.valueLabel {
   fill: white;
-  font: 10px sans-serif;
-  text-anchor: start;
+  font: 12px sans-serif;
+  text-anchor: end;
+  font-weight: bold;
 }
 
 .chart text.regionLabel {
