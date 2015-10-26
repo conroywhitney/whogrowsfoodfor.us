@@ -82,6 +82,7 @@ body {
 
 .feature:hover {
   fill: orange;
+  fill-opacity: 0.2;
 }
 
 .feature.active {
