@@ -11,7 +11,6 @@ export default React.createClass({
 
   dataForBarChart: function() {
     var data = this.props.productData.fips;
-    console.log('transform bar chart', data);
 
     if(!data) { return []; }
 
@@ -19,7 +18,6 @@ export default React.createClass({
       keys = Object.keys(data),
       stateKeys = keys.filter(key => isFipsState(key))
     ;
-    console.log(stateKeys);
 
     return stateKeys.map(key => ({ label: getRegionLabel(key), value: data[key] }));
   },
