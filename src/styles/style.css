@@ -138,11 +138,19 @@ iframe {
 .chart text.valueLabel {
   fill: white;
   font: 12px sans-serif;
-  text-anchor: end;
-  font-weight: bold;
 }
 
 .chart text.regionLabel {
   fill: black;
   font: 18px sans-serif;
+}
+
+.chart text.exterior {
+  text-anchor: start;
+  fill: #000;
+}
+
+.chart text.interior {
+  text-anchor: end;
+  fill: #FFF;
 }

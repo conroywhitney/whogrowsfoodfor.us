@@ -41,9 +41,11 @@ export default React.createClass({
             formattedValue = formatFunction(d.value),
             groupPosition  = "translate(" + xPos + "," + yPos + ")",
             labelUnits     = ' acres',
-            label          = barHeight > 100 ? formattedValue : '',
-            labelX         = -(barWidth / 2 - 2),
-            labelY         = -labelX,
+            barTooShort    = barHeight < 100,
+            label          = formattedValue,
+            labelX         = barTooShort ? 5 : -(barWidth / 2 - 2),
+            labelY         = (barWidth / 2 - 2),
+            labelClass     = barTooShort ? 'exterior' : 'interior',
             labelRotate    = 270,
             regionName     = d.label,
             regionX        = labelX,
@@ -60,7 +62,7 @@ export default React.createClass({
                 height: barHeight
               }),
               React.DOM.text({
-                className: "valueLabel",
+                className: "valueLabel " + labelClass,
                 x: labelX,
                 y: labelY,
                 dy: "0.35em",
