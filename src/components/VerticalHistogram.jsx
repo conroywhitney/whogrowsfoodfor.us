@@ -42,8 +42,7 @@ export default React.createClass({
 
     return (
       React.DOM.svg({
-        width: chartWidth,
-        height: chartHeight,
+        viewBox: "0 0 " + chartWidth + " " + chartHeight,
         className: "chart"
       },
         sliced.map(function(d, barIndex) {
