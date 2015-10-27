@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {Map, List, fromJS} from 'immutable';
 
-import {productMeta, productOptions, sectors, getDataForQuery} from '../src/products'
+import {productMeta, productOptions, sectors, getDataForQuery, filterProductQuery} from '../src/products'
 import {filterProducts, productFilter, filterOptions, filterOption} from '../src/product_helper';
 
 describe('products', () => {
@@ -36,6 +36,30 @@ describe('products', () => {
 
       expect(option.value).to.eq(query);
       expect(option.label).to.eq('Blackberries (Incl Dewberries and Marionberries)');
+    });
+
+  });
+
+  describe('fiterProductQuery', () => {
+
+    it('should return false for null values', () => {
+      expect(filterProductQuery(null)).to.be.false;
+    });
+
+    it('should return false for blank values', () => {
+      expect(filterProductQuery('')).to.be.false;
+    });
+
+    it("should let through a desirable query", () => {
+      expect(filterProductQuery('avocados_acres_area_bearing')).to.be.true;
+    });
+
+    it('should filter out an undesirable query', () => {
+      expect(filterProductQuery('chickens_(broilers)_head_production_production_contract')).to.be.false;
+    });
+
+    it('should filter out queries that have bad data', () => {
+      expect(filterProductQuery('corn_acres_area_harvested')).to.be.false;
     });
 
   });
