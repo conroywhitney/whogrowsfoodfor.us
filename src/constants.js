@@ -2,7 +2,6 @@ import {Map, List, Set, fromJS} from 'immutable';
 
 export const ACTIONS = {
   setRegion: 'SET_REGION',
-  highlightRegion: 'HIGHLIGHT_REGION',
   setProduct: 'SET_PRODUCT'
 };
 

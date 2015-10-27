@@ -15,9 +15,3 @@ export function setRegion(fips) {
   }
 }
 
-export function highlightRegion(fips) {
-  return {
-    type: ACTIONS.highlightRegion,
-    fips: fips
-  }
-}
