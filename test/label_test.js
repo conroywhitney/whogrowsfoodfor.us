@@ -46,11 +46,11 @@ describe('label', () => {
 
     it('should set the product name in the label', () => {
       var
-        productKey  = 'corn',
-        productName = 'Corn',
-        newState    = product(INITIAL_STATE, 'corn')
+        productKey  = 'corn_acres_area_harvested_silage',
+        productName = 'Corn (Silage)',
+        newState    = product(INITIAL_STATE, productKey)
       ;
-      expect(getLabel(newState)).to.eq(`${productName}`);
+      expect(getLabel(newState)).to.eq(`${productName} (acres)`);
     });
 
   });
@@ -59,14 +59,14 @@ describe('label', () => {
 
     it('should include both product and region', () => {
       var
-        productKey  = 'corn',
-        productName = 'Corn',
+        productKey  = 'corn_acres_area_harvested_silage',
+        productName = 'Corn (Silage)',
         regionFIPS  = '41029',
         regionName  = 'Jackson County, OR',
         newState    = product(INITIAL_STATE, productKey),
         newState    = select(newState, regionFIPS)
       ;
-      expect(getLabel(newState)).to.eq(`${productName} - ${regionName}`);
+      expect(getLabel(newState)).to.eq(`${productName} (acres) - ${regionName}`);
     });
 
   });
@@ -139,6 +139,10 @@ describe('label', () => {
 
     it('should return head for livestock', () => {
       expect(getQueryUnits('hogs_head_sales')).to.eq('head');
+    });
+
+    it('should return units for something with util as well', () => {
+      expect(getQueryUnits('corn_acres_area_harvested_silage')).to.eq('acres');
     });
 
   });
