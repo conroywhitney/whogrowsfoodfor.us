@@ -213,6 +213,31 @@ gulp.task('product-combinations', function() {
 
 });
 
+gulp.task('product-empty-queries', function() {
+  var
+    products = getFilteredProductList()
+  ;
+
+  products.forEach(function(product) {
+    var
+      props = getProductProperties(product)
+    ;
+
+    gulp.src(props.folder + '/*_queries.json')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+
+        if(json[props.slug].queries.length == 0) {
+          console.log("ZOMG THIS HAS ZERO QUERIES", props.slug);
+        }
+
+        return json;
+      }))
+      .pipe(jsonlint())
+  });
+
+});
+
 gulp.task('product-download', function(cb) {
   var
     products = getFilteredProductList()
@@ -283,13 +308,19 @@ gulp.task('product-clean', function() {
         if(!json) { return '!error!'; }
         var
           value           = json,
+          primaryKey      = Object.keys(json)[0],
+          innerValue      = json[primaryKey],
+          emptyObject     = Object.keys(innerValue).length == 0,
           value_string    = JSON.stringify(value),
           value_substring = value_string.substring(1, value_string.length - 1),
-          value_return    = value_substring
+          value_return    = value_substring,
+          value_return    = value_return + ',' // not append outside of transform
         ;
-        return value_return;
+
+        // don't return anything if the file was blank
+        // situation arises when query is created from combinations, but actually has no data
+        return(emptyObject ? '' : value_return);
       }))
-      .pipe(insert.append(','))
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
@@ -361,24 +392,20 @@ gulp.task('product-combine-all', function() {
         var
           keys            = Object.keys(json),
           value           = json[keys[0]],
+          emptyObject     = Object.keys(value).length == 0,
           value_string    = JSON.stringify(value),
           value_substring = value_string.substring(1, value_string.length - 1),
-          value_return    = value_substring
+          value_return    = value_substring,
+          value_return    = value_return + ','
         ;
-        return value_return;
+        return (emptyObject ? '' : value_return);
       }))
-      .pipe(insert.append(','))
       .pipe(concat('products.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "products": {'))
       .pipe(insert.append(' "ignore": {} }}'))
-      .pipe(jsonTransform(function(json) {
-        // was just a placeholder for concat
-        delete json.products.ignore;
-        return json;
-      }))
-      .pipe(gulp.dest(DATADIR))
       .pipe(jsonlint())
       .pipe(jsonlint.reporter())
+      .pipe(gulp.dest(DATADIR))
   ;
 });
 
