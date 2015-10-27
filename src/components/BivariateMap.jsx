@@ -183,12 +183,12 @@ export default React.createClass({
               handleClick={this.handleMapClick}
               scaleFunction={this.scaleFunction}
             />
+            <BubbleLegend
+              cx={this.props.width}
+              cy={this.props.height - 50}
+              quantFunction={this.quantFunction}
+            />
           </g>
-          <BubbleLegend
-            cx={this.props.width}
-            cy={this.props.height - 50}
-            quantFunction={this.quantFunction}
-          />
         </svg>
       </div>
    );
