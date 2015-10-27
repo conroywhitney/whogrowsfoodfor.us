@@ -5,31 +5,42 @@ export default React.createClass({
   mixins: [PureRenderMixin],
 
   render: function() {
+    if(!this.props.quantFunction) { return false; }
+
     var
       legendCx      = this.props.cx,
       legendCy      = this.props.cy,
-      scaleFunction = this.props.scaleFunction,
-      quantiles     = scaleFunction ? scaleFunction.quantiles() : []
+      quantFunction = this.props.quantFunction,
+      quantiles     = quantFunction.quantiles(),
+      quantSize     = quantiles.length
     ;
 
-    return (
+    // reavers, man
+    if(isNaN(quantiles[0])) { return false; }
+
+    return(quantiles?
       React.DOM.g({
         className: "legend",
         transform: "translate(" + legendCx + "," + legendCy + ")"
       },
-        quantiles.map(function(quant) {
+        quantiles.map(function(quant, quantIndex) {
           var
-            value  = quant,
-            radius = scaleFunction(value),
-            cy     = -radius
+            value         = quant,
+            radius        = quantFunction(value),
+            cy            = -radius,
+            xOffset       = -50,
+            yOffset       = -20,
+            bubbleOffsetX = xOffset,
+            bubbleOffsetY = ((quantSize - quantIndex) * yOffset)
           ;
           return React.DOM.circle({
             r: radius,
-            cy: cy
+            cy: cy,
+            transform: "translate(" + bubbleOffsetX + ", " + bubbleOffsetY  + ")"
           })
         })
       )
-    );
+    :null);
   }
 
 });

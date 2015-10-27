@@ -50,6 +50,8 @@ export default React.createClass({
 
   scaleFunction: null,
 
+  quantFunction: null,
+
   colorFunction: null,
 
   componentWillUpdate: function(nextProps, nextState) {
@@ -67,7 +69,8 @@ export default React.createClass({
     ;
 
     // set scale method using max value from data
-    this.scaleFunction = d3.scale.sqrt().domain([0, max]).range([0, 7])
+    this.scaleFunction = d3.scale.sqrt().domain([0, max]).range([0, 7]);
+    this.quantFunction = d3.scale.quantile().domain([0, max]).range([0, 1, 3, 5, 7]);
 
     // TODO: set color range based on quantile
     this.colorFunction = null;
@@ -181,6 +184,11 @@ export default React.createClass({
               scaleFunction={this.scaleFunction}
             />
           </g>
+          <BubbleLegend
+            cx={this.props.width}
+            cy={this.props.height - 50}
+            quantFunction={this.quantFunction}
+          />
         </svg>
       </div>
    );
