@@ -1,7 +1,7 @@
 {
-  "name": "ag-eyes",
+  "name": "WhoGrowsFoodFor.Us",
   "version": "1.0.0",
-  "description": "@conroywhitney's entry into the USDA Innovation Challenge (usdaapps.devpost.com)",
+  "description": "Exploring the communities which grow food for us here in the United States.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/conroywhitney/ag-eyes.git"
+    "url": "https://github.com/conroywhitney/whogrowsfoodfor.us"
   },
   "keywords": [
     "usda",
@@ -24,9 +24,9 @@
   "author": "Conroy Whitney",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/conroywhitney/ag-eyes/issues"
+    "url": "https://github.com/conroywhitney/whogrowsfoodfor.us/issues"
   },
-  "homepage": "https://github.com/conroywhitney/ag-eyes",
+  "homepage": "http://whogrowsfoodfor.us/",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
     "babel": "^5.8.23",
