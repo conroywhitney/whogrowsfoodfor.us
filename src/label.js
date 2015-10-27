@@ -2,7 +2,7 @@ import {Map, List, fromJS} from 'immutable';
 import {toTitleCase} from 'titlecase';
 
 import {normalizeFIPS, FIPS_NATIONAL} from './fips';
-import {productMeta} from './products';
+import {productMeta, getDataForQuery} from './products';
 
 export const labelJSON = require('../data/meta/geo_labels.json');
 
@@ -15,10 +15,11 @@ export function getLabel(state) {
     product      = state.get('product'),
     regionLabel  = getRegionLabel(fips),
     productLabel = getQueryLabel(product),
+    productUnits = getQueryUnits(product),
     label        = [];
   ;
 
-  if(productLabel) { label.push(productLabel); }
+  if(productLabel) { label.push(`${productLabel} (${productUnits})`); }
   if(regionLabel)  { label.push(regionLabel); }
 
   return label.join(' - ');
@@ -50,4 +51,16 @@ export function getQueryLabel(query) {
   ;
 
   return toTitleCase(product);
+}
+
+export function getQueryUnits(query) {
+  if(!query || query.length == 0) { return ''; }
+  var
+    product = getDataForQuery(query)
+  ;
+  if(product && product.stats && product.stats.units) {
+    return product.stats.units.toLowerCase();
+  } else {
+    return '';
+  }
 }

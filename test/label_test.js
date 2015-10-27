@@ -3,7 +3,7 @@ import {Map, List, fromJS} from 'immutable';
 
 import {INITIAL_STATE, DEFAULT_LABEL} from '../src/constants';
 import {select, product} from '../src/core';
-import {getLabel, getProductLabel, getQueryLabel} from '../src/label';
+import {getLabel, getProductLabel, getQueryLabel, getQueryUnits} from '../src/label';
 import {productKeys} from '../src/products';
 
 describe('label', () => {
@@ -115,6 +115,30 @@ describe('label', () => {
 
     it('should handle silage', () => {
       expect(getQueryLabel('corn_acres_area_harvested_silage')).to.eq('Corn (Silage)');
+    });
+
+  });
+
+  describe('getQueryUnits', () => {
+
+    it('should be blank if null value', () => {
+      expect(getQueryUnits(null)).to.eq('');
+    });
+
+    it('should be blank if blank value', () => {
+      expect(getQueryUnits('')).to.eq('');
+    });
+
+    it('should be blank if unknown value', () => {
+      expect(getQueryUnits('asdfasdf')).to.eq('');
+    });
+
+    it('should return acres for crops', () => {
+      expect(getQueryUnits('avocados_acres_area_bearing')).to.eq('acres');
+    });
+
+    it('should return head for livestock', () => {
+      expect(getQueryUnits('hogs_head_sales')).to.eq('head');
     });
 
   });
