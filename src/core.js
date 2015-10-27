@@ -22,3 +22,12 @@ export function product(state, productKey) {
   ;
 };
 
+export function highlight(state, fips) {
+  var
+    fips = normalizeFIPS(fips)
+  ;
+
+  return state
+    .set('highlight', fips)
+  ;
+}

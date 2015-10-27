@@ -1,5 +1,5 @@
 import {INITIAL_STATE, ACTIONS} from './constants';
-import {select, product} from './core';
+import {select, product, highlight} from './core';
 
 export default function reducer(state, action) {
   if(!state)  { return INITIAL_STATE; }
@@ -11,6 +11,8 @@ export default function reducer(state, action) {
       return select(state, action.fips);
     case ACTIONS.setProduct:
       return product(state, action.product);
+    case ACTIONS.highlightRegion:
+      return highlight(state, action.fips);
   }
   // return unaltered state if we don't recognize the action
   return state;

@@ -10,6 +10,7 @@ export const INITIAL_STATE = fromJS({
   product: null,
   stat: null,
   selected: null,
+  highlight: null,
   zoom: null,
   detail: Set(['land', 'states']),
   histograms: [],

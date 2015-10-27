@@ -166,6 +166,7 @@ export default React.createClass({
                 className="feature"
                 handleClick={this.handleMapClick}
                 handleHover={this.handleMapHover}
+                highlightedFIPS={this.props.highlightedFIPS}
               />
             : null }
             {this.showDetailLevel('states') ?

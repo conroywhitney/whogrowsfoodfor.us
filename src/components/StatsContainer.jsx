@@ -31,6 +31,7 @@ export default React.createClass({
           height={200}
           onFIPSClick={this.props.onFIPSClick}
           onFIPSHover={this.props.onFIPSHover}
+          highlightedFIPS={this.props.highlightedFIPS}
         />
       </div>
     );
