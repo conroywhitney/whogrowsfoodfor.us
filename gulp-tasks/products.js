@@ -308,13 +308,19 @@ gulp.task('product-clean', function() {
         if(!json) { return '!error!'; }
         var
           value           = json,
+          primaryKey      = Object.keys(json)[0],
+          innerValue      = json[primaryKey],
+          emptyObject     = Object.keys(innerValue).length == 0,
           value_string    = JSON.stringify(value),
           value_substring = value_string.substring(1, value_string.length - 1),
-          value_return    = value_substring
+          value_return    = value_substring,
+          value_return    = value_return + ',' // not append outside of transform
         ;
-        return value_return;
+
+        // don't return anything if the file was blank
+        // situation arises when query is created from combinations, but actually has no data
+        return(emptyObject ? '' : value_return);
       }))
-      .pipe(insert.append(','))
       .pipe(concat(props.slug + '.json')) // combine all files into single options file
       .pipe(insert.prepend('{ "' + props.slug + '": {'))
       .pipe(insert.append('"ignore": {}}}'))
