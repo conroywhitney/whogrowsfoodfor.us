@@ -36,7 +36,6 @@ export const MainNaked = React.createClass({
                 productData={this.props.product_data}
                 detailLevel={this.props.detail_level}
                 onFIPSClick={this.props.setRegion}
-                onFIPSHover={this.props.highlightRegion}
                 countyLineFilter={this.countyLineFilter}
               />
             </div>
@@ -53,7 +52,6 @@ export const MainNaked = React.createClass({
               <StatsContainer
                 productData={this.props.product_data}
                 onFIPSClick={this.props.setRegion}
-                onFIPSHover={this.props.highlightRegion}
               />
             </div>
           </div>

@@ -13,7 +13,6 @@ export default React.createClass({
         productData={this.props.productData}
         detailLevel={this.props.detailLevel}
         onFIPSClick={this.props.onFIPSClick}
-        onFIPSHover={this.props.onFIPSHover}
         selectedFIPS={this.props.selected}
         countyLineFilter={this.props.countyLineFilter}
       />

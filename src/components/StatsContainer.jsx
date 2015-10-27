@@ -30,7 +30,6 @@ export default React.createClass({
           width={960}
           height={200}
           onFIPSClick={this.props.onFIPSClick}
-          onFIPSHover={this.props.onFIPSHover}
         />
       </div>
     );
