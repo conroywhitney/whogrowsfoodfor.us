@@ -21,7 +21,8 @@ export default React.createClass({
             id: location.id, // to actually use in application
             className: this.props.className,
             d: d3path(location),
-            onClick: this.props.handleClick
+            onClick: this.props.handleClick,
+            onMouseOver: this.props.handleHover
           })
         }, this)
       )
