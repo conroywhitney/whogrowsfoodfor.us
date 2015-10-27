@@ -11,6 +11,7 @@ export default React.createClass({
         width="960"
         height="500"
         productData={this.props.productData}
+        units={this.props.productUnits}
         detailLevel={this.props.detailLevel}
         onFIPSClick={this.props.onFIPSClick}
         selectedFIPS={this.props.selected}

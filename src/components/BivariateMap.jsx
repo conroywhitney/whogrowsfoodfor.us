@@ -184,6 +184,7 @@ export default React.createClass({
               scaleFunction={this.scaleFunction}
             />
             <BubbleLegend
+              units={this.props.units}
               cx={this.props.width}
               cy={this.props.height - 50}
               quantFunction={this.quantFunction}

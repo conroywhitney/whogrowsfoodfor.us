@@ -18,6 +18,7 @@ export default React.createClass({
       quantFunction  = this.props.quantFunction,
       quantiles      = quantFunction.quantiles(),
       quantSize      = quantiles.length,
+      quantUnits     = this.props.units,
       formatFunction = this.numberWithCommas
     ;
 
@@ -60,7 +61,13 @@ export default React.createClass({
               }, quantLabel)
             )
           );
-        })
+        }),
+        React.DOM.text({
+          className: "legendUnits",
+          x: -40,
+          y: -85,
+          dy: "0.35em"
+        }, quantUnits)
       )
     :null);
   }
