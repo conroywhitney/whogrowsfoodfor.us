@@ -15,6 +15,22 @@
     <!-- stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+
+    <style type="text/css">
+      #loading {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 100;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(192, 192, 192, 0.5);
+          background-image: url("http://i.stack.imgur.com/MnyxU.gif");
+          background-repeat: no-repeat;
+          background-position: center;
+      }
+    </style>
   </head>
 
   <body>
@@ -29,6 +45,9 @@
     </div><!-- /menu -->
 
     <div class="ui main container">
+
+      <div id="loading">
+      </div>
 
       <div id="app"></div>
       <script src="bundle.js"></script>
@@ -51,6 +70,12 @@
       </div>
     </div><!-- /footer -->
 
+    <script>
+      // hide loading once everything's done downloading
+      window.onload = function() {
+        document.getElementById("loading").style.display = "none";
+      }
+    </script>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
