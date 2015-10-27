@@ -14,7 +14,6 @@ export default React.createClass({
         detailLevel={this.props.detailLevel}
         onFIPSClick={this.props.onFIPSClick}
         onFIPSHover={this.props.onFIPSHover}
-        highlightedFIPS={this.props.highlightedFIPS}
         selectedFIPS={this.props.selected}
         countyLineFilter={this.props.countyLineFilter}
       />

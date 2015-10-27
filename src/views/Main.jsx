@@ -37,7 +37,6 @@ export const MainNaked = React.createClass({
                 detailLevel={this.props.detail_level}
                 onFIPSClick={this.props.setRegion}
                 onFIPSHover={this.props.highlightRegion}
-                highlightedFIPS={this.props.highlighted}
                 countyLineFilter={this.countyLineFilter}
               />
             </div>
@@ -55,7 +54,6 @@ export const MainNaked = React.createClass({
                 productData={this.props.product_data}
                 onFIPSClick={this.props.setRegion}
                 onFIPSHover={this.props.highlightRegion}
-                highlightedFIPS={this.props.highlighted}
               />
             </div>
           </div>
@@ -77,7 +75,6 @@ const mapStateToProps = (state) => ({
   product_data:    getDataForQuery(state.get('product')),
   selected:        state.get('selected'),
   selected_state:  getStateFIPS(state.get('selected')),
-  highlighted:     state.get('highlight'),
   label:           getLabel(state),
   detail_level:    state.get('detail')
 });

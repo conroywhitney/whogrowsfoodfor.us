@@ -13,9 +13,6 @@ export default React.createClass({
       xPos           = this.props.chartWidth - xOffset,
       yPos           = this.props.chartHeight - barHeight,
       formattedValue = this.props.formatFunction(this.props.value),
-      highlighted    = (this.props.highlightedFIPS == this.props.fips),
-      highlightClass = highlighted ? ' highlighted' : '',
-      className      = 'vertical-bar' + highlightClass,
       groupPosition  = "translate(" + xPos + "," + yPos + ")",
       labelUnits     = ' acres',
       barTooShort    = barHeight < 100,
@@ -29,12 +26,10 @@ export default React.createClass({
       regionY        = labelY
     ;
 
-    console.log('vertical histogram bar : render', highlighted, highlightClass, className);
-
     return (
       React.DOM.g({
         transform:   groupPosition,
-        className:   className,
+        className:   'vertical-bar',
         onClick:     this.props.onClick,
         onMouseOver: this.props.onHover,
         "data-fips": this.props.fips

@@ -102,23 +102,4 @@ describe('application logic', () => {
 
   });
 
-  describe('highlight', () => {
-
-
-    it('should have nothing set by default', () => {
-      expect(INITIAL_STATE.get('highlight')).to.be.null;
-    });
-
-    it('should set the id in the highlighted region', () => {
-      var newState = highlight(INITIAL_STATE, stateFIPS);
-      expect(newState.get('highlight')).to.eq(stateFIPS);
-    });
-
-    it('should remove highlight when null', () => {
-      var newState = highlight(highlight(INITIAL_STATE, stateFIPS), null);
-      expect(newState.get('highlight')).to.be.null;
-    });
-
-  });
-
 });

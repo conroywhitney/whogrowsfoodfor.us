@@ -80,7 +80,7 @@ body {
   cursor: pointer;
 }
 
-.feature.highlighted {
+.feature:hover {
   stroke: orange;
   stroke-width: .5;
 }
@@ -171,7 +171,7 @@ iframe {
   cursor: pointer;
 }
 
-.chart g.vertical-bar.highlighted rect {
+.chart g.vertical-bar:hover rect {
   fill: orange;
 }
 

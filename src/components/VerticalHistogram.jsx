@@ -27,21 +27,20 @@ export default React.createClass({
     // thanks to http://bl.ocks.org/mbostock/3885304
 
     var
-      data            = this.props.data || [],
-      sorted          = data.sort(function(a, b) { return b.value - a.value }), // descending
-      totalItems      = sorted.length,
-      maxItems        = 40,
-      itemOverage     = totalItems - maxItems,
-      tooManyItems    = itemOverage > 0,
-      sliced          = tooManyItems ? sorted.slice(0, maxItems - 1) : sorted,
-      overageLabel    = tooManyItems ? (itemOverage + 1) + ' locations not shown' : '',
-      chartWidth      = this.props.width,
-      chartHeight     = this.props.height,
-      yScaleFunction  = d3.scale.linear().range([0, chartHeight]),
-      formatFunction  = this.numberWithCommas,
-      handleClick     = this.handleBarClicked,
-      handleHover     = this.handleBarHover,
-      highlightedFIPS = this.props.highlightedFIPS
+      data           = this.props.data || [],
+      sorted         = data.sort(function(a, b) { return b.value - a.value }), // descending
+      totalItems     = sorted.length,
+      maxItems       = 40,
+      itemOverage    = totalItems - maxItems,
+      tooManyItems   = itemOverage > 0,
+      sliced         = tooManyItems ? sorted.slice(0, maxItems - 1) : sorted,
+      overageLabel   = tooManyItems ? (itemOverage + 1) + ' locations not shown' : '',
+      chartWidth     = this.props.width,
+      chartHeight    = this.props.height,
+      yScaleFunction = d3.scale.linear().range([0, chartHeight]),
+      formatFunction = this.numberWithCommas,
+      handleClick    = this.handleBarClicked,
+      handleHover    = this.handleBarHover
     ;
 
     yScaleFunction.domain([0, d3.max(data, function(d) { return d.value; })])
@@ -67,7 +66,6 @@ export default React.createClass({
               scaleFunction={yScaleFunction}
               onClick={handleClick}
               onHover={handleHover}
-              highlightedFIPS={highlightedFIPS}
             />
           )
         }),
