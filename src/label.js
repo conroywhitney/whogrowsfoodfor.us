@@ -44,9 +44,9 @@ export function getQueryLabel(query) {
   if(!query) { return null; }
 
   var
-  splits  = query.split(/_(acres|head)/gi),
-  product = splits[0]
-              .replace(/_/gi, ' ')
+    product = query.split(/_(acres|head)/gi)[0].replace(/_/gi, ' '),
+    util    = query.split(/_(grain|silage|seed|shelled|oil)/gi)[1],
+    product = util ? `${product} (${util})` : product
   ;
 
   return toTitleCase(product);

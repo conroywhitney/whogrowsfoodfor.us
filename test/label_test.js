@@ -101,6 +101,22 @@ describe('label', () => {
       expect(getQueryLabel('coffee_acres_area_bearing')).to.eq('Coffee');
     });
 
+    it('should handle seed', () => {
+      expect(getQueryLabel('sweet_corn_acres_area_harvested_seed')).to.eq('Sweet Corn (Seed)');
+    });
+
+    it('should handle shelled', () => {
+      expect(getQueryLabel('popcorn_acres_area_harvested_shelled')).to.eq('Popcorn (Shelled)');
+    });
+
+    it('should handle grain', () => {
+      expect(getQueryLabel('corn_acres_area_harvested_grain')).to.eq('Corn (Grain)');
+    });
+
+    it('should handle silage', () => {
+      expect(getQueryLabel('corn_acres_area_harvested_silage')).to.eq('Corn (Silage)');
+    });
+
   });
 
 });
