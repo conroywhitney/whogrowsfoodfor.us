@@ -6,7 +6,7 @@ import MapContainer                   from '../components/MapContainer';
 import StatsContainer                 from '../components/StatsContainer';
 import Title                          from '../components/Title';
 import * as actionCreators            from '../action_creators';
-import {getLabel}                     from '../label';
+import {getLabel, getQueryUnits}      from '../label';
 import {getStateFIPS}                 from '../fips';
 import {productData, getDataForQuery} from '../products';
 
@@ -34,6 +34,7 @@ export const MainNaked = React.createClass({
                 selected={this.props.selected}
                 label={this.props.label}
                 productData={this.props.product_data}
+                productUnits={this.props.product_units}
                 detailLevel={this.props.detail_level}
                 onFIPSClick={this.props.setRegion}
                 countyLineFilter={this.countyLineFilter}
@@ -71,6 +72,7 @@ export const MainNaked = React.createClass({
 const mapStateToProps = (state) => ({
   product:         state.get('product'),
   product_data:    getDataForQuery(state.get('product')),
+  product_units:   getQueryUnits(state.get('product')),
   selected:        state.get('selected'),
   selected_state:  getStateFIPS(state.get('selected')),
   label:           getLabel(state),

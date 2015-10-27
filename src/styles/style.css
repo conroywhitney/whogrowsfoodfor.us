@@ -111,9 +111,14 @@ body {
   width: 325px;
 }
 
+.legend {
+  fill: #CCC;
+}
+
 .legend circle {
   fill: none;
-  stroke: #ccc;
+  stroke: #FFF;
+  fill: steelblue;
 }
 
 .legend text {
