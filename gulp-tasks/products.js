@@ -213,6 +213,31 @@ gulp.task('product-combinations', function() {
 
 });
 
+gulp.task('product-empty-queries', function() {
+  var
+    products = getFilteredProductList()
+  ;
+
+  products.forEach(function(product) {
+    var
+      props = getProductProperties(product)
+    ;
+
+    gulp.src(props.folder + '/*_queries.json')
+      .pipe(jsonTransform(function(json) {
+        if(!json) { return '!error!'; }
+
+        if(json[props.slug].queries.length == 0) {
+          console.log("ZOMG THIS HAS ZERO QUERIES", props.slug);
+        }
+
+        return json;
+      }))
+      .pipe(jsonlint())
+  });
+
+});
+
 gulp.task('product-download', function(cb) {
   var
     products = getFilteredProductList()
