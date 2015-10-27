@@ -15,10 +15,6 @@ export default React.createClass({
     return this.props.onFIPSClick(this.getEventFIPS(event));
   },
 
-  handleBarHover: function(event) {
-    return this.props.onFIPSHover(this.getEventFIPS(event));
-  },
-
   getEventFIPS: function(event) {
     return event.target.getAttribute('data-fips');
   },
@@ -39,8 +35,7 @@ export default React.createClass({
       chartHeight    = this.props.height,
       yScaleFunction = d3.scale.linear().range([0, chartHeight]),
       formatFunction = this.numberWithCommas,
-      handleClick    = this.handleBarClicked,
-      handleHover    = this.handleBarHover
+      handleClick    = this.handleBarClicked
     ;
 
     yScaleFunction.domain([0, d3.max(data, function(d) { return d.value; })])
@@ -65,7 +60,6 @@ export default React.createClass({
               formatFunction={formatFunction}
               scaleFunction={yScaleFunction}
               onClick={handleClick}
-              onHover={handleHover}
             />
           )
         }),

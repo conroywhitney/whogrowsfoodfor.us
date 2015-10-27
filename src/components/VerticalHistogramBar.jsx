@@ -31,7 +31,6 @@ export default React.createClass({
         transform:   groupPosition,
         className:   'vertical-bar',
         onClick:     this.props.onClick,
-        onMouseOver: this.props.onHover,
         "data-fips": this.props.fips
       },
         React.DOM.rect({

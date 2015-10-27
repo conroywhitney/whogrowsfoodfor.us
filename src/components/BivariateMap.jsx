@@ -44,15 +44,6 @@ export default React.createClass({
     }
   },
 
-  handleMapHover: function(event) {
-    var
-      eventFIPS = this.getEventFIPS(event),
-      stateFIPS = getStateFIPS(eventFIPS)
-    ;
-
-    this.props.onFIPSHover(stateFIPS);
-  },
-
   getEventFIPS: function(event) {
     return normalizeFIPS(event.target.id);
   },
@@ -165,7 +156,6 @@ export default React.createClass({
                 topoJSON={stateTopoJSON}
                 className="feature"
                 handleClick={this.handleMapClick}
-                handleHover={this.handleMapHover}
               />
             : null }
             {this.showDetailLevel('states') ?
