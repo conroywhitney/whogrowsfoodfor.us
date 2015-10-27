@@ -35,7 +35,7 @@ export const MainNaked = React.createClass({
                 label={this.props.label}
                 productData={this.props.product_data}
                 detailLevel={this.props.detail_level}
-                setRegion={this.props.setRegion}
+                onFIPSClick={this.props.setRegion}
                 countyLineFilter={this.countyLineFilter}
               />
             </div>
@@ -51,6 +51,7 @@ export const MainNaked = React.createClass({
             <div className="fourteen wide centered column">
               <StatsContainer
                 productData={this.props.product_data}
+                onFIPSClick={this.props.setRegion}
               />
             </div>
           </div>

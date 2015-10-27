@@ -30,19 +30,22 @@ export default React.createClass({
 
   handleMapClick: function(event) {
     var
-      target           = event.target,
-      clickedFIPS      = normalizeFIPS(target.id),
-      clickedStateFIPS = getStateFIPS(clickedFIPS)
+      clickedFIPS       = this.getEventFIPS(event),
+      clickedStateFIPS  = getStateFIPS(clickedFIPS)
     ;
 
     if(isFipsState(clickedFIPS) && (this.props.selectedFIPS === clickedFIPS)) {
       // if click same location again, should reset instead
       // also, only if you click a state
-      this.props.setRegion(null);
+      this.props.onFIPSClick(null);
     } else {
       // update app state based on clicked item
-      this.props.setRegion(clickedFIPS);
+      this.props.onFIPSClick(clickedFIPS);
     }
+  },
+
+  getEventFIPS: function(event) {
+    return normalizeFIPS(event.target.id);
   },
 
   scaleFunction: null,
