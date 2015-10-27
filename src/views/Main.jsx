@@ -1,14 +1,13 @@
-import React                          from 'react';
-import PureRenderMixin                from 'react-addons-pure-render-mixin';
-import {connect}                      from 'react-redux';
-import ProductDropdown                from '../components/ProductDropdown';
-import MapContainer                   from '../components/MapContainer';
-import StatsContainer                 from '../components/StatsContainer';
-import Title                          from '../components/Title';
-import * as actionCreators            from '../action_creators';
-import {getLabel}                     from '../label';
-import {getStateFIPS}                 from '../fips';
-import {productData, getDataForQuery} from '../products';
+import React               from 'react';
+import PureRenderMixin     from 'react-addons-pure-render-mixin';
+import {connect}           from 'react-redux';
+import ProductDropdown     from '../components/ProductDropdown';
+import MapContainer        from '../components/MapContainer';
+import StatsContainer      from '../components/StatsContainer';
+import Title               from '../components/Title';
+import * as actionCreators from '../action_creators';
+import {getLabel}          from '../label';
+import {getStateFIPS}      from '../fips';
 
 export const MainNaked = React.createClass({
   mixins: [PureRenderMixin],
@@ -22,7 +21,7 @@ export const MainNaked = React.createClass({
           <div className="ui row">
             <div className="fourteen wide centered column">
               <ProductDropdown
-                product={this.props.product}
+                product={this.props.product_query}
                 handleChange={this.props.setProduct}
               />
             </div>
@@ -33,7 +32,7 @@ export const MainNaked = React.createClass({
               <MapContainer
                 selected={this.props.selected}
                 label={this.props.label}
-                productData={this.props.product_data}
+                productQuery={this.props.product_query}
                 detailLevel={this.props.detail_level}
                 onFIPSClick={this.props.setRegion}
                 onFIPSHover={this.props.highlightRegion}
@@ -51,7 +50,7 @@ export const MainNaked = React.createClass({
           <div className="ui row">
             <div className="fourteen wide centered column">
               <StatsContainer
-                productData={this.props.product_data}
+                productQuery={this.props.product_query}
                 onFIPSClick={this.props.setRegion}
                 onFIPSHover={this.props.highlightRegion}
               />
@@ -71,8 +70,7 @@ export const MainNaked = React.createClass({
 });
 
 const mapStateToProps = (state) => ({
-  product:         state.get('product'),
-  product_data:    getDataForQuery(state.get('product')),
+  product_query:   state.get('product'),
   selected:        state.get('selected'),
   selected_state:  getStateFIPS(state.get('selected')),
   label:           getLabel(state),
